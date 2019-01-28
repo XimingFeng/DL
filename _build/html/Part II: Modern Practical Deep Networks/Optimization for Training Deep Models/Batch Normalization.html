@@ -27,7 +27,9 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="Optimization for Training Deep Models" href="index.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -77,8 +79,18 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../index.html">Part II: Modern Practical Deep Networks</a></li>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Optimization for Training Deep Models</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Batch Normalization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#simulation-method">Simulation method</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
 </ul>
 
             
@@ -124,6 +136,10 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
+          <li><a href="../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
+        
+          <li><a href="index.html">Optimization for Training Deep Models</a> &raquo;</li>
+        
       <li>Batch Normalization</li>
     
     
@@ -147,8 +163,25 @@
 <h1>Batch Normalization<a class="headerlink" href="#batch-normalization" title="Permalink to this headline">¶</a></h1>
 <p>One of the assignment in class cs231n is to implement the function of bacth
 normalization, in both forward and backward propagation. Forward propagation is
-pretty straigh forward but backward too me really long time understand and
+pretty straigh forward but backward took me really long time to understand and
 implement.</p>
+<p>As you can see from the assignment, there are two ways to implement
+backpropagation.</p>
+<ul class="simple">
+<li>Simulate forward and backward prop through multiple steps</li>
+<li>Calculate the relationship between input and output. Then give a one step calculation.</li>
+</ul>
+<p>No matter what method you want to choose, you have to draw a computation graph in order
+to help yourself to understand the operation dynamic. Below is the figure I had in my
+scratch paper.</p>
+<p>There some few things to note:</p>
+<ul class="simple">
+<li>This figure did not show process from <span class="math notranslate nohighlight">\(intmdt\_out\)</span> to <span class="math notranslate nohighlight">\(out\)</span> in order to simplify the problem.</li>
+<li>For the node that has two path coming out of it, the gradient should be the sum of the gradients calculated individually on different path. So in order to get the gradient of <span class="math notranslate nohighlight">\(x_centered\)</span>, we need calculate the gradients with respect of path (1) and path (2) and add them together.</li>
+</ul>
+<div class="section" id="simulation-method">
+<h2>Simulation method<a class="headerlink" href="#simulation-method" title="Permalink to this headline">¶</a></h2>
+</div>
 </div>
 
 
@@ -156,6 +189,15 @@ implement.</p>
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Optimization for Training Deep Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>
@@ -187,6 +229,7 @@ implement.</p>
         <script type="text/javascript" src="../../_static/jquery.js"></script>
         <script type="text/javascript" src="../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     
 
   

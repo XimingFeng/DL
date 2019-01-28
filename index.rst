@@ -11,6 +11,7 @@ Welcome to dl's documentation!
    :caption: Contents:
 
    Part II: Modern Practical Deep Networks/index
+   Extra/index
 
 
 Indices and tables
