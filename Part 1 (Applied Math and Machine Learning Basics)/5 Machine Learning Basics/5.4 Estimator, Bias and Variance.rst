@@ -1,0 +1,9 @@
+5.4 Estimator, Bias and Variance
+====================================
+
+
+##############################
+Pointe estimator 
+##############################
+
+Denote a point estimate of a parameter :math:`\hat{\theta}` 

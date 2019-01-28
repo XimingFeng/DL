@@ -5,4 +5,4 @@ Part II: Modern Practical Deep Networks
    :maxdepth: 2
    :caption: Contents:
 
-   Optimization for Training Deep Models/index
+   8 Optimization for Training Deep Models/index

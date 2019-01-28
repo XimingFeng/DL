@@ -10,7 +10,9 @@ Welcome to dl's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   Part II: Modern Practical Deep Networks/index
+   Part 1 (Applied Math and Machine Learning Basics)/index
+   Part 2 (Modern Practical Deep Networks)/index
+
 
 
 Indices and tables
