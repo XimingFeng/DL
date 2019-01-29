@@ -92,6 +92,7 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
 </ul>
 
             
@@ -164,7 +165,25 @@
 <h1>5.4 Estimator, Bias and Variance<a class="headerlink" href="#estimator-bias-and-variance" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="pointe-estimator">
 <h2>Pointe estimator<a class="headerlink" href="#pointe-estimator" title="Permalink to this headline">¶</a></h2>
-<p>Denote a point estimate of a parameter <span class="math notranslate nohighlight">\(\hat{\theta}\)</span></p>
+<p>Denote a point estimate of a parameter <span class="math notranslate nohighlight">\(\hat{\theta}\)</span>.
+Let <span class="math notranslate nohighlight">\(\{x^{1} ... x^{m}\}\)</span> be a set of m independent and identically distributed data (iid). A point estimator or statistic is any function of the data:</p>
+<div class="math notranslate nohighlight">
+\[\hat{\theta}_m = g(x_1, x_2, x_3 ... x_m)\]</div>
+<p>Frequentist perspective on statistics: assume true parameter value :math: <cite>theta</cite> is fixed but unknown. The point estimate is a function of the data. Since data is drawn from random process, any function of the data is random. Therefore <span class="math notranslate nohighlight">\(\hat{\theta}\)</span> is a random process.</p>
+<div class="section" id="bias">
+<h3>Bias<a class="headerlink" href="#bias" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[bias(\hat{\theta}) = \boldsymbol{E}(\hat{\theta}) - \theta\]</div>
+<p>Expectation is over the data. :math: <cite>theta</cite> is true underlying value used to define the data generating distribution. :math: <cite>theta</cite> is unbiased when <span class="math notranslate nohighlight">\(bias(\hat{\theta}) = 0\)</span>. :math: <cite>theta</cite> is asymptotically nbiased when <span class="math notranslate nohighlight">\(lim_{m\rightarrow \infty}bias(\hat{\theta}) = 0\)</span></p>
+<p>See all the examples from p121 ~ p124 for Estimation mean, square …</p>
+</div>
+<div class="section" id="variance">
+<h3>Variance<a class="headerlink" href="#variance" title="Permalink to this headline">¶</a></h3>
+<p>Variance of the estimator:</p>
+<div class="math notranslate nohighlight">
+\[var(\hat{\theta})\]</div>
+<p>The variance provides a measure of how we would expect the estimate we compute from data to vary as we independently resample the dataset from the underlying data-generating process.</p>
+</div>
 </div>
 </div>
 

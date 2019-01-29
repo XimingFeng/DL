@@ -6,4 +6,33 @@
 Pointe estimator 
 ##############################
 
-Denote a point estimate of a parameter :math:`\hat{\theta}` 
+Denote a point estimate of a parameter :math:`\hat{\theta}`. 
+Let :math:`\{x^{1} ... x^{m}\}` be a set of m independent and identically distributed data (iid). A point estimator or statistic is any function of the data:
+
+.. math::
+	
+	\hat{\theta}_m = g(x_1, x_2, x_3 ... x_m) 
+
+Frequentist perspective on statistics: assume true parameter value :math: `\theta` is fixed but unknown. The point estimate is a function of the data. Since data is drawn from random process, any function of the data is random. Therefore :math:`\hat{\theta}` is a random process.
+
+***********************
+Bias
+***********************
+.. math::
+	
+	bias(\hat{\theta}) = \boldsymbol{E}(\hat{\theta}) - \theta
+
+Expectation is over the data. :math: `\theta` is true underlying value used to define the data generating distribution. :math: `\theta` is unbiased when :math:`bias(\hat{\theta}) = 0`. :math: `\theta` is asymptotically nbiased when :math:`lim_{m\rightarrow \infty}bias(\hat{\theta}) = 0`
+
+See all the examples from p121 ~ p124 for Estimation mean, square ...
+
+***********************
+Variance
+***********************
+Variance of the estimator:
+
+.. math::
+	
+	var(\hat{\theta})
+
+The variance provides a measure of how we would expect the estimate we compute from data to vary as we independently resample the dataset from the underlying data-generating process. 
