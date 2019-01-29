@@ -39,7 +39,11 @@ release = '0.0.1'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
+<<<<<<< HEAD
     "sphinx.ext.mathbase",
+=======
+    "sphinx.ext.mathjax",
+>>>>>>> 430487563957844c25609c32a2c12dfac209fe7f
 ]
 
 # Add any paths that contain templates here, relative to this directory.
