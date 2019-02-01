@@ -35,4 +35,32 @@ Variance of the estimator:
 	
 	var(\hat{\theta})
 
+Standar Error:
+	
+.. math::
+	
+	\sqrt{var(\hat{\theta})}
+
 The variance provides a measure of how we would expect the estimate we compute from data to vary as we independently resample the dataset from the underlying data-generating process. 
+
+The standard error of mean  :math:`SE(\hat{\mu}_m)=\sqrt{Var(\frac{1}{m} \sum_{i} x^i}) = \frac{\sigma}{\sqrt{m}}` is very useful because we often estimate the generalization error by computing sample mean of the error on the test set. See example of Bernoulli Distribution in P125
+
+*********************************************************************
+Trading off Bias and Variance to Minimizing Mean Error
+*********************************************************************
+
+* Bias measures the expected deviation from the true value of the function or parameter. 
+* Variance provides a measure of teh deviation from the expected estimator value that any particular sampling of the data is likely to cause.
+
+How do we compare a model with large bias and model with large variance? Most common way: use cross-validation. Alternatively, mean square error (MSE):
+
+.. math::
+	
+	MSE = \mathbb{E}[(\hat{\theta}_m - \theta)^2] 
+		= Bias(\hat{\theta}_m)^2 + Var(\hat{\theta}_m) 
+
+To prove it, try it from right to left. 
+
+When generalization erro (defined in 5.2 in P107, as **expected** value of **error** on a new input) is measured by the MSE (where bias and variance are meaningful components of generalization error), increasing capacity tends to increase variance and decrease bais.
+
+.. image:: Figure5.6MSE.PNG
