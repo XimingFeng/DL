@@ -12,6 +12,7 @@ Welcome to dl's documentation!
 
    Part 1 (Applied Math and Machine Learning Basics)/index
    Part 2 (Modern Practical Deep Networks)/index
+   Part 3 (Deep Learning Research)/index
    Extra/index
 
 

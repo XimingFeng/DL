@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>8 Optimization for Training Deep Models &mdash; dl 0.0.1 documentation</title>
+  <title>14 Autoencoders &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Batch Normalization" href="Batch Normalization.html" />
-    <link rel="prev" title="Part II: Modern Practical Deep Networks" href="../index.html" /> 
+    <link rel="next" title="14.1 Undercomplete Autoencoders" href="14.1 Undercomplete Autoencoders.html" />
+    <link rel="prev" title="Part III: Deep Learning Research" href="../index.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,15 +81,11 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../index.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#why-we-call-it-network">Why we call it Network?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#hidden-layers">Hidden Layers</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html#chapters">Chapters</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">8 Optimization for Training Deep Models</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="Batch Normalization.html">Batch Normalization</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">14 Autoencoders</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="14.1 Undercomplete Autoencoders.html">14.1 Undercomplete Autoencoders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="14.5 Denoising Autoencoders.html">14.5 Denoising Autoencoders</a></li>
 </ul>
 </li>
 </ul>
@@ -140,15 +136,15 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>8 Optimization for Training Deep Models</li>
+      <li>14 Autoencoders</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 2 (Modern Practical Deep Networks)/8 Optimization for Training Deep Models/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/14 Autoencoders/index.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -161,16 +157,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="optimization-for-training-deep-models">
-<h1>8 Optimization for Training Deep Models<a class="headerlink" href="#optimization-for-training-deep-models" title="Permalink to this headline">¶</a></h1>
-<p>Here is the <a class="reference external" href="https://www.deeplearningbook.org/contents/optimization.html">link</a> to the test book.</p>
+  <div class="section" id="autoencoders">
+<h1>14 Autoencoders<a class="headerlink" href="#autoencoders" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="Batch Normalization.html">Batch Normalization</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Batch Normalization.html#simulation-method">Simulation method</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="14.1 Undercomplete Autoencoders.html">14.1 Undercomplete Autoencoders</a></li>
+<li class="toctree-l1"><a class="reference internal" href="14.5 Denoising Autoencoders.html">14.5 Denoising Autoencoders</a></li>
 </ul>
 </div>
 </div>
@@ -183,10 +175,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Batch Normalization.html" class="btn btn-neutral float-right" title="Batch Normalization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="14.1 Undercomplete Autoencoders.html" class="btn btn-neutral float-right" title="14.1 Undercomplete Autoencoders" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Part II: Modern Practical Deep Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral" title="Part III: Deep Learning Research" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

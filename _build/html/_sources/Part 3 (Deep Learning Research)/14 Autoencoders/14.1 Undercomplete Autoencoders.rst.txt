@@ -1,0 +1,35 @@
+14.1 Undercomplete Autoencoders
+================================
+
+
+An autoencoder whose code dimension is less than the input dimension is called **undercomplete**.
+
+The learning process: minimizing a loss function
+
+.. math::
+	
+	L(x, g(f(x)))
+
+where L is a loss function penalizingg g(f(x)) for being dissimilar from x, such as the mean squared error. 
+
+When the decoder is linear and L is the mean squared error, an undercomplete autoencoder learns to span the same subspace as PCA. In this case, an autoencoder trained to perform the copying task has learned the principal subspace of the training data as a side eﬀect.
+
+In PCA, we apply a transform of higer dimension data :math:`x \in R^d` with :math:`U \in R^{(d*p)}` where :math:`d > p`:
+
+.. math::
+
+	y = U^Tx
+
+To reconstruct the orginal data you can apply:
+
+.. math::
+	
+	x = Uy
+
+You can imagin an simple autoencoder with applying :math:`U^T` as encoder and applying :math:`U` as decoder. That is the same logic as PCA
+
+######################
+Reference
+######################
+
+* `Ali Ghodsi Variational Autoencoder <https://www.youtube.com/watch?v=uaaqyVS9-rM>`_
