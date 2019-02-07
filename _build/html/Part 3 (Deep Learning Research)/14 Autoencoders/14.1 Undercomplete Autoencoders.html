@@ -85,6 +85,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">14 Autoencoders</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">14.1 Undercomplete Autoencoders</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#review-on-info-theory">Review on info theory</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#variational-inference">Variational inference</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
@@ -177,6 +179,48 @@
 <div class="math notranslate nohighlight">
 \[x = Uy\]</div>
 <p>You can imagin an simple autoencoder with applying <span class="math notranslate nohighlight">\(U^T\)</span> as encoder and applying <span class="math notranslate nohighlight">\(U\)</span> as decoder. That is the same logic as PCA</p>
+<div class="section" id="review-on-info-theory">
+<h2>Review on info theory<a class="headerlink" href="#review-on-info-theory" title="Permalink to this headline">¶</a></h2>
+<p>Low possibility: more informational. High possibility: less informational.</p>
+<p>Information gain:</p>
+<div class="math notranslate nohighlight">
+\[I = -log P(x)\]</div>
+<p>Entropy (expected information gain)</p>
+<div class="math notranslate nohighlight">
+\[H = - \sum P(x)log P(x)\]</div>
+<p>KL divergence, which measure the similarity of two distribution:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+        KL(P || Q) = - \sum P(x)log Q(x) + \sum P(x)logP(x) \\
+        = \sum P(x) log \frac{P(x)}{Q(x)}
+\end{equation}\end{split}\]</div>
+<p>KL divergence is not . The KL divergence above is of Q with respect to P. There are two important properties of KL divergence:</p>
+<ol class="arabic simple">
+<li><span class="math notranslate nohighlight">\(KL &gt;= 0\)</span></li>
+<li><span class="math notranslate nohighlight">\(KL(P||Q) \neq KL (Q||P)\)</span> (not symmetric)</li>
+</ol>
+</div>
+<div class="section" id="variational-inference">
+<h2>Variational inference<a class="headerlink" href="#variational-inference" title="Permalink to this headline">¶</a></h2>
+<p>Suppose x is observation and z is hidden variable. In order to compute the relationship between z and x, we have to compute:</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+        P(x|z) = \frac {P(z|x)p(z)}{p(x)}
+\end{equation}\]</div>
+<p>Computing <span class="math notranslate nohighlight">\(P(x) = \int P(x|z)p(z)dz\)</span> is very challenging (imagin z with very high dimemsion). Sometime it is intractable. There are two ways to deal with this challenge.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo Method</a> (not focused here)</li>
+<li>Variational Inference (explained below)</li>
+</ul>
+<p>We can approach P(z|x) with Q(z). If we choose Q to be tractabke distribution, such as Gaussian or Bernoulli, then we have an approximate distribution that we can compute. So the goal is minimize:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+        KL (q(z) || p(z|x)) \\
+        = - \sum q(z) log \frac {p(z|x)}{q(z)} \\
+        = \sum q(z) log \frac{\frac {p(x, z)}{p(x)}} {q(z)} \\
+        = \sum q(z) (log \frac {p(x, z)}{q(z)} + log \frac {1}{p(x)} )
+\end{equation}\end{split}\]</div>
+</div>
 <div class="section" id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">

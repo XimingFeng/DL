@@ -28,6 +28,74 @@ To reconstruct the orginal data you can apply:
 
 You can imagin an simple autoencoder with applying :math:`U^T` as encoder and applying :math:`U` as decoder. That is the same logic as PCA
 
+
+######################
+Review on info theory
+######################
+Low possibility: more informational. High possibility: less informational. 
+
+Information gain:
+
+.. math::
+	
+	I = -log P(x)
+
+Entropy (expected information gain)
+
+.. math::
+	
+	H = - \sum P(x)log P(x)
+
+KL divergence, which measure the similarity of two distribution:
+
+.. math::
+	
+	\begin{equation}
+		KL(P || Q) = - \sum P(x)log Q(x) + \sum P(x)logP(x) \\
+		= \sum P(x) log \frac{P(x)}{Q(x)}
+	\end{equation}
+
+KL divergence is not . The KL divergence above is of Q with respect to P. There are two important properties of KL divergence:
+
+1. :math:`KL >= 0` 
+2. :math:`KL(P||Q) \neq KL (Q||P)` (not symmetric)
+
+######################
+Variational inference
+######################
+
+Suppose x is observation and z is hidden variable. In order to compute the relationship between z and x, we have to compute:
+
+.. math::
+	
+	\begin{equation}
+		P(x|z) = \frac {P(z|x)p(z)}{p(x)}
+	\end{equation}
+
+Computing :math:`P(x) = \int P(x|z)p(z)dz` is very challenging (imagin z with very high dimemsion). Sometime it is intractable. There are two ways to deal with this challenge.
+
+* `Monte Carlo Method <https://en.wikipedia.org/wiki/Monte_Carlo_method>`_ (not focused here)
+* Variational Inference (explained below)
+
+We can approach P(z|x) with Q(z). If we choose Q to be tractabke distribution, such as Gaussian or Bernoulli, then we have an approximate distribution that we can compute. So the goal is minimize:
+
+.. math::
+
+	\begin{equation}
+		KL (q(z) || p(z|x)) \\
+		= - \sum q(z) log \frac {p(z|x)}{q(z)} \\
+		= \sum q(z) log \frac{\frac {p(x, z)}{p(x)}} {q(z)} \\
+		= \sum q(z) (log \frac {p(x, z)}{q(z)} + log \frac {1}{p(x)} ) 
+	\end{equation}
+	 
+
+
+
+
+
+
+
+
 ######################
 Reference
 ######################
