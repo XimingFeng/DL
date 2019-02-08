@@ -81,18 +81,39 @@ We can approach P(z|x) with Q(z). If we choose Q to be tractabke distribution, s
 
 .. math::
 
-	\begin{equation}
+	\begin{aligned}
 		KL (q(z) || p(z|x)) \\
-		= - \sum q(z) log \frac {p(z|x)}{q(z)} \\
-		= \sum q(z) log \frac{\frac {p(x, z)}{p(x)}} {q(z)} \\
-		= \sum q(z) (log \frac {p(x, z)}{q(z)} + log \frac {1}{p(x)} ) 
+		& = - \sum q(z) log \frac {p(z|x)}{q(z)} &\\
+		& = - \sum q(z) log \frac{\frac {p(x, z)}{p(x)}} {q(z)} &\\
+		& = - \sum q(z) (log \frac {p(x, z)}{q(z)} - log p(x) ) &\\ 
+		& = - \sum q(z) log \frac {p(x, z)}{q(z)} + \sum q(z)log p(x) &\\
+		& = - \sum q(z) log \frac {p(x, z)}{q(z)} + log p(x) \sum q(z) &\\
+		& = - \sum q(z) log \frac {p(x, z)}{q(z)} + log p(x)
+	\end{aligned}
+
+So we can rewrite the equation as 
+
+.. math::
+
+	\begin{equation}
+		log p(x) \\
+		= KL (q(z) || p(z|x))  + \sum q(z) log \frac {p(x, z)}{q(z)}  \\
 	\end{equation}
-	 
 
+logP(x) is given, if we want to minimize :math:`KL (q(z) || p(z|x))`, we should maximize :math:`\sum q(z) log \frac {p(x, z)}{q(z)}` (we can call it L). This term L is also called **variational lower bound**. Since KL divergence is always non-negative, logP(x) is always greater or equal to L.  
 
+.. math::
 
+	\begin{aligned}
+    \sum q(z) log \frac {p(x, z)}{q(z)} &= \sum q(z)log p(x|z) + \sum q(z)log\frac {p(z)}{q(z)} &\\
+                						&= \sum q(z)log p(x|z) - KL (q(z) || p(z)) &\\
+                						&=  - KL (q(z) || p(z))
+	\end{aligned}
+	
+To maximize L we need to make :math:`E_{q(z)} log p(x|z)` as great as possible. 
+We can think of :math:`E_{q(z)} log p(x|z)` as reconstruction gain. If x is a Gaussian distribution, maximizing :math:`E_{q(z)} log p(x|z)` is the same as minimizing :math:`|x - \hat{x}|^2`
 
-
+q(z) as similar to p(z) as possible and make 
 
 
 

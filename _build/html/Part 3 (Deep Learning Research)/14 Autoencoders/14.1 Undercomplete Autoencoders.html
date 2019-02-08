@@ -214,12 +214,31 @@
 </ul>
 <p>We can approach P(z|x) with Q(z). If we choose Q to be tractabke distribution, such as Gaussian or Bernoulli, then we have an approximate distribution that we can compute. So the goal is minimize:</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}\begin{equation}
+\[\begin{split}\begin{aligned}
         KL (q(z) || p(z|x)) \\
-        = - \sum q(z) log \frac {p(z|x)}{q(z)} \\
-        = \sum q(z) log \frac{\frac {p(x, z)}{p(x)}} {q(z)} \\
-        = \sum q(z) (log \frac {p(x, z)}{q(z)} + log \frac {1}{p(x)} )
+        &amp; = - \sum q(z) log \frac {p(z|x)}{q(z)} &amp;\\
+        &amp; = - \sum q(z) log \frac{\frac {p(x, z)}{p(x)}} {q(z)} &amp;\\
+        &amp; = - \sum q(z) (log \frac {p(x, z)}{q(z)} - log p(x) ) &amp;\\
+        &amp; = - \sum q(z) log \frac {p(x, z)}{q(z)} + \sum q(z)log p(x) &amp;\\
+        &amp; = - \sum q(z) log \frac {p(x, z)}{q(z)} + log p(x) \sum q(z) &amp;\\
+        &amp; = - \sum q(z) log \frac {p(x, z)}{q(z)} + log p(x)
+\end{aligned}\end{split}\]</div>
+<p>So we can rewrite the equation as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+        log p(x) \\
+        = KL (q(z) || p(z|x))  + \sum q(z) log \frac {p(x, z)}{q(z)}  \\
 \end{equation}\end{split}\]</div>
+<p>logP(x) is given, if we want to minimize <span class="math notranslate nohighlight">\(KL (q(z) || p(z|x))\)</span>, we should maximize <span class="math notranslate nohighlight">\(\sum q(z) log \frac {p(x, z)}{q(z)}\)</span> (we can call it L). This term L is also called <strong>variational lower bound</strong>. Since KL divergence is always non-negative, logP(x) is always greater or equal to L.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}    \begin{aligned}
+\sum q(z) log \frac {p(x, z)}{q(z)} &amp;= \sum q(z)log p(x|z) + \sum q(z)log\frac {p(z)}{q(z)} &amp;\\
+                                                            &amp;= \sum q(z)log p(x|z) - KL (q(z) || p(z)) &amp;\\
+                                                            &amp;=  - KL (q(z) || p(z))
+    \end{aligned}\end{split}\]</div>
+<p>To maximize L we need to make <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> as great as possible.
+We can think of <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> as reconstruction gain. If x is a Gaussian distribution, maximizing <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> is the same as minimizing <span class="math notranslate nohighlight">\(|x - \hat{x}|^2\)</span></p>
+<p>q(z) as similar to p(z) as possible and make</p>
 </div>
 <div class="section" id="reference">
 <h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
