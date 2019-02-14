@@ -1,5 +1,51 @@
 14.5 Denoising Autoencoders
 =============================
+Denoising autoencoder (DAE) is an autoencoder that receives a corrupted data point as input and is trained to predict the original, uncorrupted data point as its output.
+
+.. Image:: Figure14.3.PNG
+ 
+Learns **reconstruction distribution** :math:`p_{reconstruct}(x|\hat{x})` by
+
+1. Sample **x** from training data
+2. Sample a corrupted version :math:`\hat{x}` from :math:`C(\hat{x}|x = x)`
+3. Use :math:`(x|\hat{x})` as training example for estimating the autoencoder reconstruction distribution `p_{reconstruct}(x|\hat{x})` which is equal to :math:`p_{decoder}(x|h)`. (h: the output of encoder :math:`f(\hat{x})`. decoder: g(h))
+
+We can view the DAE as performing statistic gradient descent on the following expectation:
+
+.. math::
+	
+	-E_{x \sim \hat{p}_{data}(x)}E_{\hat{x}\ \sim C(\hat{x}|x)}log P_{decoder}(x|h=f(\hat{x}))
+
+Where :math:`\hat{p}_{data}(x)` is the training distribution
+
+Score matching: encourage the model to have the same score as the data distribution at every training point x. In this context, the score is
+
+.. math::
+	
+	\nabla_x log P(x)
+
+Learning the gradient field of :math:`logP_{data}(x)` is one way to learn the structure of :math:`P_{data}` itself.
+
+Important property of DAE: conditionally Gaussian p(x | h) makes the autoencoder learn a vector field (g(f(x)) - x) that estimate the score of the data distribution. 
+
+.. Image:: Figure14.4.PNG
+
+Training with squared error criterion
+
+.. math::
+
+	||g(f(\hat{x})) -x||^2
+
+and corruption:
+
+.. math::
+	
+	c(\hat{x}|x) = \mathcal{N}(\mu=x, \Sigma = \sigma^2 I)
+
+A generic encoder-decoder architecture may be made to estimate the score. 
+
+.. Image:: Figure14.5.PNG
+
 
 
 

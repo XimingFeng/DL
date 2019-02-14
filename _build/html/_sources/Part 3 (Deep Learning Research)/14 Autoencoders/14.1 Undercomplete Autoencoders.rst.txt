@@ -111,7 +111,7 @@ logP(x) is given, if we want to minimize :math:`KL (q(z) || p(z|x))`, we should 
 	\end{aligned}
 	
 To maximize L we need to make :math:`E_{q(z)} log p(x|z)` as great as possible. 
-We can think of :math:`E_{q(z)} log p(x|z)` as reconstruction gain. If x is a Gaussian distribution, maximizing :math:`E_{q(z)} log p(x|z)` is the same as minimizing :math:`|x - \hat{x}|^2`
+We can think of :math:`E_{q(z)} log p(x|z)` as reconstruction gain. If x is a Gaussian distribution, maximizing :math:`E_{q(z)} log p(x|z)` is the same as minimizing :math:`|x - \hat{x}|^2`. If x is a Bernoulli, it is the same as cross entropy. 
 
 q(z) as similar to p(z) as possible and make 
 

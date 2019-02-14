@@ -1,0 +1,25 @@
+14.3 Representational Power, Layer Size and Depth
+===================================================
+
+################
+Review 
+################
+The universal approximation theorem (Horniket al., 1989; Cybenko, 1989) states that a feedforward network with a linear output layer and at least one hidden layer with any “squashing” activation function (suchas the logistic sigmoid activation function) can approximate any Borel measurable function from one ﬁnite-dimensional space to another with any desired nonzero amount of error, provided that the network is given enough hidden units.
+
+According to the universal approximation theorem, there exists a network largeenough to achieve any degree of accuracy we desire. 
+
+A feedforward network with a single layer is sufficient to representany function, but the layer may be infeasibly large and may fail to learn and generalize correctly. In many circumstances, using deeper models can reduce the number of units required to represent the desired function and can reduce the amount of generalization error.
+
+Choosing a deep model encodes a very general belief that the function wewant to learn should involve composition of several simpler functions.
+
+########################
+Apply to autoencoder
+########################
+
+Encoder and decoder are both feedfoward networks, they can individually benefit from depth or as a whole.
+
+Autoencoder with a single hidden layer is able to represent the identity function. But mapping from input to code is shallow -> not able to enforce arbitrary constraints, eg: the code should be sparse. 
+
+Depth exponetially reduce: 1. computational cost. 2. amount of training data needed 
+
+Common strategy of training: greedily pretrain the deep architecture by train a stack of shallow autoencoder. 

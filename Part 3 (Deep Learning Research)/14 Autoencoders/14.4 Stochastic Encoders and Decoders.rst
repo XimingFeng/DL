@@ -1,0 +1,9 @@
+14.4 Stochastic Encoders and Decoders
+======================================
+
+Given a hidden code h, we may think of the decoder as providing a conditional distribution :math:`p_{decoder}(x|h)`. We may train the autoencoder by minimizing :math:`-lpg P_{decoder}(x|h)`.
+
+* x is Gaussian, negative log-likehood yield mean squared error
+* x is Bernoulli, yield softmax
+
+See p129 5.5.1 for review

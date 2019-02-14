@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>14.5 Denoising Autoencoders &mdash; dl 0.0.1 documentation</title>
+  <title>14.3 Representational Power, Layer Size and Depth &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Extra" href="../../Extra/index.html" />
-    <link rel="prev" title="14.4 Stochastic Encoders and Decoders" href="14.4 Stochastic Encoders and Decoders.html" /> 
+    <link rel="next" title="14.5 Denoising Autoencoders" href="14.5 Denoising Autoencoders.html" />
+    <link rel="prev" title="14.1 Undercomplete Autoencoders" href="14.1 Undercomplete Autoencoders.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -85,12 +85,12 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">14 Autoencoders</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="14.1 Undercomplete Autoencoders.html">14.1 Undercomplete Autoencoders</a></li>
-<li class="toctree-l3"><a class="reference internal" href="14.3 Representational Power, Layer Size and Depth.html">14.3 Representational Power, Layer Size and Depth</a></li>
-<li class="toctree-l3"><a class="reference internal" href="14.4 Stochastic Encoders and Decoders.html">14.4 Stochastic Encoders and Decoders</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">14.5 Denoising Autoencoders</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#reference">Reference</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">14.3 Representational Power, Layer Size and Depth</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#review">Review</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apply-to-autoencoder">Apply to autoencoder</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="14.5 Denoising Autoencoders.html">14.5 Denoising Autoencoders</a></li>
 </ul>
 </li>
 </ul>
@@ -145,13 +145,13 @@
         
           <li><a href="index.html">14 Autoencoders</a> &raquo;</li>
         
-      <li>14.5 Denoising Autoencoders</li>
+      <li>14.3 Representational Power, Layer Size and Depth</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/14 Autoencoders/14.5 Denoising Autoencoders.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/14 Autoencoders/14.3 Representational Power, Layer Size and Depth.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,39 +164,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="denoising-autoencoders">
-<h1>14.5 Denoising Autoencoders<a class="headerlink" href="#denoising-autoencoders" title="Permalink to this headline">¶</a></h1>
-<p>Denoising autoencoder (DAE) is an autoencoder that receives a corrupted data point as input and is trained to predict the original, uncorrupted data point as its output.</p>
-<img alt="../../_images/Figure14.3.PNG" src="../../_images/Figure14.3.PNG" />
-<p>Learns <strong>reconstruction distribution</strong> <span class="math notranslate nohighlight">\(p_{reconstruct}(x|\hat{x})\)</span> by</p>
-<ol class="arabic simple">
-<li>Sample <strong>x</strong> from training data</li>
-<li>Sample a corrupted version <span class="math notranslate nohighlight">\(\hat{x}\)</span> from <span class="math notranslate nohighlight">\(C(\hat{x}|x = x)\)</span></li>
-<li>Use <span class="math notranslate nohighlight">\((x|\hat{x})\)</span> as training example for estimating the autoencoder reconstruction distribution <cite>p_{reconstruct}(x|hat{x})</cite> which is equal to <span class="math notranslate nohighlight">\(p_{decoder}(x|h)\)</span>. (h: the output of encoder <span class="math notranslate nohighlight">\(f(\hat{x})\)</span>. decoder: g(h))</li>
-</ol>
-<p>We can view the DAE as performing statistic gradient descent on the following expectation:</p>
-<div class="math notranslate nohighlight">
-\[-E_{x \sim \hat{p}_{data}(x)}E_{\hat{x}\ \sim C(\hat{x}|x)}log P_{decoder}(x|h=f(\hat{x}))\]</div>
-<p>Where <span class="math notranslate nohighlight">\(\hat{p}_{data}(x)\)</span> is the training distribution</p>
-<p>Score matching: encourage the model to have the same score as the data distribution at every training point x. In this context, the score is</p>
-<div class="math notranslate nohighlight">
-\[\nabla_x log P(x)\]</div>
-<p>Learning the gradient field of <span class="math notranslate nohighlight">\(logP_{data}(x)\)</span> is one way to learn the structure of <span class="math notranslate nohighlight">\(P_{data}\)</span> itself.</p>
-<p>Important property of DAE: conditionally Gaussian p(x | h) makes the autoencoder learn a vector field (g(f(x)) - x) that estimate the score of the data distribution.</p>
-<img alt="../../_images/Figure14.4.PNG" src="../../_images/Figure14.4.PNG" />
-<p>Training with squared error criterion</p>
-<div class="math notranslate nohighlight">
-\[||g(f(\hat{x})) -x||^2\]</div>
-<p>and corruption:</p>
-<div class="math notranslate nohighlight">
-\[c(\hat{x}|x) = \mathcal{N}(\mu=x, \Sigma = \sigma^2 I)\]</div>
-<p>A generic encoder-decoder architecture may be made to estimate the score.</p>
-<img alt="../../_images/Figure14.5.PNG" src="../../_images/Figure14.5.PNG" />
-<div class="section" id="reference">
-<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><a class="reference external" href="https://www.youtube.com/watch?v=uaaqyVS9-rM">Ali Ghodsi Variational Autoencoder</a></li>
-</ul>
+  <div class="section" id="representational-power-layer-size-and-depth">
+<h1>14.3 Representational Power, Layer Size and Depth<a class="headerlink" href="#representational-power-layer-size-and-depth" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="review">
+<h2>Review<a class="headerlink" href="#review" title="Permalink to this headline">¶</a></h2>
+<p>The universal approximation theorem (Horniket al., 1989; Cybenko, 1989) states that a feedforward network with a linear output layer and at least one hidden layer with any “squashing” activation function (suchas the logistic sigmoid activation function) can approximate any Borel measurable function from one ﬁnite-dimensional space to another with any desired nonzero amount of error, provided that the network is given enough hidden units.</p>
+<p>According to the universal approximation theorem, there exists a network largeenough to achieve any degree of accuracy we desire.</p>
+<p>A feedforward network with a single layer is sufficient to representany function, but the layer may be infeasibly large and may fail to learn and generalize correctly. In many circumstances, using deeper models can reduce the number of units required to represent the desired function and can reduce the amount of generalization error.</p>
+<p>Choosing a deep model encodes a very general belief that the function wewant to learn should involve composition of several simpler functions.</p>
+</div>
+<div class="section" id="apply-to-autoencoder">
+<h2>Apply to autoencoder<a class="headerlink" href="#apply-to-autoencoder" title="Permalink to this headline">¶</a></h2>
+<p>Encoder and decoder are both feedfoward networks, they can individually benefit from depth or as a whole.</p>
+<p>Autoencoder with a single hidden layer is able to represent the identity function. But mapping from input to code is shallow -&gt; not able to enforce arbitrary constraints, eg: the code should be sparse.</p>
+<p>Depth exponetially reduce: 1. computational cost. 2. amount of training data needed</p>
+<p>Common strategy of training: greedily pretrain the deep architecture by train a stack of shallow autoencoder.</p>
 </div>
 </div>
 
@@ -208,10 +190,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="14.5 Denoising Autoencoders.html" class="btn btn-neutral float-right" title="14.5 Denoising Autoencoders" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="14.4 Stochastic Encoders and Decoders.html" class="btn btn-neutral" title="14.4 Stochastic Encoders and Decoders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="14.1 Undercomplete Autoencoders.html" class="btn btn-neutral" title="14.1 Undercomplete Autoencoders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

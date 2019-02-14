@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="14.5 Denoising Autoencoders" href="14.5 Denoising Autoencoders.html" />
+    <link rel="next" title="14.3 Representational Power, Layer Size and Depth" href="14.3 Representational Power, Layer Size and Depth.html" />
     <link rel="prev" title="14 Autoencoders" href="index.html" /> 
 
   
@@ -90,6 +90,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#reference">Reference</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="14.3 Representational Power, Layer Size and Depth.html">14.3 Representational Power, Layer Size and Depth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="14.5 Denoising Autoencoders.html">14.5 Denoising Autoencoders</a></li>
 </ul>
 </li>
@@ -237,7 +238,7 @@
                                                             &amp;=  - KL (q(z) || p(z))
     \end{aligned}\end{split}\]</div>
 <p>To maximize L we need to make <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> as great as possible.
-We can think of <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> as reconstruction gain. If x is a Gaussian distribution, maximizing <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> is the same as minimizing <span class="math notranslate nohighlight">\(|x - \hat{x}|^2\)</span></p>
+We can think of <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> as reconstruction gain. If x is a Gaussian distribution, maximizing <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)\)</span> is the same as minimizing <span class="math notranslate nohighlight">\(|x - \hat{x}|^2\)</span>. If x is a Bernoulli, it is the same as cross entropy.</p>
 <p>q(z) as similar to p(z) as possible and make</p>
 </div>
 <div class="section" id="reference">
@@ -256,7 +257,7 @@ We can think of <span class="math notranslate nohighlight">\(E_{q(z)} log p(x|z)
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="14.5 Denoising Autoencoders.html" class="btn btn-neutral float-right" title="14.5 Denoising Autoencoders" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="14.3 Representational Power, Layer Size and Depth.html" class="btn btn-neutral float-right" title="14.3 Representational Power, Layer Size and Depth" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="14 Autoencoders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
