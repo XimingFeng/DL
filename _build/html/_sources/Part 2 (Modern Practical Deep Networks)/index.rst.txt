@@ -2,6 +2,12 @@ Part II: Modern Practical Deep Networks
 ========================================
 Deep feedforward networks, also called feedforward neural networks, or multilayer perceptrons(MLPs). 
 
+.. toctree::
+   :maxdepth: 2
+
+   8 Optimization for Training Deep Models/index
+   9 Convolutional Networks/index
+
 ######################
 Introduction
 ######################
@@ -24,10 +30,3 @@ Hidden Layers
 ###############################################
 The training examples specify directly what the output layer must do at each point :math:`x`; it must produce a value that is close to :math:`y`. The behavior of the other layers is not directly speciﬁed by the training data. The learning algorithm must decide how to use those layers to produce the desired output, but the training data do not say what each individual layer should do. Instead, the learning algorithm must decide how to use these layers to best implement an approximation of :math:`f^∗`. Because the training data does not show the desired output for each of these layers, they are called hidden layers
 
-##################
-Chapters
-##################
-.. toctree::
-   :maxdepth: 2
-
-   8 Optimization for Training Deep Models/index
