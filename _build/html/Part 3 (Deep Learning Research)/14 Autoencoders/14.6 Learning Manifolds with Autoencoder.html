@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>14 Autoencoders &mdash; dl 0.0.1 documentation</title>
+  <title>14.6 Learning Manifolds with Autoencoder &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="14.1 Undercomplete Autoencoders" href="14.1 Undercomplete Autoencoders.html" />
-    <link rel="prev" title="Part III: Deep Learning Research" href="../index.html" /> 
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="14.5 Denoising Autoencoders" href="14.5 Denoising Autoencoders.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -83,12 +83,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">14 Autoencoders</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">14 Autoencoders</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="14.1 Undercomplete Autoencoders.html">14.1 Undercomplete Autoencoders</a></li>
 <li class="toctree-l3"><a class="reference internal" href="14.3 Representational Power, Layer Size and Depth.html">14.3 Representational Power, Layer Size and Depth</a></li>
 <li class="toctree-l3"><a class="reference internal" href="14.4 Stochastic Encoders and Decoders.html">14.4 Stochastic Encoders and Decoders</a></li>
 <li class="toctree-l3"><a class="reference internal" href="14.5 Denoising Autoencoders.html">14.5 Denoising Autoencoders</a></li>
-<li class="toctree-l3"><a class="reference internal" href="14.6 Learning Manifolds with Autoencoder.html">14.6 Learning Manifolds with Autoencoder</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">14.6 Learning Manifolds with Autoencoder</a></li>
 </ul>
 </li>
 </ul>
@@ -141,13 +141,15 @@
         
           <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>14 Autoencoders</li>
+          <li><a href="index.html">14 Autoencoders</a> &raquo;</li>
+        
+      <li>14.6 Learning Manifolds with Autoencoder</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/14 Autoencoders/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/14 Autoencoders/14.6 Learning Manifolds with Autoencoder.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -160,17 +162,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="autoencoders">
-<h1>14 Autoencoders<a class="headerlink" href="#autoencoders" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="14.1 Undercomplete Autoencoders.html">14.1 Undercomplete Autoencoders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="14.3 Representational Power, Layer Size and Depth.html">14.3 Representational Power, Layer Size and Depth</a></li>
-<li class="toctree-l1"><a class="reference internal" href="14.4 Stochastic Encoders and Decoders.html">14.4 Stochastic Encoders and Decoders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="14.5 Denoising Autoencoders.html">14.5 Denoising Autoencoders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="14.6 Learning Manifolds with Autoencoder.html">14.6 Learning Manifolds with Autoencoder</a></li>
+  <div class="section" id="learning-manifolds-with-autoencoder">
+<h1>14.6 Learning Manifolds with Autoencoder<a class="headerlink" href="#learning-manifolds-with-autoencoder" title="Permalink to this headline">¶</a></h1>
+<p>Tangent planes: At a point x on a d-dimensional manifold, the tangent plane is given by d basis vectors that span the local directions of variation allowed on the manifold.</p>
+<img alt="../../_images/Figure14.6.PNG" src="../../_images/Figure14.6.PNG" />
+<p>Two forces of autoencoder training procedure:</p>
+<ol class="arabic">
+<li><p class="first">Learning a representation h of training examples x. Autoencoder need not successfully reconstruct inputs that are not probale under data generating distribution since x is drawn from the training data, not directly from data generating distribution.</p>
+</li>
+<li><p class="first">Satisfying the constraint or regularization penalty such as below which perfer solutions that are less sensitive to the input.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Architectural constraint</li>
+<li>regularization term</li>
 </ul>
-</div>
+</div></blockquote>
+</li>
+</ol>
+<p>The two forces together are useful because they force the hidden representation to capture information about the structure of the data-generating distribution. Autoencoder can afford to repersent only the variation that are needed to reconstruct training examples. Encoder learns a mapping from the input space x to a repersentation space, a mapping that is only sensitive to changes along the manifold directions, but that is insensitive to changes orthorgnal to the manifold.</p>
+<img alt="../../_images/Figure14.7.PNG" src="../../_images/Figure14.7.PNG" />
+<p>How to characterize a manifold: A <strong>repersentation</strong> of the data points on (or near) the manifold. Such a repersentation for a perticular exmaple is also called “embedding”. It is typically given by a low-D vector, with fewer D than the <a class="reference external" href="https://www.merriam-webster.com/dictionary/ambient">ambient</a> space of which the manifold is a low-D subset.</p>
+<p>Nearest Neighbor Graph:</p>
+<img alt="../../_images/Figure14.8.PNG" src="../../_images/Figure14.8.PNG" />
+<p>A global coordinate system can then be obtained through an optimization or by solving a linear system</p>
+<img alt="../../_images/Figure14.9.PNG" src="../../_images/Figure14.9.PNG" />
+<p>Foundamental problem with such local nonparametric approach: if the manifold is not very smooth, one may need a very large number of training examples to cover each one of these varitions, with no chance to generalize to unseen variations. This motivates the use of distributed represenations and deep learning for capturing manifold structure.</p>
 </div>
 
 
@@ -181,10 +197,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="14.1 Undercomplete Autoencoders.html" class="btn btn-neutral float-right" title="14.1 Undercomplete Autoencoders" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Part III: Deep Learning Research" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="14.5 Denoising Autoencoders.html" class="btn btn-neutral" title="14.5 Denoising Autoencoders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

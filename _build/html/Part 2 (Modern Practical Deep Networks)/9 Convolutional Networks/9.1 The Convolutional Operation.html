@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Part III: Deep Learning Research" href="../../Part 3 (Deep Learning Research)/index.html" />
+    <link rel="next" title="9.2 Motivation" href="9.2 Motivation.html" />
     <link rel="prev" title="9 The convolutional Networks" href="index.html" /> 
 
   
@@ -84,7 +84,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">9 The convolutional Networks</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">9.1 The Convolutional Operation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">9.1 The Convolutional Operation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="9.2 Motivation.html">9.2 Motivation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#introduction">Introduction</a></li>
@@ -171,13 +175,31 @@
 \[s(t) = (x * w)(t) = \int x(a)w(t - a)da\]</div>
 <p>In the case of dsicrete value</p>
 <div class="math notranslate nohighlight">
-\[s(t) = (x * w)(t) = \sum_{a=-\infty}^{\infty}\]</div>
+\[s(t) = (x * w)(t) = \sum_{a=-\infty}^{\infty} x(a)w(t - a)\]</div>
 <p>Note: w needs to be 0 for all negative arguments</p>
 <ul class="simple">
 <li>x: input</li>
 <li>w: kernel</li>
 <li>s: feature map</li>
 </ul>
+<p>For 2D input and 2D kernel:</p>
+<div class="math notranslate nohighlight">
+\[S(i, j) = (I * K)(i, j) = \sum_m \sum_n I(m, n)K(i- m, j - n)\]</div>
+<p>It is commutative, so we can also right</p>
+<div class="math notranslate nohighlight">
+\[S(i, j) = (K * I)(i, j) = \sum_m \sum_n I(i-m, j-n)K(m, n)\]</div>
+<p>Cross-coorelation:</p>
+<div class="math notranslate nohighlight">
+\[S(i, j) = (I * K)(i, j) = \sum_m \sum_n I(i + m, j + n)K(m, n)\]</div>
+<p>Many machine learning libaries implement cross correlations but call it covolution. Check reference for the difference.</p>
+<p>Any Neural Network algorithm that work with matrix multiplication and does not depend on specific properties of the matrix structure should work with convolution, without requiring any further changes to the neural network.</p>
+<div class="section" id="reference">
+<h2>Reference<a class="headerlink" href="#reference" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.cs.umd.edu/~djacobs/CMSC426/Convolution.pdf">Correlations and Convolutions</a></li>
+<li><a class="reference external" href="http://cs231n.github.io/convolutional-networks/">CS231n Convolutional NN</a></li>
+</ul>
+</div>
 </div>
 
 
@@ -188,7 +210,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../Part 3 (Deep Learning Research)/index.html" class="btn btn-neutral float-right" title="Part III: Deep Learning Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="9.2 Motivation.html" class="btn btn-neutral float-right" title="9.2 Motivation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="9 The convolutional Networks" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

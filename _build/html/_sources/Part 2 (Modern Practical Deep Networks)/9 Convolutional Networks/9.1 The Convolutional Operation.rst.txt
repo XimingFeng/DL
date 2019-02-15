@@ -15,7 +15,9 @@ In the case of dsicrete value
 
 .. math::
 	
-	s(t) = (x * w)(t) = \sum_{a=-\infty}^{\infty}
+	s(t) = (x * w)(t) = \sum_{a=-\infty}^{\infty} x(a)w(t - a)
+
+
 
 
 Note: w needs to be 0 for all negative arguments
@@ -23,4 +25,37 @@ Note: w needs to be 0 for all negative arguments
 * x: input
 * w: kernel
 * s: feature map
+
+For 2D input and 2D kernel:
+
+.. math::
+	
+	S(i, j) = (I * K)(i, j) = \sum_m \sum_n I(m, n)K(i- m, j - n)
+
+It is commutative, so we can also right
+
+.. math::
+
+	S(i, j) = (K * I)(i, j) = \sum_m \sum_n I(i-m, j-n)K(m, n)
+
+Cross-coorelation:
+
+.. math::
+
+	S(i, j) = (I * K)(i, j) = \sum_m \sum_n I(i + m, j + n)K(m, n)
+
+Many machine learning libaries implement cross correlations but call it covolution. Check reference for the difference.
+
+Any Neural Network algorithm that work with matrix multiplication and does not depend on specific properties of the matrix structure should work with convolution, without requiring any further changes to the neural network. 
+
+
+
+
+#################
+Reference
+#################
+
+* `Correlations and Convolutions <http://www.cs.umd.edu/~djacobs/CMSC426/Convolution.pdf>`_
+* `CS231n Convolutional NN <http://cs231n.github.io/convolutional-networks/>`_
+
 
