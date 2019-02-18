@@ -24,3 +24,10 @@ We need to store fewer parameters, which improves
 .. Image:: Figure9.3.PNG
 
 .. Image:: Figure9.4.PNG
+
+
+#######################
+Parameter sharing 
+#######################
+
+Use the same parameter for more than one function in a model
