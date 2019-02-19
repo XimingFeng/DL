@@ -25,9 +25,47 @@ We need to store fewer parameters, which improves
 
 .. Image:: Figure9.4.PNG
 
+This allows the network to efficiently describe complicated interaction between many variables by construction such interaction from simple building blocks that each describe only sparse interaction. 
+
 
 #######################
 Parameter sharing 
 #######################
 
-Use the same parameter for more than one function in a model
+Use the same parameter for more than one function in a model. 
+
+* Matrix Multiplication: Each element of the weight matrix is used exactly once when computing the output. It is multiplied by one element of the input and never revisited.
+* Convolution: Tied weights, value of weight applied to one input is tied the value of a weight applied to applied elsewhere. Rather than learning a seperate set of parameters for every location, we learn only one set. Dramatically decrease the storage requriements.
+
+.. Image:: Figure9.5.PNG
+
+Combine sparse connectivity and parameter sharing:
+
+.. Image:: Figure9.6.PNG
+
+
+#####################################
+Equivariance to Translation
+#####################################
+
+If the input changes, the output changes in the same way.
+Specifically, a function f(x) is equivariant to function g if :math:`f(g(x)) = g(f(x))`. Eg:
+
+* g: shift image
+* f: convolution
+
+When processing time-serise data: convolution produces a sort of timeline that shows when different features appear in the input. If we move an event later in time in the input, the exact same representation of it will appear in the outout
+
+Convolution is not natually quivariant to some other transformation such as changes in scale or rotation of an image.
+
+#######################################
+Enables processing flexible shaped data
+#######################################
+
+Discussed in 9.7
+
+#####################################
+Resource
+#####################################
+
+* `cs231n Assignment 2 Conv Net <https://github.com/XimingFeng/cs231n-assignment2/blob/master/ConvolutionalNetworks.ipynb>`_

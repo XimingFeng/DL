@@ -1,3 +1,9 @@
 11.1 Performance Metrics
 ==========================
 
+It is impossible to achieve absolute 0 error error. Reason
+
+* Your input features may not contain complete information about the output variable
+* The system is intrinsically stochastic. 
+* Limited training data 
+

@@ -52,7 +52,7 @@ Any Neural Network algorithm that work with matrix multiplication and does not d
 
 
 #################
-Reference
+Resources
 #################
 
 * `Correlations and Convolutions <http://www.cs.umd.edu/~djacobs/CMSC426/Convolution.pdf>`_
