@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>9 The convolutional Networks &mdash; dl 0.0.1 documentation</title>
+  <title>9.3 Pooling &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="9.1 The Convolutional Operation" href="9.1 The Convolutional Operation.html" />
-    <link rel="prev" title="Batch Normalization" href="../8 Optimization for Training Deep Models/Batch Normalization.html" /> 
+    <link rel="next" title="11 Practical Methodoloogy" href="../11 Practical Methodology/index.html" />
+    <link rel="prev" title="9.2 Motivation" href="9.2 Motivation.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -85,10 +85,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#introduction">Introduction</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#chapters">Chapters</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">9 The convolutional Networks</a><ul>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">9 The convolutional Networks</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="9.1 The Convolutional Operation.html">9.1 The Convolutional Operation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="9.2 Motivation.html">9.2 Motivation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="9.3 Pooling.html">9.3 Pooling</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">9.3 Pooling</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
@@ -145,13 +145,15 @@
         
           <li><a href="../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
         
-      <li>9 The convolutional Networks</li>
+          <li><a href="index.html">9 The convolutional Networks</a> &raquo;</li>
+        
+      <li>9.3 Pooling</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 2 (Modern Practical Deep Networks)/9 Convolutional Networks/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 2 (Modern Practical Deep Networks)/9 Convolutional Networks/9.3 Pooling.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,15 +166,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="the-convolutional-networks">
-<h1>9 The convolutional Networks<a class="headerlink" href="#the-convolutional-networks" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="9.1 The Convolutional Operation.html">9.1 The Convolutional Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.2 Motivation.html">9.2 Motivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.3 Pooling.html">9.3 Pooling</a></li>
+  <div class="section" id="pooling">
+<h1>9.3 Pooling<a class="headerlink" href="#pooling" title="Permalink to this headline">¶</a></h1>
+<img alt="../../_images/Figure9.7.PNG" src="../../_images/Figure9.7.PNG" />
+<p>A pooling function replaces the output of the net at a certain lcoation with a summary statistic of the nearby output. Eg:</p>
+<ul class="simple">
+<li>Max Pooling</li>
+<li>Average Pooling</li>
+<li>L2 Norm</li>
+<li>Weighted Average based on the distance from the central pixels</li>
 </ul>
-</div>
+<p>Pooling helps to make representation approximately invariant to small translation of the input. Invariance to local translation can be a useful property if we care mor e about whether some feature is present than exactly where it is.</p>
+<img alt="../../_images/Figure9.8.PNG" src="../../_images/Figure9.8.PNG" />
+<p>Use of pooling: add an infinitely strong prior that the funnction the layer learns must be invariant to small translation. Pool over the output of seperately parameterized convolutions, the features can learn which transformations to become invarient to.</p>
+<p>Improve the</p>
+<ul class="simple">
+<li>computational efficiency</li>
+<li>statistic efficiency and memory requirement: when the next layer is a function of its input side.</li>
+</ul>
+<img alt="../../_images/Figure9.10.PNG" src="../../_images/Figure9.10.PNG" />
+<p>Pooling is essential for handling inputs of varying size.</p>
+<p>Which kind of pooing to use:</p>
+<ul class="simple">
+<li>Dynamically pool features together</li>
+<li>Learn a single pooling structure that is applied to all images.</li>
+</ul>
 </div>
 
 
@@ -183,10 +201,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="9.1 The Convolutional Operation.html" class="btn btn-neutral float-right" title="9.1 The Convolutional Operation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../11 Practical Methodology/index.html" class="btn btn-neutral float-right" title="11 Practical Methodoloogy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../8 Optimization for Training Deep Models/Batch Normalization.html" class="btn btn-neutral" title="Batch Normalization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="9.2 Motivation.html" class="btn btn-neutral" title="9.2 Motivation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

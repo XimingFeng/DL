@@ -1,0 +1,32 @@
+9.3 Pooling 
+========================
+
+.. Image:: Figure9.7.PNG
+
+A pooling function replaces the output of the net at a certain lcoation with a summary statistic of the nearby output. Eg:
+
+* Max Pooling
+* Average Pooling
+* L2 Norm 
+* Weighted Average based on the distance from the central pixels
+
+Pooling helps to make representation approximately invariant to small translation of the input. Invariance to local translation can be a useful property if we care mor e about whether some feature is present than exactly where it is. 
+
+.. Image:: Figure9.8.PNG
+
+Use of pooling: add an infinitely strong prior that the funnction the layer learns must be invariant to small translation. Pool over the output of seperately parameterized convolutions, the features can learn which transformations to become invarient to.
+
+Improve the 
+	
+* computational efficiency
+* statistic efficiency and memory requirement: when the next layer is a function of its input side. 
+
+.. Image:: Figure9.10.PNG
+
+Pooling is essential for handling inputs of varying size.
+
+Which kind of pooing to use:
+
+* Dynamically pool features together
+* Learn a single pooling structure that is applied to all images.
+
