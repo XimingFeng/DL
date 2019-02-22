@@ -1,9 +1,7 @@
 Part II: Modern Practical Deep Networks
 ========================================
 
-####################
-Introduction
-####################
+**1. Introduction**
 
 Deep feedforward networks, also called feedforward neural networks, or multilayer perceptrons(MLPs). 
 
@@ -12,23 +10,17 @@ Deep feedforward networks, also called feedforward neural networks, or multilaye
 
 It forms the basic of many important commercial application such as Convolutional Neural Network and Recurrent Neural Network. 
 
-******************************
-Why we call it Network?
-******************************
+
+**2. Why we call it Network?**
 
 It represent the combination of different functions. For example, we might have three functions :math:`f_1, f_2 and f_3` connectedin a chain, to form :math:`f(x) = f_3(f_2(f_1(x)))`. These chain structures are the most commonly used structures of neural networks. In this case, :math:`f_1` is called the ﬁrst layerof the network, :math:`f_2` is called the second layer, and so on. 
 
 The ﬁnal layer of a feedforward network is called theoutput layer. During neural network training, we drive :math:`f(x)` to match :math:`f^∗(x)`.
 
-***************
-Hidden Layers
-***************
+**3. Hidden Layers**
 
 The training examples specify directly what the output layer must do at each point :math:`x`; it must produce a value that is close to :math:`y`. The behavior of the other layers is not directly speciﬁed by the training data. The learning algorithm must decide how to use those layers to produce the desired output, but the training data do not say what each individual layer should do. Instead, the learning algorithm must decide how to use these layers to best implement an approximation of :math:`f^∗`. Because the training data does not show the desired output for each of these layers, they are called hidden layers
 
-######################
-Chapters
-######################
 
 .. toctree::
    :maxdepth: 2

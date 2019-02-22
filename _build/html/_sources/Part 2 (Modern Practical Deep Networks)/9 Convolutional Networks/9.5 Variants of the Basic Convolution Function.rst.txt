@@ -7,7 +7,10 @@ Convolution in the context of NN means an operation that consists of many applic
 * Input: :math:`V_{i, j, k}` with channel i, row j and column k
 * Output Z same format as V
 
+0 Padding and 1 Stride:
 
 .. math::
 	
 	Z_{i, j, k} = \sum_{l, m, n} V_{l, j + m - 1, k + n - 1} K_{i, l, m, n}
+
+
