@@ -1,0 +1,268 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>14.7 Contractive Autoencoders &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="14.6 Learning Manifolds with Autoencoder" href="14.6 Learning Manifolds with Autoencoder.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">14 Autoencoders</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="14.1 Undercomplete Autoencoders.html">14.1 Undercomplete Autoencoders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="14.3 Representational Power, Layer Size and Depth.html">14.3 Representational Power, Layer Size and Depth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="14.4 Stochastic Encoders and Decoders.html">14.4 Stochastic Encoders and Decoders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="14.5 Denoising Autoencoders.html">14.5 Denoising Autoencoders</a></li>
+<li class="toctree-l3"><a class="reference internal" href="14.6 Learning Manifolds with Autoencoder.html">14.6 Learning Manifolds with Autoencoder</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">14.7 Contractive Autoencoders</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resource">Resource</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">14 Autoencoders</a> &raquo;</li>
+        
+      <li>14.7 Contractive Autoencoders</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/14 Autoencoders/14.7 Contractive Autoencoders.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="contractive-autoencoders">
+<h1>14.7 Contractive Autoencoders<a class="headerlink" href="#contractive-autoencoders" title="Permalink to this headline">¶</a></h1>
+<p>The contractive autoencoder introduces an explicit regularizer on the code h =f(x), encouraging the derivatives of f to be small as possible</p>
+<div class="math notranslate nohighlight">
+\[\Omega (h) = \lambda ||\frac{\partial f(x)}{\partial x}||_F^2\]</div>
+<p>This penalty: sum of squared elements of Jacobian matrix of partial deirvatives associated with encoder function.</p>
+<p>With small Gaussian noise on input, DAE is equivalent to a contractive penalty on the reconstruction function that maps x to <span class="math notranslate nohighlight">\(r=g(f(x))\)</span>. In orther words, DAE make the reconstruction function resist small but finit sized perturbations of the input value.</p>
+<p>Review from 14.5.1 Estimating the score</p>
+<p><strong>Score matching (Hyvärinen, 2005) is an alternative to maximum likelihood. It provides a consistent estimator of probability distributions based on encouraging the model to have the same score as the data distribution at every training point x. In this context, the score is a particular gradient ﬁeld:∇xlog p(x).</strong></p>
+<p><strong>Denoising training of a speciﬁc kind of autoencoder (sigmoidal hidden units,linear reconstruction units) using Gaussian noise and mean squared error as the reconstruction cost is equivalent (Vincent, 2011) to training a speciﬁc kind of undirected probabilistic model called an RBM with Gaussian visible units.</strong></p>
+<p>CAE is trained to resist perturbation of its input, it is encouraged to map a neighborhood of input to a smaller neighborhood of output space.</p>
+<p>CAE is contractive only locally – all pertubations if a training point x are mapped near to f(x). Globally, two different points x and x’ maybe mapped to f(x) and f(x’) points that are farther apart from original points.</p>
+<p>We can think of J at point x as approximating nonlinear encoder as be a linear operator. A linear operator is said to be contractive if the norm Jx remains less than or equal to 1 for all unit-norm x. We can think of the CAE as penalizing the Frobenius norm of the local linear approaximation of f(x) at every training point x in order to encourage each of these lcoal linear operators to become a contraction.</p>
+<p>Review on 14.6: Two forces of autoencoder training procedure:</p>
+<ol class="arabic simple">
+<li><strong>Learning a representation h of training examples x. Autoencoder need not successfully reconstruct inputs that are not probale under data generating distribution since x is drawn from the training data, not directly from data generating distribution.</strong></li>
+<li><strong>Satisfying the constraint or regularization penalty such as below which perfer solutions that are less sensitive to the input.</strong></li>
+</ol>
+<p>In case of CAE, we have two force</p>
+<ul class="simple">
+<li>Reconstruction error</li>
+<li>Contractive penalty</li>
+</ul>
+<p>Direction with large Jx rapidly change h =&gt; likely to be the direction that approximate the tangent planes of the manifold. Training CAE results in most singular values of J dropping below 1. Th direction with largest singular values are interpreted as the tangent directions that CAE has learned.</p>
+<div class="line-block">
+<div class="line">Issue: cheap to compute in the case of a single hiddne layer but much more expensive to in the case of deeper autoencoder</div>
+<div class="line">Stratege: seperately train a series of single layer autoencoders, each trained to reconstruct the previous autoencoder’s hidden layer.</div>
+</div>
+<div class="line-block">
+<div class="line">Issue: contraction penalty can obtain useless result. Eg: Encoder: multiply input by <span class="math notranslate nohighlight">\(\epsilon\)</span>; decoder: divide code by <span class="math notranslate nohighlight">\(\epsilon\)</span>. As <span class="math notranslate nohighlight">\(\epsilon\)</span> approaches0, contractive penalty approaches 0 without learning anything and decoder maintain perfect reconstruction.</div>
+<div class="line">Stratege: Tying the weights of f and g. Both f and g are standard neural network consisting of an affine followed by element wise nonlinearity, so it is straightforward to set the weight matrix of g to be the transpose of the weight matrix of f.</div>
+</div>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://www.iro.umontreal.ca/~lisa/pointeurs/ICML2011_explicit_invariance.pdf">Contractive AutoEncoders Explicit Invariance During Feature Extraction</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="14.6 Learning Manifolds with Autoencoder.html" class="btn btn-neutral" title="14.6 Learning Manifolds with Autoencoder" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

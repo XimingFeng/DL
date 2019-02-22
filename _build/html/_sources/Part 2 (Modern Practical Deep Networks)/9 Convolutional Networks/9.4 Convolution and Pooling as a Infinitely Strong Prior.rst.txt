@@ -1,0 +1,24 @@
+9.4 Convolution and Pooling as a Infinitely Strong Prior
+=========================================================
+
+Prior: probability distribution oever the parameters of the model that encode our believe about what models are reasonable.
+
+* A weak prior: high entropy. Eg: Gaussian with high variance. Such prior allows the data to move more or less freely.
+* A strong prior: lwo entropy. Eg: Gaussian with low variance. Such piror plays a more active role in determine where the parameters end up. 
+
+Check `this <https://homepage.stat.uiowa.edu/~mbognar/applets/normal.html>`_ and try different variance.
+
+We can imagine conv net as being similar to a fully connected net, but with an infinitely strong prior over its weight: weights for one hidden unit must be identical to weights of its neighbor but shifted in space.
+
+Over all, infinitely strong layer:
+
+* Conv layer: the function the layer should learn contains only local interaction and is equivariant to translation
+* Pooling layer: each unit should be invariant to small translation
+
+Like any other prior, conv and pooling are only useful when the assumption made by the prior are reasonably accurate. If not, underfitting. When a task involves incorporating information from very distance locations in the input, then the prior imposed by conv maybe inpropriate.
+
+##################################
+Resource
+##################################
+
+* `Normal Distribution Graph <https://homepage.stat.uiowa.edu/~mbognar/applets/normal.html>`_

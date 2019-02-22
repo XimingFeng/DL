@@ -1,0 +1,51 @@
+14.7 Contractive Autoencoders
+================================
+
+The contractive autoencoder introduces an explicit regularizer on the code h =f(x), encouraging the derivatives of f to be small as possible
+
+.. math::
+	
+	\Omega (h) = \lambda ||\frac{\partial f(x)}{\partial x}||_F^2
+
+This penalty: sum of squared elements of Jacobian matrix of partial deirvatives associated with encoder function.
+
+With small Gaussian noise on input, DAE is equivalent to a contractive penalty on the reconstruction function that maps x to :math:`r=g(f(x))`. In orther words, DAE make the reconstruction function resist small but finit sized perturbations of the input value.
+
+Review from 14.5.1 Estimating the score
+
+**Score matching (Hyvärinen, 2005) is an alternative to maximum likelihood. It provides a consistent estimator of probability distributions based on encouraging the model to have the same score as the data distribution at every training point x. In this context, the score is a particular gradient ﬁeld:∇xlog p(x).**
+
+**Denoising training of a speciﬁc kind of autoencoder (sigmoidal hidden units,linear reconstruction units) using Gaussian noise and mean squared error as the reconstruction cost is equivalent (Vincent, 2011) to training a speciﬁc kind of undirected probabilistic model called an RBM with Gaussian visible units.**
+
+CAE is trained to resist perturbation of its input, it is encouraged to map a neighborhood of input to a smaller neighborhood of output space.
+
+CAE is contractive only locally -- all pertubations if a training point x are mapped near to f(x). Globally, two different points x and x' maybe mapped to f(x) and f(x') points that are farther apart from original points.
+
+We can think of J at point x as approximating nonlinear encoder as be a linear operator. A linear operator is said to be contractive if the norm Jx remains less than or equal to 1 for all unit-norm x. We can think of the CAE as penalizing the Frobenius norm of the local linear approaximation of f(x) at every training point x in order to encourage each of these lcoal linear operators to become a contraction.
+
+Review on 14.6: Two forces of autoencoder training procedure:
+
+1. **Learning a representation h of training examples x. Autoencoder need not successfully reconstruct inputs that are not probale under data generating distribution since x is drawn from the training data, not directly from data generating distribution.** 
+2. **Satisfying the constraint or regularization penalty such as below which perfer solutions that are less sensitive to the input.**   
+
+In case of CAE, we have two force
+
+* Reconstruction error
+* Contractive penalty
+
+Direction with large Jx rapidly change h => likely to be the direction that approximate the tangent planes of the manifold. Training CAE results in most singular values of J dropping below 1. Th direction with largest singular values are interpreted as the tangent directions that CAE has learned. 
+
+| Issue: cheap to compute in the case of a single hiddne layer but much more expensive to in the case of deeper autoencoder
+| Stratege: seperately train a series of single layer autoencoders, each trained to reconstruct the previous autoencoder's hidden layer.
+
+| Issue: contraction penalty can obtain useless result. Eg: Encoder: multiply input by :math:`\epsilon`; decoder: divide code by :math:`\epsilon`. As :math:`\epsilon` approaches0, contractive penalty approaches 0 without learning anything and decoder maintain perfect reconstruction.
+| Stratege: Tying the weights of f and g. Both f and g are standard neural network consisting of an affine followed by element wise nonlinearity, so it is straightforward to set the weight matrix of g to be the transpose of the weight matrix of f.
+
+
+##########################################
+Resource
+##########################################
+
+* `Contractive AutoEncoders Explicit Invariance During Feature Extraction <http://www.iro.umontreal.ca/~lisa/pointeurs/ICML2011_explicit_invariance.pdf>`_
+
+

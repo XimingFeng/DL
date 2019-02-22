@@ -1,0 +1,15 @@
+14.9 Applications of Autoencoders
+=====================================
+
+Autoencoders have been successfully applied to dimensionality reduction and information retrieval. 
+
+Lower dimensional representations can improve performance on many tasks, such as classification.
+
+Information retrieval: the task of finding entries in a database that resemble a query entry. Benefit:
+
+* Usual benefits from dimensionality reduction that other tasks do
+* search can be extremely efficient in certain kind of low dimensional spaces. Semantic hashing: train the D reduction algorithm to produce a code that is low-dimensional and binary, then we can store all database entries in a hash table that maps binary code vector to entries. We cam also search over slightly less similar entries efficiently, just by flipping individual bits from the encoding of the query. 
+
+Semantic hashing is applied to both textual input and image.
+
+ 

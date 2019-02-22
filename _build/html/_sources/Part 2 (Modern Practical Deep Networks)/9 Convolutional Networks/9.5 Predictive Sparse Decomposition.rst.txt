@@ -1,0 +1,9 @@
+9.5 Predictive Sparse Decomposition
+=========================================
+
+Training Proceeds by minimizing 
+
+.. math::
+	||x - g(x)||^2 + \lambda|h|_1 + \gamma||h - f(x)||^2
+
+During training, h is controlled by the optimization algorithm.

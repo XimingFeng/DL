@@ -1,0 +1,17 @@
+14.8 Predictive Sparse Decomposition
+=========================================
+
+Training Proceeds by minimizing 
+
+.. math::
+	||x - g(x)||^2 + \lambda|h|_1 + \gamma||h - f(x)||^2
+
+During training, h is controlled by the optimization algorithm. The training alternates between minimization with respect to h and minimization respect to the model parameters.
+
+The interactive optimization is used only during training. The parametric encoder f is used to compute the learned feature when the model is deployed. PSD models maybe stacked and used to initialize a deep network to be trained with another criterion.
+
+#######################################
+Resource
+#######################################
+
+* `What is the Best Multi Stage Architecture for Object Recognition <http://yann.lecun.com/exdb/publis/pdf/jarrett-iccv-09.pdf>`_

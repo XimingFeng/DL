@@ -1,0 +1,13 @@
+9.5 Variants of the Basic Convolution Function
+================================================
+
+Convolution in the context of NN means an operation that consists of many applications of convolution in parallel. 
+
+* Kenel K with element :math:`K_{i, j, k, l}` giving the connection strength between a unit in channel i of output and a unit in channel j of the input, with an offset of k rows and l columns between the output unit and the input unit.
+* Input: :math:`V_{i, j, k}` with channel i, row j and column k
+* Output Z same format as V
+
+
+.. math::
+	
+	Z_{i, j, k} = \sum_{l, m, n} V_{l, j + m - 1, k + n - 1} K_{i, l, m, n}
