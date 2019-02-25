@@ -82,21 +82,19 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../index.html#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../index.html#why-we-call-it-network">Why we call it Network?</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html#hidden-layers">Hidden Layers</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
-<li class="toctree-l3 current"><a class="reference internal" href="index.html">9 The convolutional Networks</a><ul class="current">
-<li class="toctree-l4"><a class="reference internal" href="9.1 The Convolutional Operation.html">9.1 The Convolutional Operation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="9.2 Motivation.html">9.2 Motivation</a></li>
-<li class="toctree-l4"><a class="reference internal" href="9.3 Pooling.html">9.3 Pooling</a></li>
-<li class="toctree-l4"><a class="reference internal" href="9.4 Convolution and Pooling as a Infinitely Strong Prior.html">9.4 Convolution and Pooling as a Infinitely Strong Prior</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">9.5 Variants of the Basic Convolution Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">9 The convolutional Networks</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="9.1 The Convolutional Operation.html">9.1 The Convolutional Operation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="9.2 Motivation.html">9.2 Motivation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="9.3 Pooling.html">9.3 Pooling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="9.4 Convolution and Pooling as a Infinitely Strong Prior.html">9.4 Convolution and Pooling as a Infinitely Strong Prior</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">9.5 Variants of the Basic Convolution Function</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#full-convolution">Full Convolution</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Part 3 (Deep Learning Research)/index.html">Part III: Deep Learning Research</a></li>
@@ -176,10 +174,35 @@
 <li>Kenel K with element <span class="math notranslate nohighlight">\(K_{i, j, k, l}\)</span> giving the connection strength between a unit in channel i of output and a unit in channel j of the input, with an offset of k rows and l columns between the output unit and the input unit.</li>
 <li>Input: <span class="math notranslate nohighlight">\(V_{i, j, k}\)</span> with channel i, row j and column k</li>
 <li>Output Z same format as V</li>
+<li>Use 1 as first entry</li>
 </ul>
-<p>0 Padding and 1 Stride:</p>
+<div class="section" id="full-convolution">
+<h2>Full Convolution<a class="headerlink" href="#full-convolution" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="padding-1-stride">
+<h3>0 Padding 1 stride<a class="headerlink" href="#padding-1-stride" title="Permalink to this headline">¶</a></h3>
 <div class="math notranslate nohighlight">
 \[Z_{i, j, k} = \sum_{l, m, n} V_{l, j + m - 1, k + n - 1} K_{i, l, m, n}\]</div>
+</div>
+<div class="section" id="padding-s-stride">
+<h3>0 Padding s stride<a class="headerlink" href="#padding-s-stride" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[Z_{i,j,k} = c(K, V, s)_{i, j, k} = \sum_{l, m, n}[V_{l, s * (j - 1) + m, s * (k - 1) + n} K_{i, l, m, n}]\]</div>
+<p>Convolution with a stride greater than 1 pixel is equivalent to conv with 1 stride followed by downsampling:</p>
+<img alt="../../_images/Figure9.12.PNG" src="../../_images/Figure9.12.PNG" />
+</div>
+<div class="section" id="some-0-paddings-and-1-stride">
+<h3>Some 0 Paddings and 1 stride<a class="headerlink" href="#some-0-paddings-and-1-stride" title="Permalink to this headline">¶</a></h3>
+<p>Without 0 paddings, the width of representation shrinks by one pixel less than the kernel width at each layer. We are forced to choose between shrinking the spatial extent of the network rapidly and using small kernel. 0 padding allows us to control the kernel width and the size of the output independently.</p>
+<img alt="../../_images/Figure9.13.PNG" src="../../_images/Figure9.13.PNG" />
+<p>Special case of 0 padding:</p>
+<ul class="simple">
+<li>Valid: no 0 padding is used. Limited number of layers.</li>
+<li>Same: keep the size of the output to the size of input. Unlimited number of layers. Pixels near the border influence fewer output pixels than the input pixels near the center.</li>
+<li>Full: Enough zeros are added for every pixels to be visited k (kenel width) times in each direction, resulting width m + k - 1. Difficult to learn a single kernel that performs well at all positions in the convolutional feature map.</li>
+</ul>
+<p>Usually the optimal amount of 0 padding lies somewhere between ‘Valid’ or ‘Same’</p>
+</div>
+</div>
 </div>
 
 
