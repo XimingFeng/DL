@@ -47,3 +47,48 @@ Special case of 0 padding:
 
 Usually the optimal amount of 0 padding lies somewhere between 'Valid' or 'Same'
 
+
+############################
+Unshared Convolution
+############################
+
+In some case when we do not want to use convolution but want to use locally connected layer. We use **Unshared convolution**. Indices into weight W
+
+* i: the output channel
+* j: the output row;
+* k: the output column
+* l: the input channel
+* m: row offset within input
+* n: column offset within input
+
+.. math::
+
+	Z_{i, j, k} = \sum_{l, m, n} [V_{l, i + m - 1, j + n - 1} W_{i, j, k, l, m, n}] 
+
+Comparison on local connections, convolution and full connection
+
+.. image:: Figure9.14.PNG
+
+Useful when we know that each feature should be a function of a small part of space, but no reason to think that the same feature should occur accross all the space. eg: look for mouth only in the bottom half of the image.
+
+It can be also useful to make versions of convolution or local connected layers in which the connectivity is further restricted, eg: constrain each output channeel i to be a function of onlu a subset of the input channel. Adv: 
+
+* reduce memory consumption 
+* increase statistical efficiency 
+* reduce computation for both forward and backward prop. 
+
+.. image:: Figure9.15.PNG
+
+##################################
+Tiled Convolution 
+##################################
+
+Learn a set of kernels that we rotate through as we move through space. Immediately neighboring locations will have different filters, but the memory requirement for storing the parameters will increase by a factor of the size of this set of kernels. Comparison on locally connected layers, tiled convolution and stardard convolution:  
+
+.. image:: Figure9.16.PNG
+
+K: 6-D tensor, t different choice of kernel stack
+
+.. math::
+
+	Z_{i, j, k} = \sum_{l, m, n}[V_{i, i + m - 1, j + n - 1}K_{i, l, m, n, j \% t + 1, k \% t + 1}]

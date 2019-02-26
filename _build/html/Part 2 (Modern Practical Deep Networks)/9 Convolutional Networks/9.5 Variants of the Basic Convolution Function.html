@@ -90,6 +90,8 @@
 <li class="toctree-l3"><a class="reference internal" href="9.4 Convolution and Pooling as a Infinitely Strong Prior.html">9.4 Convolution and Pooling as a Infinitely Strong Prior</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">9.5 Variants of the Basic Convolution Function</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#full-convolution">Full Convolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#unshared-convolution">Unshared Convolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tiled-convolution">Tiled Convolution</a></li>
 </ul>
 </li>
 </ul>
@@ -202,6 +204,38 @@
 </ul>
 <p>Usually the optimal amount of 0 padding lies somewhere between ‘Valid’ or ‘Same’</p>
 </div>
+</div>
+<div class="section" id="unshared-convolution">
+<h2>Unshared Convolution<a class="headerlink" href="#unshared-convolution" title="Permalink to this headline">¶</a></h2>
+<p>In some case when we do not want to use convolution but want to use locally connected layer. We use <strong>Unshared convolution</strong>. Indices into weight W</p>
+<ul class="simple">
+<li>i: the output channel</li>
+<li>j: the output row;</li>
+<li>k: the output column</li>
+<li>l: the input channel</li>
+<li>m: row offset within input</li>
+<li>n: column offset within input</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[Z_{i, j, k} = \sum_{l, m, n} [V_{l, i + m - 1, j + n - 1} W_{i, j, k, l, m, n}]\]</div>
+<p>Comparison on local connections, convolution and full connection</p>
+<img alt="../../_images/Figure9.14.PNG" src="../../_images/Figure9.14.PNG" />
+<p>Useful when we know that each feature should be a function of a small part of space, but no reason to think that the same feature should occur accross all the space. eg: look for mouth only in the bottom half of the image.</p>
+<p>It can be also useful to make versions of convolution or local connected layers in which the connectivity is further restricted, eg: constrain each output channeel i to be a function of onlu a subset of the input channel. Adv:</p>
+<ul class="simple">
+<li>reduce memory consumption</li>
+<li>increase statistical efficiency</li>
+<li>reduce computation for both forward and backward prop.</li>
+</ul>
+<img alt="../../_images/Figure9.15.PNG" src="../../_images/Figure9.15.PNG" />
+</div>
+<div class="section" id="tiled-convolution">
+<h2>Tiled Convolution<a class="headerlink" href="#tiled-convolution" title="Permalink to this headline">¶</a></h2>
+<p>Learn a set of kernels that we rotate through as we move through space. Immediately neighboring locations will have different filters, but the memory requirement for storing the parameters will increase by a factor of the size of this set of kernels. Comparison on locally connected layers, tiled convolution and stardard convolution:</p>
+<img alt="../../_images/Figure9.16.PNG" src="../../_images/Figure9.16.PNG" />
+<p>K: 6-D tensor, t different choice of kernel stack</p>
+<div class="math notranslate nohighlight">
+\[Z_{i, j, k} = \sum_{l, m, n}[V_{i, i + m - 1, j + n - 1}K_{i, l, m, n, j \% t + 1, k \% t + 1}]\]</div>
 </div>
 </div>
 
