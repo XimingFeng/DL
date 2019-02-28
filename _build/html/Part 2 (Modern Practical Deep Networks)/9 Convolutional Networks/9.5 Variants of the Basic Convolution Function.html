@@ -92,6 +92,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#full-convolution">Full Convolution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#unshared-convolution">Unshared Convolution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tiled-convolution">Tiled Convolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resources">Resources</a></li>
 </ul>
 </li>
 </ul>
@@ -236,6 +237,17 @@
 <p>K: 6-D tensor, t different choice of kernel stack</p>
 <div class="math notranslate nohighlight">
 \[Z_{i, j, k} = \sum_{l, m, n}[V_{i, i + m - 1, j + n - 1}K_{i, l, m, n, j \% t + 1, k \% t + 1}]\]</div>
+<p>Local connected layers and tiled convolutional layer with max pooling: the detector units of these layers are driven by different filters. If the filters learn to detect different tranformed version of the same underlying features, then the max-pooled units become invariant to the learned transformation.</p>
+<p>Review:</p>
+<img alt="../../_images/Figure9.7.PNG" src="../../_images/Figure9.7.PNG" />
+<img alt="../../_images/Figure9.9.PNG" src="../../_images/Figure9.9.PNG" />
+</div>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://cs231n.github.io/convolutional-networks/#convert">Converting FC to CONV Layer</a></li>
+<li><a class="reference external" href="http://www.iro.umontreal.ca/~lisa/pointeurs/convolution.pdf">Technical Report Multidimensional Downsampled Convolution for Autoencoders</a></li>
+</ul>
 </div>
 </div>
 

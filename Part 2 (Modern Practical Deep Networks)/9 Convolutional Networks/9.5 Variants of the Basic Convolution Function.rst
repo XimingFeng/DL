@@ -92,3 +92,19 @@ K: 6-D tensor, t different choice of kernel stack
 .. math::
 
 	Z_{i, j, k} = \sum_{l, m, n}[V_{i, i + m - 1, j + n - 1}K_{i, l, m, n, j \% t + 1, k \% t + 1}]
+
+
+Local connected layers and tiled convolutional layer with max pooling: the detector units of these layers are driven by different filters. If the filters learn to detect different tranformed version of the same underlying features, then the max-pooled units become invariant to the learned transformation. 
+
+Review:
+
+.. image:: Figure9.7.PNG
+
+.. image:: Figure9.9.PNG
+
+###################################
+Resources
+###################################
+
+* `Converting FC to CONV Layer <http://cs231n.github.io/convolutional-networks/#convert>`_
+* `Technical Report Multidimensional Downsampled Convolution for Autoencoders <http://www.iro.umontreal.ca/~lisa/pointeurs/convolution.pdf>`_

@@ -5,3 +5,4 @@ Part III: Deep Learning Research
    :maxdepth: 2
 
    14 Autoencoders/index
+   15 Representation Learning/index

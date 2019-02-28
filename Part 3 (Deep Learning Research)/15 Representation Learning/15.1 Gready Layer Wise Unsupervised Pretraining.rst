@@ -1,0 +1,30 @@
+15.1 Gready Layer-Wise Unsupervised Pretraining 
+================================================
+
+Greedy Layer-Wise Unsupervised Pretraining relies on single-layer representation learning algorithm. Each layer is pretrained using unsupervised learning, taking the output of previous layer and producing as output a new representation of the data, whose distribution is hopefully simpler. 
+
+.. image:: Algorithm15.1.PNG
+
+Greedy layer-wise unsupervsied pretraining name explanation:
+
+* Gready: Optimize each piece of the solution independently, on piece at a time.
+* Layer-Wise: The independent pieces are the layer of the network. Training proceeds once layer at a time, training the k-th layer while keeping the previous ones fixed.
+* Unsupervised: each layer is trained with an unsupervised representation learning algorithm.
+* Pretraining:
+	
+	* 1st step/phase: Greedy Layer-Wise Unsupervised Pretraining
+	* Fine-Tune all the layers together
+
+In the context of supervised learning, it could be viewed as 
+ 
+* Regulirizer
+* A form a parameter initialization
+
+Greedy Layer-Wise unsupervised pretraining can also be used as initialization for other unsupervised learning algorithms such as 
+
+* Deep Autoencoders
+* Probabilistic models with many layers of latent variables, including:
+	
+	* Deep Belief Network
+	* Deep Boltzman Machines
+
