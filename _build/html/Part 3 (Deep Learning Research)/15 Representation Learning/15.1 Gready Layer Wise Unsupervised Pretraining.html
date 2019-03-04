@@ -85,7 +85,10 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">15 Representation Learning</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">15.1 Gready Layer-Wise Unsupervised Pretraining</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">15.1 Gready Layer-Wise Unsupervised Pretraining</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#when-and-why-does-unsupervised-pretraining-work">When and why does unsupervised pretraining work</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -198,6 +201,57 @@
 </div></blockquote>
 </li>
 </ul>
+<div class="section" id="when-and-why-does-unsupervised-pretraining-work">
+<h2>When and why does unsupervised pretraining work<a class="headerlink" href="#when-and-why-does-unsupervised-pretraining-work" title="Permalink to this headline">¶</a></h2>
+<p>Unsupervised pretrining combines 2 ideas:</p>
+<div class="section" id="idea1-choice-of-initial-parameters-for-a-deep-nn-can-have-a-significant-regularizing-effect-on-the-model">
+<h3>Idea1: Choice of initial parameters for a deep NN can have a significant regularizing effect on the model<a class="headerlink" href="#idea1-choice-of-initial-parameters-for-a-deep-nn-can-have-a-significant-regularizing-effect-on-the-model" title="Permalink to this headline">¶</a></h3>
+<p>It remains possible that pretraining initializes the model in a location that would otherwise be inaccessible. Eg:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>a region surrounded by areas where the cost function varies so much from one example to another that minibatches give only a very noisy estimate of the gradient</li>
+<li>a region surrounded by areas where the Hessian matrix is so pooly conditioned that gradient descent methods must use very small steps.</li>
+</ol>
+</div></blockquote>
+<p>We cannot charactorize the exactly what aspects of the pretrained parameters are retained during the supervised training stages. This is one of the reason why modern approaches typically use simultaneous unsupervised learning and supervised learning rather than two sequential stages.</p>
+<p>You may also freeze the parameters for the feature extractor and use supervised learning only to add a classifier on top of the learned features.</p>
+</div>
+<div class="section" id="idea2-learning-about-the-input-distribution-can-help-with-learning-about-the-mapping-from-input-to-output">
+<h3>Idea2: Learning about the input distribution can help with learning about the mapping from input to output.<a class="headerlink" href="#idea2-learning-about-the-input-distribution-can-help-with-learning-about-the-mapping-from-input-to-output" title="Permalink to this headline">¶</a></h3>
+<p>Some features that are useful for the unsupervised task may also be useful for supervised task. This is not yet understood at a mathmatical, theoretical level. Many aspects of this approach are highly dependent on the specific models used. Eg: if we wish to add a linear classifer on top of pretrained features, the featrues mush make the underlyin classes linearly seperable. This is another reason that simultaneous supervised and unsupervised learning can be preferable.</p>
+</div>
+<div class="section" id="interpretation-to-the-function-of-unsupervised-training">
+<h3>Interpretation to the function of unsupervised training<a class="headerlink" href="#interpretation-to-the-function-of-unsupervised-training" title="Permalink to this headline">¶</a></h3>
+<p>Unsupervised training as learning a representation: We can expect unsupervised pretraining to be more effective when the initial representation is poor. Eg: the use of word embedding. It is less useful for image processing perhaps because images lie in a rich vector space where distance provide a low quality similarity metrics.</p>
+<p>Unsupervised training as a regularizer: We can also expect unsupervised pretraining to be most helpful when the number of labeled examples is very small.</p>
+<p>Unsupervised pretraining is likely to be most useful when the function to be learned is extremely complicated.</p>
+</div>
+<div class="section" id="success-case-of-unsupervised-pretraining">
+<h3>Success case of Unsupervised Pretraining<a class="headerlink" href="#success-case-of-unsupervised-pretraining" title="Permalink to this headline">¶</a></h3>
+<p>Unsupervised pretraining has usually been used to improve classifier is usually interesting from the point of view of reducing test set error. It can help tasks other than classification.</p>
+<p>Improvement to training error and test error maybe both explained in terms of unsupervised pretraining taking training into a region that would otherwise be inaccessible.</p>
+<ul class="simple">
+<li>NN with unsupervised pretraining: halt in the same smaller region of function space. Suggesting that pretraining reduces the variance of function estimation process =&gt; reduce the risk of severe over fitting.</li>
+<li>NN wihout unsupervised pretraining: halt in another region.</li>
+</ul>
+<img alt="../../_images/Figure15.1.PNG" src="../../_images/Figure15.1.PNG" />
+<p>In another words: unsupervised pretraining initialize NN parameters into a region that they do not escape, and the results following this initializations are more consistent and less likely to be very bad than without pretraining.</p>
+</div>
+<div class="section" id="disadvantage-of-unsupervised-pretraining">
+<h3>Disadvantage of Unsupervised Pretraining<a class="headerlink" href="#disadvantage-of-unsupervised-pretraining" title="Permalink to this headline">¶</a></h3>
+<p>Operating with two seperate training phase.</p>
+<ol class="arabic simple">
+<li>Unsupervsied pretraining does not offer a clear way to adjust the strength of the regularization arising from the unsupervised stage. When we perform unsupervised and supervised learning simultaneously, instead of using the pretraining strategy, there is a single hyperparameter, usually a coefficient attatched to the unsupervised cost, that determine hows strongly supervsied objective will regularize the supervsied model.</li>
+<li>Two seperate training phases has its own hyperparameters. The performance of the second phase cannot be predicted during the first phase, so there is a long delay between proposing hyperparameters for the first phase and being able to update them using feedback from the second phase. Most principled approach: use validation set error in the supervised phase to select hyperparameters of the pretraining phase.</li>
+</ol>
+<p>Today, unsupervised pretraining has been largely abandoned, except for natural language processing.</p>
+<p>Deep learning techniques based on supervised learning, regularized with dropout or batch normalization, are able to achieve human level performance on many tasks, but onlu with extremely large labeled datasets. On extremely small datasets, such as the alternative splicing dataset, Bayesian methods outperform methods based on unsupervised learning.</p>
+<p>The idea of pretraining has been generalized to supervised pretraining, as a common approach for transfer learning.</p>
+<p>Supervised pretraining for transfer learning is popular for use with convolutional networks pretrained on ImageNet dataset. Practitioners publish the parameters of the trained networks for this purpose, just as pretrained word vectors are published for natural language processing tasks.</p>
+<p>Review on 8.7.4 Supervised pretraining:</p>
+<img alt="../../_images/Figure8.7.PNG" src="../../_images/Figure8.7.PNG" />
+</div>
+</div>
 </div>
 
 
