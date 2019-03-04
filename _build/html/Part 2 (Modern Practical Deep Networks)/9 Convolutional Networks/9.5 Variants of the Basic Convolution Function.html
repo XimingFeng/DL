@@ -92,6 +92,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#full-convolution">Full Convolution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#unshared-convolution">Unshared Convolution</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#tiled-convolution">Tiled Convolution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#back-prop-in-conv-layer">Back prop in conv layer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bias-in-after-conv">Bias in after conv</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#resources">Resources</a></li>
 </ul>
 </li>
@@ -241,6 +243,26 @@
 <p>Review:</p>
 <img alt="../../_images/Figure9.7.PNG" src="../../_images/Figure9.7.PNG" />
 <img alt="../../_images/Figure9.9.PNG" src="../../_images/Figure9.9.PNG" />
+</div>
+<div class="section" id="back-prop-in-conv-layer">
+<h2>Back prop in conv layer<a class="headerlink" href="#back-prop-in-conv-layer" title="Permalink to this headline">¶</a></h2>
+<p>Back prop of conv layer:</p>
+<ul class="simple">
+<li>K: Kernel stack</li>
+<li>V: Input image</li>
+<li>Z: Output of conv layer</li>
+<li>G: gradient on Z</li>
+</ul>
+<img alt="../../_images/ConvBackProp.jpg" src="../../_images/ConvBackProp.jpg" />
+</div>
+<div class="section" id="bias-in-after-conv">
+<h2>Bias in after conv<a class="headerlink" href="#bias-in-after-conv" title="Permalink to this headline">¶</a></h2>
+<p>We generally add some bias term to each output before applying nonelinearity.</p>
+<ul class="simple">
+<li>For local conncted layers: give each unit its one bias</li>
+<li>For tiled conv layers: share the biases with the same tiling pattern as the kernels</li>
+<li>For conv layers: have one bias per channel of the output and share it accross all locations within each convolution map. If the input is fixed size, it is also possible to learn a seperate bias at each location of the output map.</li>
+</ul>
 </div>
 <div class="section" id="resources">
 <h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>

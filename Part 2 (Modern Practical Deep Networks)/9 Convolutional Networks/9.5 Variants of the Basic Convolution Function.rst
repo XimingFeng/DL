@@ -102,6 +102,31 @@ Review:
 
 .. image:: Figure9.9.PNG
 
+##################################
+Back prop in conv layer
+##################################
+
+Back prop of conv layer:
+
+* K: Kernel stack
+* V: Input image
+* Z: Output of conv layer
+* G: gradient on Z
+
+.. image:: ConvBackProp.jpg
+
+##################################
+Bias in after conv
+##################################
+
+We generally add some bias term to each output before applying nonelinearity. 
+
+* For local conncted layers: give each unit its one bias
+* For tiled conv layers: share the biases with the same tiling pattern as the kernels
+* For conv layers: have one bias per channel of the output and share it accross all locations within each convolution map. If the input is fixed size, it is also possible to learn a seperate bias at each location of the output map.
+
+
+
 ###################################
 Resources
 ###################################
