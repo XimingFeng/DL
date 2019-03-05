@@ -10,5 +10,6 @@
    9.3 Pooling
    9.4 Convolution and Pooling as a Infinitely Strong Prior
    9.5 Variants of the Basic Convolution Function
+   9.6 Structured Output
 
 
