@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>9 The convolutional Networks &mdash; dl 0.0.1 documentation</title>
+  <title>9.8 Efficient Convolution Algorithms &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="9.1 The Convolutional Operation" href="9.1 The Convolutional Operation.html" />
-    <link rel="prev" title="Batch Normalization" href="../8 Optimization for Training Deep Models/Batch Normalization.html" /> 
+    <link rel="next" title="11 Practical Methodoloogy" href="../11 Practical Methodology/index.html" />
+    <link rel="prev" title="9.7 Data Type" href="9.7 Data Type.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -83,7 +83,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">9 The convolutional Networks</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">9 The convolutional Networks</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="9.1 The Convolutional Operation.html">9.1 The Convolutional Operation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="9.2 Motivation.html">9.2 Motivation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="9.3 Pooling.html">9.3 Pooling</a></li>
@@ -91,7 +91,7 @@
 <li class="toctree-l3"><a class="reference internal" href="9.5 Variants of the Basic Convolution Function.html">9.5 Variants of the Basic Convolution Function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="9.6 Structured Output.html">9.6 Structured Output</a></li>
 <li class="toctree-l3"><a class="reference internal" href="9.7 Data Type.html">9.7 Data Type</a></li>
-<li class="toctree-l3"><a class="reference internal" href="9.8 Efficient Convolution Algorithms.html">9.8 Efficient Convolution Algorithms</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">9.8 Efficient Convolution Algorithms</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
@@ -146,13 +146,15 @@
         
           <li><a href="../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
         
-      <li>9 The convolutional Networks</li>
+          <li><a href="index.html">9 The convolutional Networks</a> &raquo;</li>
+        
+      <li>9.8 Efficient Convolution Algorithms</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 2 (Modern Practical Deep Networks)/9 Convolutional Networks/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 2 (Modern Practical Deep Networks)/9 Convolutional Networks/9.8 Efficient Convolution Algorithms.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,20 +167,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="the-convolutional-networks">
-<h1>9 The convolutional Networks<a class="headerlink" href="#the-convolutional-networks" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="9.1 The Convolutional Operation.html">9.1 The Convolutional Operation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.2 Motivation.html">9.2 Motivation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.3 Pooling.html">9.3 Pooling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.4 Convolution and Pooling as a Infinitely Strong Prior.html">9.4 Convolution and Pooling as a Infinitely Strong Prior</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.5 Variants of the Basic Convolution Function.html">9.5 Variants of the Basic Convolution Function</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.6 Structured Output.html">9.6 Structured Output</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.7 Data Type.html">9.7 Data Type</a></li>
-<li class="toctree-l1"><a class="reference internal" href="9.8 Efficient Convolution Algorithms.html">9.8 Efficient Convolution Algorithms</a></li>
+  <div class="section" id="efficient-convolution-algorithms">
+<h1>9.8 Efficient Convolution Algorithms<a class="headerlink" href="#efficient-convolution-algorithms" title="Permalink to this headline">¶</a></h1>
+<p>How to speed up convolution?</p>
+<ol class="arabic">
+<li><p class="first">Parallel Computation Resources</p>
+</li>
+<li><p class="first">Selecting Appropriate Algorithms</p>
+<blockquote>
+<div><ul class="simple">
+<li>Fourier transform: converting input and kernel into frequency space. Perform point-wise multiplication. Convert them back to time domain using an inverse Fourier transform.</li>
+<li>When d-D kernel can be expressed as outer product of o vectors, the kenel is called seperable. Composing d 1-D convolution with each of these vectors is significantly faster than performing 1 d-D convolution with their outer product. The naive approach requires <span class="math notranslate nohighlight">\(O(w^d)\)</span> runtime and parameter storage place.  Seperable approach requires <span class="math notranslate nohighlight">\(O(w * d)\)</span> runtime and storage place.</li>
 </ul>
-</div>
+</div></blockquote>
+</li>
+</ol>
+<p>Even techniques that improve the efficiency of only forward propagation are useful because in the commercial settings, it is typical to devote more resource to deployment of network than to its training.</p>
 </div>
 
 
@@ -189,10 +193,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="9.1 The Convolutional Operation.html" class="btn btn-neutral float-right" title="9.1 The Convolutional Operation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../11 Practical Methodology/index.html" class="btn btn-neutral float-right" title="11 Practical Methodoloogy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../8 Optimization for Training Deep Models/Batch Normalization.html" class="btn btn-neutral" title="Batch Normalization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="9.7 Data Type.html" class="btn btn-neutral" title="9.7 Data Type" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

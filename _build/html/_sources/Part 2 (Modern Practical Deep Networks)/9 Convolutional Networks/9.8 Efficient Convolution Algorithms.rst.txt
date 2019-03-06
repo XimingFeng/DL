@@ -1,0 +1,12 @@
+9.8 Efficient Convolution Algorithms
+=======================================
+
+How to speed up convolution?
+
+1. Parallel Computation Resources
+2. Selecting Appropriate Algorithms
+	
+	* Fourier transform: converting input and kernel into frequency space. Perform point-wise multiplication. Convert them back to time domain using an inverse Fourier transform.
+	* When d-D kernel can be expressed as outer product of o vectors, the kenel is called seperable. Composing d 1-D convolution with each of these vectors is significantly faster than performing 1 d-D convolution with their outer product. The naive approach requires :math:`O(w^d)` runtime and parameter storage place.  Seperable approach requires :math:`O(w * d)` runtime and storage place.
+
+Even techniques that improve the efficiency of only forward propagation are useful because in the commercial settings, it is typical to devote more resource to deployment of network than to its training.
