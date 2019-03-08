@@ -3,7 +3,7 @@
 
 Greedy Layer-Wise Unsupervised Pretraining relies on single-layer representation learning algorithm. Each layer is pretrained using unsupervised learning, taking the output of previous layer and producing as output a new representation of the data, whose distribution is hopefully simpler. 
 
-.. image:: Algorithm15.1.PNG
+.. image:: rsc/Algorithm15.1.PNG
 
 Greedy layer-wise unsupervsied pretraining name explanation:
 
@@ -74,7 +74,7 @@ Improvement to training error and test error maybe both explained in terms of un
 * NN with unsupervised pretraining: halt in the same smaller region of function space. Suggesting that pretraining reduces the variance of function estimation process => reduce the risk of severe over fitting.
 * NN wihout unsupervised pretraining: halt in another region. 
 
-.. image:: Figure15.1.PNG
+.. image:: rsc/Figure15.1.PNG
 
 In another words: unsupervised pretraining initialize NN parameters into a region that they do not escape, and the results following this initializations are more consistent and less likely to be very bad than without pretraining.
 
@@ -97,5 +97,5 @@ Supervised pretraining for transfer learning is popular for use with convolution
 
 Review on 8.7.4 Supervised pretraining:
 
-.. image:: Figure8.7.PNG
+.. image:: rsc/Figure8.7.PNG
 

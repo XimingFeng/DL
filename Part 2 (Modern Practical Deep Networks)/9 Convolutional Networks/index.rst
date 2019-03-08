@@ -13,5 +13,6 @@
    9.6 Structured Output
    9.7 Data Type
    9.8 Efficient Convolution Algorithms
+   9.9 Random or Unsupervised Features
 
 

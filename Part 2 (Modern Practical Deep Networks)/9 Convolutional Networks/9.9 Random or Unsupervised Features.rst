@@ -1,0 +1,22 @@
+9.9 Random or Unsupervised Features
+====================================
+
+Typically, the most expensive part of conv network training is learning the features. There are 3 basic strategies for obtaining convolution kernels without supervised training.
+
+
+1. Simply initialize randomly: random filters work well in convolutional networks. Inexpensive way to choose the architecture of a convolutional network:
+
+	1. Evaluate the performance of several convolutional network architecture by training only the last layer 
+	2. Take the best of these architectures and train the entire architecture using a more expensive approach. 
+
+2. Design them by hand
+3. Learn the kenel with an unsupervised criterion: Learning the features from unsupervised criterion allows them to be determined seperatly from the classifier layer at the top of the architecture. 
+
+Intermediate approach, greedy layer-wise pretraining, e.g.: Convolutional Deep Believe Network. 
+
+Instead of training an entire convolutional layer at a time, we can train a model of small patch, we can use the parameters from this patch-based to define the kernels of a convolutional layer. 
+
+Today, most convolution networks are trained in a purely supervised fashion, using full forward and back-propagation through the entire network on each training iteration. 
+ 
+
+

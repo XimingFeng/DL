@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>15.2 Transfer Learning and Domain Adaptation &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="15.1 Gready Layer-Wise Unsupervised Pretraining" href="15.1 Gready Layer Wise Unsupervised Pretraining.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">15 Representation Learning</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="15.1 Gready Layer Wise Unsupervised Pretraining.html">15.1 Gready Layer-Wise Unsupervised Pretraining</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">15.2 Transfer Learning and Domain Adaptation</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#transfer-learning">Transfer learning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#shared-semantics-of-the-output">Shared semantics of the output</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#domain-adaptation">Domain Adaptation</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">15 Representation Learning</a> &raquo;</li>
+        
+      <li>15.2 Transfer Learning and Domain Adaptation</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/15 Representation Learning/15.2 Transfer Learning and Domain Adaptation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="transfer-learning-and-domain-adaptation">
+<h1>15.2 Transfer Learning and Domain Adaptation<a class="headerlink" href="#transfer-learning-and-domain-adaptation" title="Permalink to this headline">¶</a></h1>
+<p>Transfer learning and domain adaptation refer to situation where what has been learned in one setting (e.g. distribution P1) is exploited to improve generalization in another settings (say, distribution P2).</p>
+<div class="section" id="transfer-learning">
+<h2>Transfer learning<a class="headerlink" href="#transfer-learning" title="Permalink to this headline">¶</a></h2>
+<p>The learner must perform two or more different tasks, we assume that many of the factors that explain the variations in P1 are relavant to the variations that need to be captured for learning P2.</p>
+<p>Transfer learning, nultitask learning and domain adptation can be achieved via representation learning when there exist features that are useful for different settings or tasks, corresponding to underlying factors that appear in more than one setting. Review:</p>
+<img alt="../../_images/Figure7.2.PNG" src="../../_images/Figure7.2.PNG" />
+<p>Two extreme form of transfer learning:</p>
+<div class="section" id="one-shot-learning">
+<h3>(1) One-shot learning<a class="headerlink" href="#one-shot-learning" title="Permalink to this headline">¶</a></h3>
+<p>Only one example of transfer task is given for one-shot learning. It is possible because the representation learns cleanly seperate the underlying classes during first stage. During the transfer learning stage, only one labeled example is needed to infer the label of many possible test examples that all cluster around the same point in representation space.</p>
+</div>
+<div class="section" id="zero-shot-learning">
+<h3>(2) Zero-shot learning<a class="headerlink" href="#zero-shot-learning" title="Permalink to this headline">¶</a></h3>
+<p>No labeled examples are given at all. It is only possible because additional information has been exploited during training. Three random variable</p>
+<ul class="simple">
+<li>traditional input x</li>
+<li>traditional output y</li>
+<li>additional random varible describing the task T</li>
+</ul>
+<p>The model is trained estimate P(y|x, T)</p>
+</div>
+</div>
+<div class="section" id="shared-semantics-of-the-output">
+<h2>Shared semantics of the output<a class="headerlink" href="#shared-semantics-of-the-output" title="Permalink to this headline">¶</a></h2>
+<img alt="../../_images/Figure15.2.PNG" src="../../_images/Figure15.2.PNG" />
+</div>
+<div class="section" id="domain-adaptation">
+<h2>Domain Adaptation<a class="headerlink" href="#domain-adaptation" title="Permalink to this headline">¶</a></h2>
+<p>The task (and the optimal input-to-output mapping) remains the same between each setting, but the input distribution is slightly different. e.g. A sentiment predictor trained on customer review of media content, such as book, video is later used to analyze comments about comsumer eletronics such as TVs and smartphones. Simple unsupervised pretraining (with DAE) has been found to be very successful for sentiment analysis with domain adaptation.</p>
+<p>In all these cases, the objective is to take advantage of data from the first setting to extract info that maybe useful when learning or even when directly making predictions in the second setting. Core idea of representation learning: same representation maybe useful in both settings</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="15.1 Gready Layer Wise Unsupervised Pretraining.html" class="btn btn-neutral" title="15.1 Gready Layer-Wise Unsupervised Pretraining" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

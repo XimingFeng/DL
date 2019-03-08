@@ -26,4 +26,5 @@ Just like superviser network, unsupervised deep learning algorithms have a main 
 	:maxdepth: 1
 	:caption: Contents:
 
-	15.1 Gready Layer Wise Unsupervised Pretraining 
+	15.1 Gready Layer Wise Unsupervised Pretraining
+	15.2 Transfer Learning and Domain Adaptation 
