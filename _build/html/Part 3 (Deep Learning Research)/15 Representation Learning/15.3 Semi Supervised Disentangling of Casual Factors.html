@@ -1,0 +1,275 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>15.3 Semi-Supervised Disentangling of Casual Factors &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="15.2 Transfer Learning and Domain Adaptation" href="15.2 Transfer Learning and Domain Adaptation.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">15 Representation Learning</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="15.1 Gready Layer Wise Unsupervised Pretraining.html">15.1 Gready Layer-Wise Unsupervised Pretraining</a></li>
+<li class="toctree-l3"><a class="reference internal" href="15.2 Transfer Learning and Domain Adaptation.html">15.2 Transfer Learning and Domain Adaptation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">15.3 Semi-Supervised Disentangling of Casual Factors</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#situation-1-unsupervised-learning-fails-to-help-supervised-learning">Situation 1: unsupervised learning fails to help supervised learning</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#situation-2-unsupervised-learning-succeeds-to-help-supervised-learning">Situation 2: unsupervised learning succeeds to help supervised learning</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">15 Representation Learning</a> &raquo;</li>
+        
+      <li>15.3 Semi-Supervised Disentangling of Casual Factors</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/15 Representation Learning/15.3 Semi Supervised Disentangling of Casual Factors.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="semi-supervised-disentangling-of-casual-factors">
+<h1>15.3 Semi-Supervised Disentangling of Casual Factors<a class="headerlink" href="#semi-supervised-disentangling-of-casual-factors" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Question: What makes one representation better then another</li>
+<li>One hypothesis: the one in which the features within the representation corresponds to the underlying <strong>causes</strong> of the observed data, with seperate features or directions in the feature space corresponding to different causes, so that the representation disentangles the causes from one another.</li>
+</ul>
+<p>This hypothesis motivates approaches in which we first seek a good representation for p(x). Such a representation may also be a good representation for computing p(y|x) if y is among the most salient causes. The following properties coindide for many AI task:</p>
+<ul class="simple">
+<li>We are able to abtain the underline explanations for what we observe</li>
+<li>It generally becomes easier to isolate individual attributes from the others.</li>
+</ul>
+<div class="section" id="situation-1-unsupervised-learning-fails-to-help-supervised-learning">
+<h2>Situation 1: unsupervised learning fails to help supervised learning<a class="headerlink" href="#situation-1-unsupervised-learning-fails-to-help-supervised-learning" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>P(x): uniformly distributed</li>
+<li>Gola: Learn E(y | x)</li>
+</ul>
+</div>
+<div class="section" id="situation-2-unsupervised-learning-succeeds-to-help-supervised-learning">
+<h2>Situation 2: unsupervised learning succeeds to help supervised learning<a class="headerlink" href="#situation-2-unsupervised-learning-succeeds-to-help-supervised-learning" title="Permalink to this headline">¶</a></h2>
+<img alt="../../_images/Figure15.4.PNG" src="../../_images/Figure15.4.PNG" />
+<p>If y is closely associated with one of the causal factors of x, then p(x) and p(y|x) will be strongly tied and unsupervised representation learning tries to disentangle the underlying factors of variation is likely to be useful as a semi-supervised learning strategy.</p>
+<ul>
+<li><p class="first">Problem: Most of observations are formed by an extremely large number of underlying causes.</p>
+</li>
+<li><p class="first">Brute Force Solution: An unsupervised learner learns a representation that captures all the reasonably salient generative factors and disentangles them from each other, thus making it easy to predict y from h, regardless of which <span class="math notranslate nohighlight">\(h_i\)</span> is associate with y. Not feasible. It is not possible to capture all or most of the factors of variation that influence an observation.</p>
+</li>
+<li><p class="first">Two Main Strategies used</p>
+<blockquote>
+<div><ul class="simple">
+<li>Use a supervised learning signal at the same time as the unsupervised learning signal so that the model will choose to capture most relevant factors of variation.</li>
+<li>Use much larger representation if using purely unsupervised learning.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>An emerging strategy for unsupervised learning is to modify the definition of which underlying causes are most salient. Historically, autoencoder and generative models have been trained to optimize a fixed criterion. These fixed criteria determine which causes are considered salient. See figure below how MSE failed to learn to encode a small ping pong ball:</p>
+<img alt="../../_images/Figure15.5.PNG" src="../../_images/Figure15.5.PNG" />
+<p>Other definitions of salient are possible. e.g. Recognizable Pattern. One way to implement such a definition of salience is to use Generatibe Adverserial Network:</p>
+<ul class="simple">
+<li>A feedforward classifier: attempts to recognize all samples from the generative model as being fake and samples from training set as real</li>
+<li>Generative model: provide “fake samples”</li>
+</ul>
+<p>The network will learn what is salient.</p>
+<p>If the true generative process has x as an effect and y as a cause, then modeling p(x|y) is robust to changes in p(y). If the cause-effect relationship is reserved, that would not be true. Very often, when we consider changes in distribution due to different domains, temporal nonstationary  or changes the nature of task, the causal mechanisms remain invarianct. So, better generalization and robustness to all kinds of change can be expected via learning a generative model that attempts to recover the causal factors h and p(x|h).</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="15.2 Transfer Learning and Domain Adaptation.html" class="btn btn-neutral" title="15.2 Transfer Learning and Domain Adaptation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

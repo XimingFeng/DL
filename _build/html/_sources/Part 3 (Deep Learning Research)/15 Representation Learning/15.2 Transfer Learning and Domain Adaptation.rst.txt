@@ -9,7 +9,7 @@ Transfer learning
 
 The learner must perform two or more different tasks, we assume that many of the factors that explain the variations in P1 are relavant to the variations that need to be captured for learning P2.
 
-Transfer learning, nultitask learning and domain adptation can be achieved via representation learning when there exist features that are useful for different settings or tasks, corresponding to underlying factors that appear in more than one setting. Review: 
+Transfer learning, multitask learning and domain adptation can be achieved via representation learning when there exist features that are useful for different settings or tasks, corresponding to underlying factors that appear in more than one setting. Review: 
 
 .. image:: rsc/Figure7.2.PNG
 
@@ -31,7 +31,9 @@ No labeled examples are given at all. It is only possible because additional inf
 * traditional output y
 * additional random varible describing the task T
 
-The model is trained estimate P(y|x, T)
+The model is trained estimate P(y|x, T). E.g. Even we may not have labeled exmaples translating word A in language X to word B in language Y, we can generalize and guess a translation for word A. Illustrated below:
+
+.. image:: rsc/Figure15.3.PNG
 
 ##############################
 Shared semantics of the output

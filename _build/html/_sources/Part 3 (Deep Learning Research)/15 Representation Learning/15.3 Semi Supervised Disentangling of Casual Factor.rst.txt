@@ -1,0 +1,6 @@
+15.3 Semi-Supervised Disentangling of Casual Factors
+======================================================
+
+| Question: What makes one representation better then another 
+| One hypothesis: the one in which the features within the representation corresponds to the underlying **causes** of the observed data, with seperate features or directions in the feature space corresponding to different causes, so that the representation disentangles the causes from one another.
+

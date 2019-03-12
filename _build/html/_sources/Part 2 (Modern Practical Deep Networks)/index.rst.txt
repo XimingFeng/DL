@@ -28,6 +28,7 @@ The training examples specify directly what the output layer must do at each poi
    8 Optimization for Training Deep Models/index
    9 Convolutional Networks/index
    11 Practical Methodology/index
+   12 Applications/index
 
 
 

@@ -1,0 +1,45 @@
+15.3 Semi-Supervised Disentangling of Casual Factors
+======================================================
+
+* Question: What makes one representation better then another 
+* One hypothesis: the one in which the features within the representation corresponds to the underlying **causes** of the observed data, with seperate features or directions in the feature space corresponding to different causes, so that the representation disentangles the causes from one another.
+
+This hypothesis motivates approaches in which we first seek a good representation for p(x). Such a representation may also be a good representation for computing p(y|x) if y is among the most salient causes. The following properties coindide for many AI task:
+
+* We are able to abtain the underline explanations for what we observe
+* It generally becomes easier to isolate individual attributes from the others.
+
+##########################################################################
+Situation 1: unsupervised learning fails to help supervised learning
+##########################################################################
+
+* P(x): uniformly distributed
+* Gola: Learn E(y | x)
+
+##########################################################################
+Situation 2: unsupervised learning succeeds to help supervised learning
+##########################################################################
+
+.. image:: rsc/Figure15.4.PNG
+
+If y is closely associated with one of the causal factors of x, then p(x) and p(y|x) will be strongly tied and unsupervised representation learning tries to disentangle the underlying factors of variation is likely to be useful as a semi-supervised learning strategy.
+
+* Problem: Most of observations are formed by an extremely large number of underlying causes. 
+* Brute Force Solution: An unsupervised learner learns a representation that captures all the reasonably salient generative factors and disentangles them from each other, thus making it easy to predict y from h, regardless of which :math:`h_i` is associate with y. Not feasible. It is not possible to capture all or most of the factors of variation that influence an observation.
+* Two Main Strategies used
+	
+	* Use a supervised learning signal at the same time as the unsupervised learning signal so that the model will choose to capture most relevant factors of variation.
+	* Use much larger representation if using purely unsupervised learning.
+
+An emerging strategy for unsupervised learning is to modify the definition of which underlying causes are most salient. Historically, autoencoder and generative models have been trained to optimize a fixed criterion. These fixed criteria determine which causes are considered salient. See figure below how MSE failed to learn to encode a small ping pong ball:
+
+.. image:: rsc/Figure15.5.PNG
+
+Other definitions of salient are possible. e.g. Recognizable Pattern. One way to implement such a definition of salience is to use Generatibe Adverserial Network:
+ 
+* A feedforward classifier: attempts to recognize all samples from the generative model as being fake and samples from training set as real
+* Generative model: provide "fake samples" 
+
+The network will learn what is salient. 
+
+If the true generative process has x as an effect and y as a cause, then modeling p(x|y) is robust to changes in p(y). If the cause-effect relationship is reserved, that would not be true. Very often, when we consider changes in distribution due to different domains, temporal nonstationary  or changes the nature of task, the causal mechanisms remain invarianct. So, better generalization and robustness to all kinds of change can be expected via learning a generative model that attempts to recover the causal factors h and p(x|h). 

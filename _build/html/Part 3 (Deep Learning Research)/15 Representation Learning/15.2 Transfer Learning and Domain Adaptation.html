@@ -171,7 +171,7 @@
 <div class="section" id="transfer-learning">
 <h2>Transfer learning<a class="headerlink" href="#transfer-learning" title="Permalink to this headline">¶</a></h2>
 <p>The learner must perform two or more different tasks, we assume that many of the factors that explain the variations in P1 are relavant to the variations that need to be captured for learning P2.</p>
-<p>Transfer learning, nultitask learning and domain adptation can be achieved via representation learning when there exist features that are useful for different settings or tasks, corresponding to underlying factors that appear in more than one setting. Review:</p>
+<p>Transfer learning, multitask learning and domain adptation can be achieved via representation learning when there exist features that are useful for different settings or tasks, corresponding to underlying factors that appear in more than one setting. Review:</p>
 <img alt="../../_images/Figure7.2.PNG" src="../../_images/Figure7.2.PNG" />
 <p>Two extreme form of transfer learning:</p>
 <div class="section" id="one-shot-learning">
@@ -186,7 +186,8 @@
 <li>traditional output y</li>
 <li>additional random varible describing the task T</li>
 </ul>
-<p>The model is trained estimate P(y|x, T)</p>
+<p>The model is trained estimate P(y|x, T). E.g. Even we may not have labeled exmaples translating word A in language X to word B in language Y, we can generalize and guess a translation for word A. Illustrated below:</p>
+<img alt="../../_images/Figure15.3.PNG" src="../../_images/Figure15.3.PNG" />
 </div>
 </div>
 <div class="section" id="shared-semantics-of-the-output">

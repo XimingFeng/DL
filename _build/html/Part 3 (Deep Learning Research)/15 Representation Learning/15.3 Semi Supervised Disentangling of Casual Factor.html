@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>15 Representation Learning &mdash; dl 0.0.1 documentation</title>
+  <title>15.3 Semi-Supervised Disentangling of Casual Factors &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -27,9 +27,7 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="15.1 Gready Layer-Wise Unsupervised Pretraining" href="15.1 Gready Layer Wise Unsupervised Pretraining.html" />
-    <link rel="prev" title="14.9 Applications of Autoencoders" href="../14 Autoencoders/14.9 Applications of Autoencoders.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -79,19 +77,10 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">15 Representation Learning</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="15.1 Gready Layer Wise Unsupervised Pretraining.html">15.1 Gready Layer-Wise Unsupervised Pretraining</a></li>
-<li class="toctree-l3"><a class="reference internal" href="15.2 Transfer Learning and Domain Adaptation.html">15.2 Transfer Learning and Domain Adaptation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="15.3 Semi Supervised Disentangling of Casual Factors.html">15.3 Semi-Supervised Disentangling of Casual Factors</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
 </ul>
 
@@ -138,15 +127,13 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
-        
-      <li>15 Representation Learning</li>
+      <li>15.3 Semi-Supervised Disentangling of Casual Factors</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/15 Representation Learning/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/15 Representation Learning/15.3 Semi Supervised Disentangling of Casual Factor.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -159,32 +146,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="representation-learning">
-<h1>15 Representation Learning<a class="headerlink" href="#representation-learning" title="Permalink to this headline">¶</a></h1>
-<p>Information processing could be easy or difficult depending on how the information is represented.</p>
-<p>Eg 1:</p>
-<ul class="simple">
-<li>210 / 6: easy, straightforward.</li>
-<li>CCX / VI: difficult.</li>
-</ul>
-<p>Eg2 Insert a number into</p>
-<ul class="simple">
-<li>sorted linked list: O(n) runtime</li>
-<li>red-black tree: O(log n)</li>
-</ul>
-<p>Feedforward network trained by supervised learning: last layer linear classifier or nearest neighbor classifier. The rest of the network learns to provide a representation to this classifier. Training with a supervised criterion naturally leads to the representatino at every hidden layer taking on properties that make the classification easier.</p>
-<p>Just like superviser network, unsupervised deep learning algorithms have a main training objective but also learn a representation as a side effect. Most of representation learning problem face the trade off between</p>
-<ul class="simple">
-<li>Researve as much info about input as possible</li>
-<li>attain nice properties such as independence</li>
-</ul>
-<div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="15.1 Gready Layer Wise Unsupervised Pretraining.html">15.1 Gready Layer-Wise Unsupervised Pretraining</a></li>
-<li class="toctree-l1"><a class="reference internal" href="15.2 Transfer Learning and Domain Adaptation.html">15.2 Transfer Learning and Domain Adaptation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="15.3 Semi Supervised Disentangling of Casual Factors.html">15.3 Semi-Supervised Disentangling of Casual Factors</a></li>
-</ul>
+  <div class="section" id="semi-supervised-disentangling-of-casual-factors">
+<h1>15.3 Semi-Supervised Disentangling of Casual Factors<a class="headerlink" href="#semi-supervised-disentangling-of-casual-factors" title="Permalink to this headline">¶</a></h1>
+<div class="line-block">
+<div class="line">Question: What makes one representation better then another</div>
+<div class="line">One hypothesis: the one in which the features within the representation corresponds to the underlying <strong>causes</strong> of the observed data, with seperate features or directions in the feature space corresponding to different causes, so that the representation disentangles the causes from one another.</div>
 </div>
 </div>
 
@@ -193,15 +159,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="15.1 Gready Layer Wise Unsupervised Pretraining.html" class="btn btn-neutral float-right" title="15.1 Gready Layer-Wise Unsupervised Pretraining" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../14 Autoencoders/14.9 Applications of Autoencoders.html" class="btn btn-neutral" title="14.9 Applications of Autoencoders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>
