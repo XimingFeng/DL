@@ -169,9 +169,9 @@
   <div class="section" id="yolo">
 <h1>YOLO<a class="headerlink" href="#yolo" title="Permalink to this headline">¶</a></h1>
 <p>See <a class="reference external" href="https://arxiv.org/pdf/1506.02640.pdf">Yolo Paper</a></p>
-<p>Over all Sturcture/Pipeline:</p>
 <div class="section" id="intro">
-<h2>Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<h2>1. Intro<a class="headerlink" href="#intro" title="Permalink to this headline">¶</a></h2>
+<p>Over all Sturcture/Pipeline:</p>
 <ol class="arabic simple">
 <li>Resize to 448 * 448</li>
 <li>Conv Net</li>
@@ -186,12 +186,112 @@
 <p>Drawback:
 Lag behind state-of-art detection system in accuracy. Struggle to precisely localize some objects. especially small ones</p>
 </div>
+<div class="section" id="unified-detection">
+<h2>2. Unified Detection<a class="headerlink" href="#unified-detection" title="Permalink to this headline">¶</a></h2>
+<p>Divide the image into S * S grid. If the center of the an object falls into a grid cell, that grid cell is responsible for detecting that object. Each grid cell predicts B bounding boxes and confidence scores for those boxes. We define confidence as <span class="math notranslate nohighlight">\(Pr(Object) * IOU_{true pred}\)</span>. <a class="reference external" href="https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/">IOU</a> is between the predicted box and the groud truth.</p>
+<img alt="../../../_images/iou_equation.png" src="../../../_images/iou_equation.png" />
+<p>For each <strong>bounding box</strong> (not grid cell), we have 5 prediction cell: x, y, w, h, and confidence.</p>
+<ul class="simple">
+<li>(x, y) represent the center of the box relative to the bound of the grid cell.</li>
+<li>(w, h) represent width and height relative to the whole image</li>
+<li>confidence represent IOU between the prediction box and any ground truth box.</li>
+</ul>
+<p>Each <strong>grid cell</strong> (not bounding box) also predict C conditional class probabilities <span class="math notranslate nohighlight">\(Pr(Class_i | Object)\)</span>. These probabilities are conditioned on the grid cell contraining an object. We only predict one set of class probability per grid cell, regardless of the number of the boxes.</p>
+<p>At test time, class-specific confidence scores for each box:</p>
+<div class="math notranslate nohighlight">
+\[Pr(Class_i | Object) * Pr(Object) * IOU_{true prob} = Pr(Class_i) * IOU_{true prob}\]</div>
+<p>These score encode both</p>
+<ul class="simple">
+<li>probability of that class appearing in the bounding box</li>
+<li>How well the predicted box fits the object</li>
+</ul>
+<img alt="../../../_images/YOLOFigure2.PNG" src="../../../_images/YOLOFigure2.PNG" />
+<div class="section" id="network-desgin">
+<h3>2.1 Network Desgin<a class="headerlink" href="#network-desgin" title="Permalink to this headline">¶</a></h3>
+<img alt="../../../_images/YOLOFigure3.PNG" src="../../../_images/YOLOFigure3.PNG" />
+</div>
+<div class="section" id="training">
+<h3>2.2 Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Pretrain: on ImageNet 1000-class dataset. First 20 conv layers with a fully connected layer.</p>
+</li>
+<li><p class="first">Convert to perform detection. Add 4 Conv and 2 fully connected with randomly initiated rate. Input resolution 224 * 224 -&gt; 448 * 448</p>
+</li>
+<li><p class="first">Normalize witdh, height, x, y to be bounded between 0 to 1</p>
+</li>
+<li><p class="first">Activation</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>Final Layer: Linear Activation</li>
+<li>Other latyer: Leaky rectified linear activation function, see equation 2</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Loss function: sum-squared error</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>Reason: Easy to optimize</li>
+<li>Problem: (1) Does not perfectly align with our goal of maximize average precision. (2) In every image many gird cells do not contain any object. This pushes the confidence scores of those cells towards 0, often overpowering the gradient from cells that do contain object.</li>
+<li>Solution: increase loss from bounding box coordinate predictions and decrease the loss from confidence predictions from boxes that don’t contain objects. We use two parameters <span class="math notranslate nohighlight">\(\lambda_{coord}\)</span> = 5 and <span class="math notranslate nohighlight">\(\lambda_{noobj}\)</span> = 0.5</li>
+<li>Sum-squared error also equally weidgts errors in large boxes and small boxes</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Only one bounding box should be responsible for each obejct. We assign one predictor to be responsible for predicting an object based on which prediction has the highest current IOU with the ground truth.</p>
+</li>
+</ol>
+<ol class="loweralpha simple">
+<li>Loss from bound box coordinate (x, y) Note that the loss comes from one bounding box from one grid cell. Even if obj not in grid cell as ground truth.</li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{cases}
+        \lambda_{coord} \sum^{S^2}_{i=0} [(x_i - \hat{x}_i)^2 + (y_i - \hat{y_i})^2] &amp;\text{responsible bounding box} \\
+        0 &amp;\text{ other} \\
+\end {cases}\end{split}\]</div>
+<ol class="loweralpha simple" start="2">
+<li>Loss from width w and height h. Note that the loss comes from one bounding box from one grid cell, even if the object is not in the grid cell as ground truth.</li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {cases}
+        \lambda_{coord} \sum^{S^2}_{i=0} [(\sqrt{w_i} - \sqrt{\hat{w}_i})^2 + (\sqrt{h_i} - \sqrt{\hat{h}_i})^2] &amp;\text{responsible bounding box} \\
+        0 &amp;\text{ other} \\
+\end {cases}\end{split}\]</div>
+<ol class="loweralpha simple" start="3">
+<li>Loss from the confidence in each bound box. Not that the loss comes from one bounding box from one grid cel, even if the object is not in the grid cell as ground truth.</li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {cases}
+        \sum^{S^2}_{i=0}(C_i - \hat{C}_i)^2 &amp;\text{obj in grid cell and responsible bounding box} \\
+        \lambda_{noobj} \sum^{S^2}_{i=0}(C_i - \hat{C}_i)^2 &amp;\text{obj not in grid cell and responsible bounding box} \\
+        0 &amp;\text{other}
+\end {cases}\end{split}\]</div>
+<ol class="loweralpha simple" start="4">
+<li>Loss from the class probability of <strong>grid cell</strong>, only when object is in the grid cell as ground truth.</li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {cases}
+        \sum^{S^2}_{i=0} \sum_{c \in classes} (p_i(c) - \hat{p}_i(c))^2 &amp;\text{obj in grid cell}\\
+        0 &amp;\text{other} \\
+\end {cases}\end{split}\]</div>
+<div class="line-block">
+<div class="line">Loss function only penalizes classification if obj is present in the grid cell.</div>
+<div class="line">It also penalize bounding box coordinate if that box is responsible for the ground box (highest IOU)</div>
+</div>
+<p>For generalization.</p>
+<ul class="simple">
+<li>Use dropout with Dropout rate 0.5.</li>
+<li>Data augmentation:random scaling, translation of up to 20% of the original size.</li>
+<li>Randomly adjust the exposure and saturation of the image by up to a factor of 1.5 in the HSV color space.</li>
+</ul>
+</div>
+</div>
 <div class="section" id="resource">
 <h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><a class="reference external" href="https://arxiv.org/pdf/1506.02640.pdf">Yolo Paper</a></li>
 <li><a class="reference external" href="http://pjreddie.com/yolo/">Project webpage</a></li>
 <li><a class="reference external" href="https://arxiv.org/pdf/1311.2524.pdf">RCNN Paper</a></li>
+<li><a class="reference external" href="https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/">Intersection over Union IOU</a></li>
 </ul>
 </div>
 </div>
