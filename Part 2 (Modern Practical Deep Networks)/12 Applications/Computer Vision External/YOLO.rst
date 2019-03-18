@@ -121,6 +121,52 @@ For generalization.
 * Data augmentation:random scaling, translation of up to 20% of the original size. 
 * Randomly adjust the exposure and saturation of the image by up to a factor of 1.5 in the HSV color space.
 
+*******************************
+2.3 Inference
+*******************************
+
+YOLO is extremely fast at test time since it only requires a single network evaluation, unlike classifier-based method.
+
+Often it is clear which grid cell an object falls in to and the network predict one box per object. However some large objects or objects near the border of the multiple cells can be well localized by multiple cells. Non-maximal suppression can be used to fix these multiple detections. 
+
+*****************************
+Limitation of YOLO
+*****************************
+
+* Impose strong spatial contraints on bounding box predictions since each grid cell predicts B boxes can only have one class. Limit the number of nearby objects that our model can predict. Struggles with small objetc such as flocks of birds.
+* Learns to predict bounding box from data -> struggles to generalize to object in new or usual aspect ratios or configurations. Uses relatively coarse features for predicting bounding boxes since our architecture has multiple downsampling layers from the input image. 
+* Loss function treat error the same in small bounding boxes versus large bounding boxes. A small error in large box is generally okay but a small error in small box has a much greater effect on IOU. The main source of error comes from localization.
+
+Consider the following example:
+
+* Prediction on large bounding box
+	
+	* Predicted bounding box size: 16 * 16 
+	* Ground truth boudning box size: 25 * 25
+
+* Prediction on large bounding box
+	
+	* Predicted bounding box size: 9 * 9
+	* Ground truth boudning box size:  16 * 16 
+
+See the picture below
+
+.. image:: rsc/YOLOLimitation.PNG
+
+Here is the result 
+
+* Large bounding box: 
+	
+	* cost on width and height: 4 
+	* IOU: 0.4096 <- (16 * 16) / (25 * 25)
+
+* Small bounding box
+
+	* cost on width and height: 4
+	* IOU: 0.3164 <- (9 * 9) / (16 * 16)
+
+The cost from the width and height of the bounding box is the same for large and small bounding box. But the IOU is not the same. The cost does not penalize the smaller IOU of the small bounding box.
+
 ########################
 Resource 
 ########################

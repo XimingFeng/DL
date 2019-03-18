@@ -1,0 +1,50 @@
+15.4 Distributed Representation
+================================
+
+* Distributed representations: representations composed of many elements that can be set seperately from each other. 
+* Symbolic representation: the input is associated with **a single** simbol or a category. 
+	
+	* If there are n symbols in the dictionary, one can imagine n feature detctors, each corresponding to the detection of the presence of the associated category. 
+	* Only n different configurations of the representation space are possible, carving n different regions in input space. 
+	* Also called one-hot representation
+	* One example of non-distributed representation.
+
+Nondistributed representations: representations that may contain many entries but without significant meaningful seperate control over each entry. 
+
+Examples of learning algo based on nondistributed representation learning:
+
+* Clustering method, include the k-means algorithm: each input assigned to exactly one cluster
+* `K Nearest neighbor <https://towardsdatascience.com/introduction-to-k-nearest-neighbors-3b534bb11d26>`_: If k > 1, multiple values describe each input, but they cannot be controlled seperately from each other, so this does not qualify as a true distributed representation.
+* Decision tree: Only one leaf is activated when the input is given
+* Gaussian mixture and mixtures of expert: each input is represented with multiple values, but those values cannot be readily be controlled seperatly from each other.
+* Kernel machine with a Gausian kernel
+* Language or translation models based on g-grams
+
+E.g. of 3 binary features representation: 
+
+.. image:: rsc/Figure15.7.PNG
+
+E.g. of non-distributed representation: nearest neighbor
+
+.. image:: rsc/Figure15.8.PNG
+
+One important concept in distributed representation: generalization arised due to shared attributes between different concepts. Distributed representation include a rich similarity space, in which semantically close concepts (or inputs) are close in distance. This is a property absnet from purely symbolic representation.
+
+###############################
+Review on KNN 5.7.3
+###############################
+
+One weakness of k-nearest neighbors is that it cannot learn that one feature is more discriminative than another. For example,imagine we have a regression task withx ∈ R 100 drawn from an isotropic Gaussian distribution, but only a single variable :math:`x_1` is relevant to the output. Suppose further that this feature simply encodes the output directly, that :math:`y=x_1` in all cases. Nearest neighbor regression will not be able to detect this simple pattern.The nearest neighbor of most pointsx will be determined by the large number of features :math:`x_2` through :math:`x_{100}`, not by the lone feature :math:`x_1`. Thus the output on small training sets will essentially be random.
+
+################################
+Review on decision tree 5.7.3
+################################
+
+.. image:: rsc/Figure5.7.PNG
+
+
+############################
+Resources
+############################
+
+* `K Nearest neighbor <https://towardsdatascience.com/introduction-to-k-nearest-neighbors-3b534bb11d26>`_

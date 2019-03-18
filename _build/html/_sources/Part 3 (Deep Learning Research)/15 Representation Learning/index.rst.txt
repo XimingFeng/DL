@@ -29,3 +29,4 @@ Just like superviser network, unsupervised deep learning algorithms have a main 
 	15.1 Gready Layer Wise Unsupervised Pretraining
 	15.2 Transfer Learning and Domain Adaptation
 	15.3 Semi Supervised Disentangling of Casual Factors 
+	15.4 Distributed Representation
