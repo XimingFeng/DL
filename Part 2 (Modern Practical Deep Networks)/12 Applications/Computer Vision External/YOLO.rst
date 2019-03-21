@@ -176,17 +176,22 @@ The cost from the width and height of the bounding box is the same for large and
 Comparison to other models
 ##############################
 
-Deformable Models (DFM): Sliding window approach. Disjoint pipeline to extract features, classify regions, prediction bounding box for high scoring regions. 
+* Deformable Models (DFM): Sliding window approach. Disjoint pipeline to extract features, classify regions, prediction bounding box for high scoring regions. 
+* RCNN: region proposal about 2000 from `Selective Search <http://www.huppelen.nl/publications/selectiveSearchDraft.pdf>`_. CNN extract features. SVM score the boxes. A linear model adjust the bounding box. 
+* Fast and faster RCNN: share computation and using Neural Network to propose region instead of Selective Search. Still fall short of real time performance. 
+* Deep MultiBox: predict region of interest instead of Selective Search.  Cannot perform genark object detection and is still just a piece in a large detection pipeline, requiring further image classification. 
+* OverFeat: efficiently performs sliding window detection but it is still a disjoint system. Optimize for localization not detection performance. The localizer only see local information when making a prediction
+* MultiGrasp: similar design with YOLO to work on grasp detection. Much simpler task than object detection. Only needs to prediect a single graspable region for an image containing one object. Does not have to estimate the size location or boundaries of the object or predict it's class, om;y find a region suitable for grasping
+* YOLO 
+    
+    * finish the following task concurently
+		
+		* Feature extraction
+		* Bound box prediction
+		* Non-maximal suppression 
 
-RCNN families: region proposal. CNN extract features. SVM score the boxes. A linear model adjust the bounding box. 
-
-YOLO finish the following concurently:
-
-* Feature extraction
-* Bound box prediction
-* Non-maximal suppression 
-
-
+	* YOLO is a general purpose detector that learns to detect a variety of objects simultaneously. 
+	* YOLO reason about global context and thus requires significant post-processing to produce coherent detection.
 
 ########################
 Resource 
@@ -197,3 +202,4 @@ Resource
 * `RCNN Paper <https://arxiv.org/pdf/1311.2524.pdf>`_
 * `Intersection over Union IOU <https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/>`_
 * `Non max suppresion <https://www.coursera.org/lecture/convolutional-neural-networks/non-max-suppression-dvrjH>`_
+* `Selective Search Paper <http://www.huppelen.nl/publications/selectiveSearchDraft.pdf>`_

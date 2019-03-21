@@ -343,13 +343,40 @@ Lag behind state-of-art detection system in accuracy. Struggle to precisely loca
 </div>
 <div class="section" id="comparison-to-other-models">
 <h2>Comparison to other models<a class="headerlink" href="#comparison-to-other-models" title="Permalink to this headline">¶</a></h2>
-<p>Deformable Models (DFM): Sliding window approach. Disjoint pipeline to extract features, classify regions, prediction bounding box for high scoring regions.</p>
-<p>RCNN families: region proposal. CNN extract features. SVM score the boxes. A linear model adjust the bounding box.</p>
-<p>YOLO finish the following concurently:</p>
-<ul class="simple">
+<ul>
+<li><p class="first">Deformable Models (DFM): Sliding window approach. Disjoint pipeline to extract features, classify regions, prediction bounding box for high scoring regions.</p>
+</li>
+<li><p class="first">RCNN: region proposal about 2000 from <a class="reference external" href="http://www.huppelen.nl/publications/selectiveSearchDraft.pdf">Selective Search</a>. CNN extract features. SVM score the boxes. A linear model adjust the bounding box.</p>
+</li>
+<li><p class="first">Fast and faster RCNN: share computation and using Neural Network to propose region instead of Selective Search. Still fall short of real time performance.</p>
+</li>
+<li><p class="first">Deep MultiBox: predict region of interest instead of Selective Search.  Cannot perform genark object detection and is still just a piece in a large detection pipeline, requiring further image classification.</p>
+</li>
+<li><p class="first">OverFeat: efficiently performs sliding window detection but it is still a disjoint system. Optimize for localization not detection performance. The localizer only see local information when making a prediction</p>
+</li>
+<li><p class="first">MultiGrasp: similar design with YOLO to work on grasp detection. Much simpler task than object detection. Only needs to prediect a single graspable region for an image containing one object. Does not have to estimate the size location or boundaries of the object or predict it’s class, om;y find a region suitable for grasping</p>
+</li>
+<li><p class="first">YOLO</p>
+<blockquote>
+<div><ul>
+<li><p class="first">finish the following task concurently</p>
+<blockquote>
+<div><blockquote>
+<div><ul class="simple">
 <li>Feature extraction</li>
 <li>Bound box prediction</li>
 <li>Non-maximal suppression</li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li>YOLO is a general purpose detector that learns to detect a variety of objects simultaneously.</li>
+<li>YOLO reason about global context and thus requires significant post-processing to produce coherent detection.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div></blockquote>
+</li>
 </ul>
 </div>
 <div class="section" id="resource">
@@ -360,6 +387,7 @@ Lag behind state-of-art detection system in accuracy. Struggle to precisely loca
 <li><a class="reference external" href="https://arxiv.org/pdf/1311.2524.pdf">RCNN Paper</a></li>
 <li><a class="reference external" href="https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/">Intersection over Union IOU</a></li>
 <li><a class="reference external" href="https://www.coursera.org/lecture/convolutional-neural-networks/non-max-suppression-dvrjH">Non max suppresion</a></li>
+<li><a class="reference external" href="http://www.huppelen.nl/publications/selectiveSearchDraft.pdf">Selective Search Paper</a></li>
 </ul>
 </div>
 </div>
