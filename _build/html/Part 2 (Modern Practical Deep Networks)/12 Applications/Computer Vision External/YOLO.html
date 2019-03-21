@@ -175,7 +175,7 @@
 <ol class="arabic simple">
 <li>Resize to 448 * 448</li>
 <li>Conv Net</li>
-<li>Threshhold the resulting detection by the model’s confidence.</li>
+<li>Threshhold the resulting detection by the model’s confidence using <a class="reference external" href="https://www.coursera.org/lecture/convolutional-neural-networks/non-max-suppression-dvrjH">Non max suppression</a>.</li>
 </ol>
 <p>A single conv net simultaneously predicts multiple bounding boxes and class probabilities for those boxes. It is trained on full image and directly optimizes detection performance. Benefit over traditional method of object detection.</p>
 <ol class="arabic simple">
@@ -237,7 +237,7 @@ Lag behind state-of-art detection system in accuracy. Struggle to precisely loca
 </ol>
 </div></blockquote>
 </li>
-<li><p class="first">Only one bounding box should be responsible for each obejct. We assign one predictor to be responsible for predicting an object based on which prediction has the highest current IOU with the ground truth.</p>
+<li><p class="first">Only one bounding box should be responsible for each obejct. We assign one predictor to be responsible for predicting an object based on which prediction has the highest current IOU with the ground truth. This leads to the specialization between the bounding box prediction. Each predictor is getting better at predicting certain sizes, aspect of ratio, or class of object, improving overall recall but struglle to generalize. See the limitation of YOLO below.</p>
 </li>
 </ol>
 <ol class="loweralpha simple">
@@ -296,7 +296,9 @@ Lag behind state-of-art detection system in accuracy. Struggle to precisely loca
 <li>Learns to predict bounding box from data -&gt; struggles to generalize to object in new or usual aspect ratios or configurations. Uses relatively coarse features for predicting bounding boxes since our architecture has multiple downsampling layers from the input image.</li>
 <li>Loss function treat error the same in small bounding boxes versus large bounding boxes. A small error in large box is generally okay but a small error in small box has a much greater effect on IOU. The main source of error comes from localization.</li>
 </ul>
-<p>Consider the following example:</p>
+<p>To understand the second limitation, revisit the paragraph from Training:</p>
+<p><strong>YOLO predicts multiple bounding boxes per grid cell. At training time we only want one bounding box predictor to be responsible for each object. We assign one predictor to be “responsible” for predicting an object based on which prediction has the highest current IOU with the ground truth. This leads to specialization between the bounding box predictors. Each predictor gets better at predicting certain sizes, aspect ratios, or classes of object, improving overall recall.</strong></p>
+<p>To understand the second limitation, consider the following example:</p>
 <ul>
 <li><p class="first">Prediction on large bounding box</p>
 <blockquote>
@@ -338,6 +340,17 @@ Lag behind state-of-art detection system in accuracy. Struggle to precisely loca
 </ul>
 <p>The cost from the width and height of the bounding box is the same for large and small bounding box. But the IOU is not the same. The cost does not penalize the smaller IOU of the small bounding box.</p>
 </div>
+</div>
+<div class="section" id="comparison-to-other-models">
+<h2>Comparison to other models<a class="headerlink" href="#comparison-to-other-models" title="Permalink to this headline">¶</a></h2>
+<p>Deformable Models (DFM): Sliding window approach. Disjoint pipeline to extract features, classify regions, prediction bounding box for high scoring regions.</p>
+<p>RCNN families: region proposal. CNN extract features. SVM score the boxes. A linear model adjust the bounding box.</p>
+<p>YOLO finish the following concurently:</p>
+<ul class="simple">
+<li>Feature extraction</li>
+<li>Bound box prediction</li>
+<li>Non-maximal suppression</li>
+</ul>
 </div>
 <div class="section" id="resource">
 <h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>

@@ -51,9 +51,6 @@ Valdation of distributed representation:
 .. image:: rsc/Figure15.9.PNG
 
 
-
-
-
 ###############################
 Review on KNN 5.7.3
 ###############################

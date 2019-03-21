@@ -12,7 +12,7 @@ Over all Sturcture/Pipeline:
 
 1. Resize to 448 * 448
 2. Conv Net
-3. Threshhold the resulting detection by the model's confidence.  
+3. Threshhold the resulting detection by the model's confidence using `Non max suppression <https://www.coursera.org/lecture/convolutional-neural-networks/non-max-suppression-dvrjH>`_.   
 
 A single conv net simultaneously predicts multiple bounding boxes and class probabilities for those boxes. It is trained on full image and directly optimizes detection performance. Benefit over traditional method of object detection.
 
@@ -77,7 +77,7 @@ These score encode both
 	c. Solution: increase loss from bounding box coordinate predictions and decrease the loss from confidence predictions from boxes that don't contain objects. We use two parameters :math:`\lambda_{coord}` = 5 and :math:`\lambda_{noobj}` = 0.5
 	d. Sum-squared error also equally weidgts errors in large boxes and small boxes
 
-6. Only one bounding box should be responsible for each obejct. We assign one predictor to be responsible for predicting an object based on which prediction has the highest current IOU with the ground truth.
+6. Only one bounding box should be responsible for each obejct. We assign one predictor to be responsible for predicting an object based on which prediction has the highest current IOU with the ground truth. This leads to the specialization between the bounding box prediction. Each predictor is getting better at predicting certain sizes, aspect of ratio, or class of object, improving overall recall but struglle to generalize. See the limitation of YOLO below.
 
 a. Loss from bound box coordinate (x, y) Note that the loss comes from one bounding box from one grid cell. Even if obj not in grid cell as ground truth.
  
@@ -137,7 +137,12 @@ Limitation of YOLO
 * Learns to predict bounding box from data -> struggles to generalize to object in new or usual aspect ratios or configurations. Uses relatively coarse features for predicting bounding boxes since our architecture has multiple downsampling layers from the input image. 
 * Loss function treat error the same in small bounding boxes versus large bounding boxes. A small error in large box is generally okay but a small error in small box has a much greater effect on IOU. The main source of error comes from localization.
 
-Consider the following example:
+To understand the second limitation, revisit the paragraph from Training:
+
+**YOLO predicts multiple bounding boxes per grid cell. At training time we only want one bounding box predictor to be responsible for each object. We assign one predictor to be “responsible” for predicting an object based on which prediction has the highest current IOU with the ground truth. This leads to specialization between the bounding box predictors. Each predictor gets better at predicting certain sizes, aspect ratios, or classes of object, improving overall recall.**
+
+
+To understand the second limitation, consider the following example:
 
 * Prediction on large bounding box
 	
@@ -167,6 +172,22 @@ Here is the result
 
 The cost from the width and height of the bounding box is the same for large and small bounding box. But the IOU is not the same. The cost does not penalize the smaller IOU of the small bounding box.
 
+##############################
+Comparison to other models
+##############################
+
+Deformable Models (DFM): Sliding window approach. Disjoint pipeline to extract features, classify regions, prediction bounding box for high scoring regions. 
+
+RCNN families: region proposal. CNN extract features. SVM score the boxes. A linear model adjust the bounding box. 
+
+YOLO finish the following concurently:
+
+* Feature extraction
+* Bound box prediction
+* Non-maximal suppression 
+
+
+
 ########################
 Resource 
 ########################
@@ -175,3 +196,4 @@ Resource
 * `Project webpage <http://pjreddie.com/yolo/>`_
 * `RCNN Paper <https://arxiv.org/pdf/1311.2524.pdf>`_
 * `Intersection over Union IOU <https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/>`_
+* `Non max suppresion <https://www.coursera.org/lecture/convolutional-neural-networks/non-max-suppression-dvrjH>`_
