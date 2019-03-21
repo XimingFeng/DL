@@ -1,0 +1,28 @@
+15.5 Exponential Gains from Depth
+===================================
+
+Mulitlayer perceptrons are universal approximators, some fonctions can be represented by exponetionally smaller deep networks compared to shallow networks. Decrease in model size -> `statistical efficiency <https://en.wikipedia.org/wiki/Efficiency_(statistics)>`_.
+
+The factors that can be chosen almost independently from each other yet still correspond to meaningful inputs are more likely to be very high levek and related in high non-linear ways to the input. -> Demands deep distributed representation. 
+
+* Higher level features: seen as functions of the input
+* Higher level factors: seen as generative causes 
+
+Are obtained through the composition of many non-linearirties.
+
+Exponential boost to statistical efficiency comes from
+
+* Organizing computation through the composition of many nonlinearities
+* A hierarchy of reused features
+* Distributed representation
+
+Theoretically: there are families of functions that can be represented efficiently by an architecture of depth k, but that would require an exponential number of hidden units (with respect to the input size) with insufficient depth (depth 2 or depth k - 1).
+
+* Deterministic feed forward networks: universal approximator of functions
+* Structured probablistic models with single hidden layer of latent variables, including restricted Bolzmann Machines and deep believe networks: universal approxiamators or probablistic distribution.
+
+###################################
+Resource
+###################################
+
+* `statistical efficiency <https://en.wikipedia.org/wiki/Efficiency_(statistics)>`_

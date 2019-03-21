@@ -196,3 +196,4 @@ Resource
 * `Project webpage <http://pjreddie.com/yolo/>`_
 * `RCNN Paper <https://arxiv.org/pdf/1311.2524.pdf>`_
 * `Intersection over Union IOU <https://www.pyimagesearch.com/2016/11/07/intersection-over-union-iou-for-object-detection/>`_
+* `Non max suppresion <https://www.coursera.org/lecture/convolutional-neural-networks/non-max-suppression-dvrjH>`_

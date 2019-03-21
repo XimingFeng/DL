@@ -30,3 +30,5 @@ Just like superviser network, unsupervised deep learning algorithms have a main 
 	15.2 Transfer Learning and Domain Adaptation
 	15.3 Semi Supervised Disentangling of Casual Factors 
 	15.4 Distributed Representation
+	15.5 Exponential Gains from Depth
+	15.6 Providing Clues to Discover Underlying Causes
