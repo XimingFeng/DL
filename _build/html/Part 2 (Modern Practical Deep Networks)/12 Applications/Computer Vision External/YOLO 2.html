@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>External Resources On Computer Vision &mdash; dl 0.0.1 documentation</title>
+  <title>YOLO 2 &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -27,9 +27,7 @@
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
-    <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="YOLO" href="YOLO.html" />
-    <link rel="prev" title="12 Applications" href="../index.html" /> 
+    <link rel="search" title="Search" href="../../../search.html" /> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -79,22 +77,9 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../9 Convolutional Networks/index.html">9 The convolutional Networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../index.html">12 Applications</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">External Resources On Computer Vision</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="YOLO.html">YOLO</a></li>
-<li class="toctree-l4"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../index.html">Part II: Modern Practical Deep Networks</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Part 3 (Deep Learning Research)/index.html">Part III: Deep Learning Research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../Extra/index.html">Extra</a></li>
 </ul>
@@ -142,17 +127,13 @@
     
       <li><a href="../../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
-        
-          <li><a href="../index.html">12 Applications</a> &raquo;</li>
-        
-      <li>External Resources On Computer Vision</li>
+      <li>YOLO 2</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../_sources/Part 2 (Modern Practical Deep Networks)/12 Applications/Computer Vision External/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/Part 2 (Modern Practical Deep Networks)/12 Applications/Computer Vision External/YOLO 2.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,12 +146,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="external-resources-on-computer-vision">
-<h1>External Resources On Computer Vision<a class="headerlink" href="#external-resources-on-computer-vision" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="section" id="yolo-2">
+<h1>YOLO 2<a class="headerlink" href="#yolo-2" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Comparison:</p>
+<ul class="simple">
+<li>Object Detection: less dataset, less labels/tags/class</li>
+<li>Classification Problem: more dataset, more labels/tags/class</li>
+</ul>
+<p>Our method uses a herachical view of object classification that allows us to combine distinct datasets together.</p>
+<p>A joint training algorithm that allow to train detectors on both detection and classification data. The model leverages labeled detection images to learn to precisely localize objects while it uses classification images to increase its vocabulary and robustness.</p>
+<p>This model</p>
+<ol class="arabic simple">
+<li>Improve the base detector YOLO to YOLOv2.</li>
+<li>use dataset combination method and joint training algorithm to train model</li>
+</ol>
+</div>
+<div class="section" id="better">
+<h2>2. Better<a class="headerlink" href="#better" title="Permalink to this headline">¶</a></h2>
+<p>Shortcomings compared to region proposal-based method:</p>
+<ol class="arabic simple">
+<li>Significant number of localization errors..</li>
+<li>Low recall</li>
+</ol>
+<p>Thus YOLO2 focus mainly on improving recall and localization while maintaining classification accuracy.</p>
+<p>Computer Vision generally trends towards larger and deeper networks. intead of scaling up the network, YOLO2 simplify the network and then make the representation easier to learn. Ideas to achieve this</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="YOLO.html">YOLO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
+<li><p class="first">Batch Normalization: with batch normalization, we can remove dropout from the model without overfitting (more than 2% mAP increase).</p>
+</li>
+<li><p class="first">High Resolution Classification (4% mAP increase):</p>
+<blockquote>
+<div><ul class="simple">
+<li>First fine tune the classification network at the full 448 * 448 resolution for 10 epochs on ImageNet. -&gt; Gives the network time to adjust its filter to work better on higher resolution input.</li>
+<li>Then fine tune the resulting network on detection.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Convolution With Anchor Boxes</p>
+</li>
 </ul>
 </div>
 </div>
@@ -180,15 +194,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="YOLO.html" class="btn btn-neutral float-right" title="YOLO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../index.html" class="btn btn-neutral" title="12 Applications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

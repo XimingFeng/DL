@@ -5,3 +5,4 @@ External Resources On Computer Vision
 	:maxdepth: 1
 
 	YOLO
+	YOLO 2
