@@ -1,0 +1,15 @@
+16.2 Using Graphs to Describe Model Structure
+===============================================
+
+Structured probablistic models use graphs to represent interactions between random variables. Each node represents a random variable. Each edge represents a direct interaction
+
+#########################################################
+16.2.1 Directed Models
+#########################################################
+
+Directed graphical model, aka, belief network or Bayesian network. The edges are directed. The direction of the arrow/edge indicates which variable's probablistic distribution is defined in terms of the other's. E.g. :
+
+.. image:: rsc/Figure16.2.PNG
+
+
+
