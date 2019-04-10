@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>External Resources On Computer Vision &mdash; dl 0.0.1 documentation</title>
+  <title>Focal Loss for Dense Object Detection &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="YOLO" href="YOLO.html" />
-    <link rel="prev" title="12 Applications" href="../index.html" /> 
+    <link rel="next" title="Part III: Deep Learning Research" href="../../../Part 3 (Deep Learning Research)/index.html" />
+    <link rel="prev" title="YOLO 2" href="YOLO 2.html" /> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -86,10 +86,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../../9 Convolutional Networks/index.html">9 The convolutional Networks</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html">12 Applications</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">External Resources On Computer Vision</a><ul>
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">External Resources On Computer Vision</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="YOLO.html">YOLO</a></li>
 <li class="toctree-l4"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
-<li class="toctree-l4"><a class="reference internal" href="Focal Loss for Dense Object Detection.html">Focal Loss for Dense Object Detection</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Focal Loss for Dense Object Detection</a></li>
 </ul>
 </li>
 </ul>
@@ -147,13 +147,15 @@
         
           <li><a href="../index.html">12 Applications</a> &raquo;</li>
         
-      <li>External Resources On Computer Vision</li>
+          <li><a href="index.html">External Resources On Computer Vision</a> &raquo;</li>
+        
+      <li>Focal Loss for Dense Object Detection</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../../_sources/Part 2 (Modern Practical Deep Networks)/12 Applications/Computer Vision External/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../../_sources/Part 2 (Modern Practical Deep Networks)/12 Applications/Computer Vision External/Focal Loss for Dense Object Detection.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -166,14 +168,34 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="external-resources-on-computer-vision">
-<h1>External Resources On Computer Vision<a class="headerlink" href="#external-resources-on-computer-vision" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
+  <div class="section" id="focal-loss-for-dense-object-detection">
+<h1>Focal Loss for Dense Object Detection<a class="headerlink" href="#focal-loss-for-dense-object-detection" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Current state of art object detector: R-CNN framewor. Process</p>
+<ol class="arabic simple">
+<li>Generates a sparse set of condidate object locations</li>
+<li>Classifies each condidate location as one of the foreground classes or as background</li>
+</ol>
+<p>This 2-stage framework consitently achieves top <strong>accuracy</strong> on the challenging COCO benchmark.</p>
+<p>One stage detector: YOLO, SSD. Faster with accuracy within 10-40% relative to state of art two-stage methods.</p>
+<p>This paper: one-stage object detector, matches state of art COCO AP of more complex 2-stage detector. To achive this result, we identify imbalance during training as the main obstacle impeding 1-stage detector and propose a new loss function that eliminates this barrier.</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="YOLO.html">YOLO</a></li>
-<li class="toctree-l1"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Focal Loss for Dense Object Detection.html">Focal Loss for Dense Object Detection</a></li>
+<li><p class="first">Class imbalance is addressed in R-CNN-like detectors by 2-stage cascade and sampling heuristics.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>The proposal stage rapidly narrows down the number of candidate object locatios to a small number (e.e 1-2k).</li>
+<li>In the second classification stage, sampling heuristics are performed to maintain a managable balance between foreground and background.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">1-stage detector must process a much larger set of canidate object location regularly sampled accross an image (~ 100k locations). While similar sampling heuristics may also be applied, they are inefficient as the training procedure is still dominated by easily classifid background examples. This inefficiency is typically addressed via techniques such as bootstrapping or hard example mining.</p>
+</li>
+<li><p class="first">This paper, we propose a new loss function that act as a more effective alternative to previous approaches for dealing with class imbalance. Loss function is dynamically scaled cross entropy loss, where the scaling factor decays to 0 as confidence in the correct class increases.</p>
+</li>
 </ul>
+<img alt="../../../_images/RetinaNetFigure1.PNG" src="../../../_images/RetinaNetFigure1.PNG" />
+<p>This scaling factor can automatically down-weight the contribution of easy examples during training and rapidly focus the model on hard exampls. Finally we note that the exact form of the focal loss is not crucial, and we show other instantials can achive similar results.</p>
 </div>
 </div>
 
@@ -185,10 +207,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="YOLO.html" class="btn btn-neutral float-right" title="YOLO" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../../Part 3 (Deep Learning Research)/index.html" class="btn btn-neutral float-right" title="Part III: Deep Learning Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="12 Applications" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="YOLO 2.html" class="btn btn-neutral" title="YOLO 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

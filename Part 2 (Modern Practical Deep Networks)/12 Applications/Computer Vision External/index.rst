@@ -6,3 +6,4 @@ External Resources On Computer Vision
 
 	YOLO
 	YOLO 2
+	Focal Loss for Dense Object Detection

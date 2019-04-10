@@ -93,6 +93,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#the-partition-function">16.2.3 The partition Function</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#energy-based-model">16.2.4 Energy-Based Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sparation-and-d-separation">16.2.5 Sparation and D-Separation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#converting-between-undirected-and-directed-graphs">16.2.6 Converting between undirected and directed graphs</a></li>
 </ul>
 </li>
 </ul>
@@ -292,6 +293,33 @@ p(x) &amp; = \frac{e^{b_i}}{e^{b_1} + e^{b_2} + e^{b_3} + e^{b_4} + e^{b_5} + ..
 <ul class="simple">
 <li>If two variables a and b are connected by <strong>a path</strong> involving <strong>only</strong> unobserved variables, then those varibles are not seperated.</li>
 <li>If <strong>no path</strong> exists between them, or <strong>all paths</strong> contain an observed variable, then they are seperated.</li>
+<li>Refer path involving only unobserved variables as “active”</li>
+<li>Refer path involving an observed variable as “inactive”</li>
+</ul>
+<p>e.g.</p>
+<img alt="../../_images/Figure16.6.PNG" src="../../_images/Figure16.6.PNG" />
+<img alt="../../_images/Figure16.7.PNG" src="../../_images/Figure16.7.PNG" />
+<p>In the context of directed model, those concerpts are referred to as d-seperation. The “d” stands for dependence.  A set of variables A is d-seperated from another set of variable B given a third set of variables S if the graph structure implies that A is independent from B given S.</p>
+<p>Two variables are dependent if there is an active path between them and d-sperated if no such path exists. How to check if an active path exists:</p>
+<img alt="../../_images/Figure16.8.PNG" src="../../_images/Figure16.8.PNG" />
+<img alt="../../_images/Figure16.9.PNG" src="../../_images/Figure16.9.PNG" />
+<p>Note: seperation and d-seperation tell us only about those conditional independences that are implied by the graph. There is no requirement that the graph imply all independences that are present. Some distributions contain independences that are not possible to represent with existing graphical notation. Context-independences are independences that are present dependent on the value of some variables in the network.</p>
+<p>In general, a graph will never imply that independence exists when it does not. However, it may fail to encode an independece.</p>
+</div>
+<div class="section" id="converting-between-undirected-and-directed-graphs">
+<h2>16.2.6 Converting between undirected and directed graphs<a class="headerlink" href="#converting-between-undirected-and-directed-graphs" title="Permalink to this headline">¶</a></h2>
+<p>We typically refer to RBMs as undirected and sparse coding as directed. Some models are most easily described using a directed graph, or most easily described using a undirected graph.</p>
+<p>We may choose to use either directed or undirecte modeling based on</p>
+<ul class="simple">
+<li>which approach uses fewest edges to describe the edges</li>
+<li>if we observe a certain subset of variables</li>
+<li>if we wish to perform different computational task.</li>
+<li>others</li>
+</ul>
+<p>e.g.</p>
+<ul class="simple">
+<li>directed model description often provides a straight forward approach to efficiently draw samples from the model (16.3).</li>
+<li>undirected model description is often useful for deriving approximate inference procedures (P640 equation 19.56)</li>
 </ul>
 </div>
 </div>

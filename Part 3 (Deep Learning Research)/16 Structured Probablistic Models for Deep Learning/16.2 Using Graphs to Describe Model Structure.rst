@@ -172,11 +172,43 @@ Conditional independence implied by the graph is called seperation. We say a set
 * If two variables a and b are connected by **a path** involving **only** unobserved variables, then those varibles are not seperated. 
 * If **no path** exists between them, or **all paths** contain an observed variable, then they are seperated. 
 
+* Refer path involving only unobserved variables as "active" 
+* Refer path involving an observed variable as "inactive"
+
+e.g.
+
+.. image:: rsc/Figure16.6.PNG
+
+.. image:: rsc/Figure16.7.PNG
+
+In the context of directed model, those concerpts are referred to as d-seperation. The "d" stands for dependence.  A set of variables A is d-seperated from another set of variable B given a third set of variables S if the graph structure implies that A is independent from B given S. 
+
+Two variables are dependent if there is an active path between them and d-sperated if no such path exists. How to check if an active path exists:
+
+.. image:: rsc/Figure16.8.PNG
+
+.. image:: rsc/Figure16.9.PNG
+
+Note: seperation and d-seperation tell us only about those conditional independences that are implied by the graph. There is no requirement that the graph imply all independences that are present. Some distributions contain independences that are not possible to represent with existing graphical notation. Context-independences are independences that are present dependent on the value of some variables in the network. 
+
+In general, a graph will never imply that independence exists when it does not. However, it may fail to encode an independece.
 
 
+#########################################################
+16.2.6 Converting between undirected and directed graphs
+#########################################################
 
+We typically refer to RBMs as undirected and sparse coding as directed. Some models are most easily described using a directed graph, or most easily described using a undirected graph.
 
+We may choose to use either directed or undirecte modeling based on 
 
+* which approach uses fewest edges to describe the edges
+* if we observe a certain subset of variables
+* if we wish to perform different computational task.
+* others
 
+e.g. 
 
+* directed model description often provides a straight forward approach to efficiently draw samples from the model (16.3).
+* undirected model description is often useful for deriving approximate inference procedures (P640 equation 19.56)
 
