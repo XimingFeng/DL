@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>RCNN &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Part III: Deep Learning Research" href="../../../Part 3 (Deep Learning Research)/index.html" />
+    <link rel="prev" title="YOLO 2" href="YOLO 2.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../9 Convolutional Networks/index.html">9 The convolutional Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">12 Applications</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">External Resources On Computer Vision</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="YOLO.html">YOLO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">RCNN</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Part 3 (Deep Learning Research)/index.html">Part III: Deep Learning Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
+        
+          <li><a href="../index.html">12 Applications</a> &raquo;</li>
+        
+          <li><a href="index.html">External Resources On Computer Vision</a> &raquo;</li>
+        
+      <li>RCNN</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/Part 2 (Modern Practical Deep Networks)/12 Applications/Computer Vision External/RCNN.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="rcnn">
+<h1>RCNN<a class="headerlink" href="#rcnn" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://arxiv.org/pdf/1311.2524.pdf">RCNN paper</a></p>
+<div class="section" id="introduction">
+<h2>1. Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>Challenge 1: localizing object:</p>
+<ul class="simple">
+<li>Frame localization as regression problem: <a class="reference external" href="https://leonardoaraujosantos.gitbooks.io/artificial-inteligence/content/object_localization_and_detection.html">does not fare well in practice</a>.</li>
+<li>Sliding window detector: units high up in RCNN have large receptive fields and strides in the input image, which makes the precise localization within sliding window paradigm an open technique challenge.</li>
+<li>RCNN: Operating within “recognition using regions” paradigm.</li>
+</ul>
+<p>Steps in test time:</p>
+<ol class="arabic simple">
+<li>Generate around 2000 category-independent region proposal for the input image.</li>
+<li>Extract fixed-length feature vector from each proposal using a CNN.</li>
+<li>Categorize each region with category-specific linear SVM.</li>
+</ol>
+<p>RCCN use affine image warping to compute a fixed-size CNN input from each region proposal. Over all structure shown below</p>
+<img alt="../../../_images/RCNNFigure1.PNG" src="../../../_images/RCNNFigure1.PNG" />
+<p>Challenge 2: labeled data is scarce and amount currently available is insufficient to train a large CNN.</p>
+<ul class="simple">
+<li>Unsupervised pretraining, followed by supervised fine tuning.</li>
+<li>Supervised pretraining on a large auxiliary dataset, followed by a domain-specific fine-tuning on small dataset. RCNN uses this method.</li>
+</ul>
+<p>Challenge 3: efficiency</p>
+<p>The only class-specific computations are reasonably small matrix-vector product and greedy non-max suppression.</p>
+</div>
+<div class="section" id="object-detection-with-rcnn">
+<h2>2. Object detection with RCNN<a class="headerlink" href="#object-detection-with-rcnn" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-design">
+<h3>2.1 Module design<a class="headerlink" href="#module-design" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Region Proposal available method:</p>
+<blockquote>
+<div><ul class="simple">
+<li>objectness</li>
+<li>selective search (used in RCNN)</li>
+<li>category independent object proposals</li>
+<li>constrained parametric min-cut</li>
+<li>multi-scale combinatorial grouping</li>
+<li></li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Feature extraction: RCNN extract 4096 from each region proposal. Features are computed by foward propagating a mean-substracted RGB image through five conv layer and 2 fully connected layer.</p>
+</li>
+</ol>
+</div>
+<div class="section" id="test-time-detection">
+<h3>2.2 Test-time detection<a class="headerlink" href="#test-time-detection" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic simple">
+<li>RCNN runs selective search on the test image to extract around 2000 region proposal.</li>
+<li>Warp each proposal into same size.</li>
+<li>Forward propogate through a CNN in order to compute features.</li>
+<li>For each class, we score each extracted feature vector using SVM trained for that class.</li>
+<li>Given all scored region in an image, we apply a non-max suppression (for each class independently) that reject region if it has IOU overlap with a higher scoring selected region larger than a learned threshold.</li>
+</ol>
+<p>Two propertied make the computation efficient:</p>
+<ul class="simple">
+<li>All CNN parameters are shared accross all categories.</li>
+<li>Feature vector computed by CNN are low dimension when compared with other common approaches.</li>
+</ul>
+<p>The feature matrix is typically 2000 * 4096 and the SVM weight matrix is 4096 * N where the N is number of classese.</p>
+</div>
+<div class="section" id="training">
+<h3>2.3 Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
+<ol class="arabic">
+<li><p class="first">Pretrain the CNN on a large auxiliary dataset using image level annotation.</p>
+</li>
+<li><p class="first">Continue stochastic gradient descent training of the CNN parameters using only warped region proposal.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Replace the CNN’s ImageNet-specific 1000-way classification layer with randomly initialized (N+1)-way classfication layer with randomly initialized (N+1)-way classification layer (N + 1=number of object classes + 1 for background)</li>
+<li>CNN architecture is unchanged.</li>
+<li>Treat all region proposal with &gt;= 0.5 IOU with ground truth bounding box as positive for the box’s class and the rest as negative.</li>
+<li>Start SGD at a learning rate of 0.001 (1/10th of the initial pretaining rate). It allows fine-tuning to make progress without clobbering the initialization.</li>
+<li>In each SGD iteration, we uniformly sample 32 positive window (over all classes) and 96 background window to construct a minibatch of size 128. We bias the sampling towards positive window because they are extremely rare compared to background.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Object category classifier</p>
+<blockquote>
+<div><ul class="simple">
+<li>How to label a region that is partially overlaps a car: threshold IoU. The threshold 0.3 is selected by grid search over {0, 0.1, …., 0.5}. Positive examples are defined simply to be the ground truth bounding boxes for each class.</li>
+<li>Once features are extracted and training labels are applied, we optimize one SVM per class. Since the training data is too large to fit into memory, we adopt standard hard negative mining method.</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="visualization-ablation-and-mode-of-errors">
+<h2>3 Visualization, ablation and mode of errors<a class="headerlink" href="#visualization-ablation-and-mode-of-errors" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="visualizing-learned-features">
+<h3>3.1 Visualizing learned features<a class="headerlink" href="#visualizing-learned-features" title="Permalink to this headline">¶</a></h3>
+<p>First-layer filter can be visualized directly are easy to understand. They capture oriented edges and opponent colors. Understanding the subsequent layer is more challenging.
+The idea is to single out a particular unit (feature) in the network and use it as if were an object detector in its own right. We compute the unit’s activation on a large set of held-out region proposal, sort the proposal from the highest to lowest activation, perform non-maximum suppresion and then display the top scoring region.
+The model lets the selected unit “speak for itself” by showing exactly which input it fires on.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../Part 3 (Deep Learning Research)/index.html" class="btn btn-neutral float-right" title="Part III: Deep Learning Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="YOLO 2.html" class="btn btn-neutral" title="YOLO 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
