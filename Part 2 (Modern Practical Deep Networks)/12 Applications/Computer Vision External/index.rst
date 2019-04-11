@@ -7,3 +7,4 @@ External Resources On Computer Vision
 	YOLO
 	YOLO 2
 	RCNN
+	Focal Loss for Dense Object Detection

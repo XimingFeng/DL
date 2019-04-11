@@ -6,3 +6,4 @@ Part III: Deep Learning Research
 
    14 Autoencoders/index
    15 Representation Learning/index
+   16 Structured Probablistic Models for Deep Learning/index

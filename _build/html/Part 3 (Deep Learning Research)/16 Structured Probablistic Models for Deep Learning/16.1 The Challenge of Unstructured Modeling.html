@@ -1,0 +1,248 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>16.1 The Challenge of Unstructured Modeling &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="16 Structured Probablistic Models for Deep Learning" href="index.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">16 Structured Probablistic Models for Deep Learning</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">16.1 The Challenge of Unstructured Modeling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">16 Structured Probablistic Models for Deep Learning</a> &raquo;</li>
+        
+      <li>16.1 The Challenge of Unstructured Modeling</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/16 Structured Probablistic Models for Deep Learning/16.1 The Challenge of Unstructured Modeling.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="the-challenge-of-unstructured-modeling">
+<h1>16.1 The Challenge of Unstructured Modeling<a class="headerlink" href="#the-challenge-of-unstructured-modeling" title="Permalink to this headline">¶</a></h1>
+<p>The goal of deep learning: scale ML to kinds of challenges needed to solve artificial intelligence. This means being able to understand high-D data with rich structure.</p>
+<p>The process of classification discards most of the information in the input and produces a single output. The classifier is also often able to ignore many parts of the input. It is possible to ask probablistic models to do many other tasks. Most require a complete understanding of the entire structure of the input, with no option to ignore sections of it.</p>
+<ul class="simple">
+<li>Density Estimation: Given an input x, the ML system returns an estimation of the true density p(x) under the data generating distribution.</li>
+<li>Denoising: Given a damaged or incorrectly observed input <span class="math notranslate nohighlight">\(\tilde{x}\)</span>, the ML system returns an estimate of the original or correct x.</li>
+<li>Missing value imputation: Given the observations of some element of x, the model is asked to return estimates of or a probablistic distribution over some or all of the unobserved elements of x.</li>
+<li>Sampling: The model generates new samples from the distribution p(x)</li>
+</ul>
+<p>In general, if we wish to model a distribution over a random vector x containing n discrete variables capable of taking k values each, then the naive approach of respresenting P(x) by storing a lookup table with one probability value per possible outcome require <span class="math notranslate nohighlight">\(k^n\)</span> parameters. This is not feasible because:</p>
+<ul class="simple">
+<li>Memory: the cost of storing the representations</li>
+<li>Statistical efficiency: as the number of parameters in a model increase so does the amount of training data needed to choose the values those parameters using a statistical estimators.</li>
+<li>Runtime-the cost of inference: Suppose we want to perform an inference to compute <span class="math notranslate nohighlight">\(P(x_1)\)</span> or <span class="math notranslate nohighlight">\(P(x_1|x_2)\)</span>. Computing these distribution will require summing accross the entire table.</li>
+<li>Runtime-the cost of sampling: Suppose we want to draw a sample from the model. Naive way: sample some value <span class="math notranslate nohighlight">\(u \sim U(0, 1)\)</span> then iterate through the table, adding up the probability values until they exceed u and return the outcome corresponding to that position in the table. This requires reading through the whole table in the worst case, so it has the same exponential cost as the older operations.</li>
+</ul>
+<p>Problem with table based approach: we are explicitly modeling every possible kind of interaction between every possible subset of variables. Real task we encounters; much simpler than this.</p>
+<p>Structured probablistic models provide a formal framework for modeling only direct interactions between random variables. This allow the model to have</p>
+<ul class="simple">
+<li>significant fewer parameters</li>
+<li>therefor be estimated reliably from less data</li>
+<li>dramastically reduced computational cost in terms of storing the model, performing inference in the model and drawing samples from the model.</li>
+</ul>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="16 Structured Probablistic Models for Deep Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
