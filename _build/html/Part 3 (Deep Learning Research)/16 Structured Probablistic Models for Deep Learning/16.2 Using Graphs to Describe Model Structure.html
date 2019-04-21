@@ -94,6 +94,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#energy-based-model">16.2.4 Energy-Based Model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#sparation-and-d-separation">16.2.5 Sparation and D-Separation</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#converting-between-undirected-and-directed-graphs">16.2.6 Converting between undirected and directed graphs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#factor-graphs">16.2.7 Factor Graphs</a></li>
 </ul>
 </li>
 </ul>
@@ -321,6 +322,26 @@ p(x) &amp; = \frac{e^{b_i}}{e^{b_1} + e^{b_2} + e^{b_3} + e^{b_4} + e^{b_5} + ..
 <li>directed model description often provides a straight forward approach to efficiently draw samples from the model (16.3).</li>
 <li>undirected model description is often useful for deriving approximate inference procedures (P640 equation 19.56)</li>
 </ul>
+<p>Every probability distribution can be represented by either directed or undirected model. In the worst case, one can alwasy represent any distribution by using a “completed graph”</p>
+<ul class="simple">
+<li>For directed graph: impose some ordering on the random variables.</li>
+<li>For undirected graph: simply a graph containing single clique encompassing all the variables</li>
+</ul>
+<img alt="../../_images/Figure16.10.PNG" src="../../_images/Figure16.10.PNG" />
+<p>Please note: “arc from each variable to <strong>every</strong> variable that comes after it in the ordering”.</p>
+<ol class="arabic simple">
+<li>Directed models are able to use one specific substructure that undirected models cannot represent: Immorality</li>
+<li>Vice Versa. Specifically when undirected model contains a loop of length greater than , unless the loop contains a chord. A chord is connection between any two nonconsecutive variables in the sequence defining a loop. If undirected model has loops of length &gt;= 4 and does not have chords for those loops, we must add the chords before we can convert it to a directed model. Adding chords discards some of the independence information that was encoded in U. The graph formed by adding chords to U is known as a chordal or triangulated graph, because all the loops can be described in terms of smaller, triangular loops. To build a directed graph from the chordal graph, we need to also assign directions to the edges. When doing so we must not create a directed cycle in the model. One way to assign direction to edges is to impose an ordering on teh random variables.</li>
+</ol>
+<p>Examples</p>
+<img alt="../../_images/Figure16.11.PNG" src="../../_images/Figure16.11.PNG" />
+<img alt="../../_images/Figure16.12.PNG" src="../../_images/Figure16.12.PNG" />
+</div>
+<div class="section" id="factor-graphs">
+<h2>16.2.7 Factor Graphs<a class="headerlink" href="#factor-graphs" title="Permalink to this headline">¶</a></h2>
+<p>Factor graphs are another way of drawing undirected models that resolve an ambiguity in the graphical represenatation of std undirected model syntax. In an undirected model, the scope of every <span class="math notranslate nohighlight">\(\phi\)</span> function must be a subset of some  clique in teh graph. Ambiguity arises because it is not clear if each clique actually has a corresponding factor whose scope encompasses the entire clique. Circle: random variables. squares: factors <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<img alt="../../_images/Figure16.13.PNG" src="../../_images/Figure16.13.PNG" />
+<p>No factor maybe connected to another factor in the graph, nor can a variable be connected to a variable.</p>
 </div>
 </div>
 

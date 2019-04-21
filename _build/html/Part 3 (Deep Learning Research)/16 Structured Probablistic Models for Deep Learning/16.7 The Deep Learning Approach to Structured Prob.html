@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>16 Structured Probablistic Models for Deep Learning &mdash; dl 0.0.1 documentation</title>
+  <title>16.7 The Deep Learning Approach to Structured Probabilistic Models &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="16.1 The Challenge of Unstructured Modeling" href="16.1 The Challenge of Unstructured Modeling.html" />
-    <link rel="prev" title="15.6 Providing Clues to Discover Underlying Causes" href="../15 Representation Learning/15.6 Providing Clues to Discover Underlying Causes.html" /> 
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="16.6 Inference and Approximate Inference" href="16.6 Inference and Approximate Inference.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -85,14 +85,14 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">16 Structured Probablistic Models for Deep Learning</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">16 Structured Probablistic Models for Deep Learning</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="16.1 The Challenge of Unstructured Modeling.html">16.1 The Challenge of Unstructured Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.2 Using Graphs to Describe Model Structure.html">16.2 Using Graphs to Describe Model Structure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.3 Sampling from Graphical Models.html">16.3 Sampling from Graphical Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.4 Advantages of Structured Modeling.html">16.4 Advantages of Structured Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.5 Learning about Dependencies.html">16.5 Learning about Dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.6 Inference and Approximate Inference.html">16.6 Inference and Approximate Inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="16.7 The Deep Learning Approach to Structured Prob.html">16.7 The Deep Learning Approach to Structured Probabilistic Models</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">16.7 The Deep Learning Approach to Structured Probabilistic Models</a></li>
 </ul>
 </li>
 </ul>
@@ -145,13 +145,15 @@
         
           <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>16 Structured Probablistic Models for Deep Learning</li>
+          <li><a href="index.html">16 Structured Probablistic Models for Deep Learning</a> &raquo;</li>
+        
+      <li>16.7 The Deep Learning Approach to Structured Probabilistic Models</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/16 Structured Probablistic Models for Deep Learning/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/16 Structured Probablistic Models for Deep Learning/16.7 The Deep Learning Approach to Structured Prob.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,20 +166,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="structured-probablistic-models-for-deep-learning">
-<h1>16 Structured Probablistic Models for Deep Learning<a class="headerlink" href="#structured-probablistic-models-for-deep-learning" title="Permalink to this headline">¶</a></h1>
-<p>A structured probablistic model is a way of describing a probablistic distribution, using a graph to descrie which random variable in the probablistic distribution interact with each other directly.</p>
-<div class="toctree-wrapper compound">
+  <div class="section" id="the-deep-learning-approach-to-structured-probabilistic-models">
+<h1>16.7 The Deep Learning Approach to Structured Probabilistic Models<a class="headerlink" href="#the-deep-learning-approach-to-structured-probabilistic-models" title="Permalink to this headline">¶</a></h1>
+<p>In the context of graphical model, the depth of a model: a latent variable <span class="math notranslate nohighlight">\(h_i\)</span> as being at depth j if shortest path from <span class="math notranslate nohighlight">\(h_i\)</span> to an observed variable is j steps.</p>
+<p>Many genarative models used for DL have no latent variables or only one layer of latent variables but use deep learning computational graphs to define the conditional distribution within a model.</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="16.1 The Challenge of Unstructured Modeling.html">16.1 The Challenge of Unstructured Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.2 Using Graphs to Describe Model Structure.html">16.2 Using Graphs to Describe Model Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.3 Sampling from Graphical Models.html">16.3 Sampling from Graphical Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.4 Advantages of Structured Modeling.html">16.4 Advantages of Structured Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.5 Learning about Dependencies.html">16.5 Learning about Dependencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.6 Inference and Approximate Inference.html">16.6 Inference and Approximate Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.7 The Deep Learning Approach to Structured Prob.html">16.7 The Deep Learning Approach to Structured Probabilistic Models</a></li>
+<li><p class="first">DL</p>
+<blockquote>
+<div><ul class="simple">
+<li>always makes use of the idea of distributed representations.</li>
+<li>DL models typically have more latent variables than observed variables.</li>
+<li>Complicated nonlinear interaction between variable are accomplished via indirect connection that flow through multiple latent variables.</li>
+<li>does not intend for the latent variables to take on any specific semantic ahead of time, training algorithms is free to invent the concepts it needs to model a particular dataset.Hard to interpret, easier to scale and reuse.</li>
 </ul>
-</div>
+</div></blockquote>
+</li>
+<li><p class="first">Traditional graphical model</p>
+<blockquote>
+<div><ul class="simple">
+<li>usually contain mostly variables that are at least occasionally observed, even if many many of the variables are missing at random from some training examples.</li>
+<li>Use high order terms and structure learning to capture complicated nonlinear interactions between variables.</li>
+<li>latent variable designed with some specific semantic in mind. Easier to interpret have more theoretical guarantees, less able to scale to complex problem and not reusable</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
 </div>
 
 
@@ -188,10 +201,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="16.1 The Challenge of Unstructured Modeling.html" class="btn btn-neutral float-right" title="16.1 The Challenge of Unstructured Modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../15 Representation Learning/15.6 Providing Clues to Discover Underlying Causes.html" class="btn btn-neutral" title="15.6 Providing Clues to Discover Underlying Causes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="16.6 Inference and Approximate Inference.html" class="btn btn-neutral" title="16.6 Inference and Approximate Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

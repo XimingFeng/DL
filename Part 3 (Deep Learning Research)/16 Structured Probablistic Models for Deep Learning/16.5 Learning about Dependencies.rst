@@ -1,0 +1,15 @@
+16.5 Learning about Dependencies
+=============================================
+
+A good generative model needs to accurately capture the distribution over the observed or visible variables v. Often the different elements of v are highly dependent on each other. Common solution in DL: introduce several latent variables, h. The model can capture dependenies between any pair of variables :math:`v_i` and :math:`v_j` indirecylt, via direct dependencies between :math:`v_i` and h, and direct dependenies between :math:`v_j` and h.
+
+Good model of v which did not contain any latent variables would need to have large number of parents per model in Bayesian network or very large cliques in a Markov network. Costly in
+
+	* Comutational sense: number of parameters must be stored in memory scales exponetially with number of member in a clique
+	* Statistical sense: exponential number of parameters requires a wealthy of data to estimate accurately.
+
+Model intended to capture dependencies between visible variables with direct connections, must be designed to connect those variables that are tightly  coupled and omit edges between other variables. Structured Learning devoted to solve this problem: a structure is proposed and a model with that structure is trained, then given a score. The score reward high training set accuracy and penalizes model complexicty. Add or remove small amount of edges as next proposal. 
+
+Using latent variable: avoids the need of 1. discrete searches 2. multiple round of training. A fixed structure over visible and hidden variables can use direct interactions between visible and hidden units to impose indirect interactions between visible units.  
+
+Many approaches accomplish feature learning by learning latent varibales. 

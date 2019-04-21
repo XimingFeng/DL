@@ -1,0 +1,23 @@
+16.3 Sampling from Graphical Models
+==========================================
+
+Advantage of directed model: ancestral sampling can produce a sample from the joint distribution represented by the model.
+
+Sort the variables in the graph into a topological ordering: for all i and j, j > i if :math:`x_i` is parent of :math:`x_j`. We first sample :math:`x1~p(x_1)` then sample :math:`p(x_2|Pa_G(x2))` and so on.
+
+Ancestral sampling could be used with any of other available topological ordering.
+
+Drawback of ancestral sampling
+
+* only applies to directed graphical model. 
+
+	* We can sample from undirected models by converting them into directed models: requires solving intractable inference problems or requiring introducing so many edges that the resulting directed model becomes intractable.
+	* Sample from undirected model without converting them into directed models: require resolving cyclical dependencies. Expensive multipass process.
+
+* does not support every conditional sampling operation.
+	
+	* we often require that all conditioning variables come earlier than the variables to be sampled in the ordered graph. In this case we sample from the local conditional probability distributions specified by the model distribution.
+	* Otherwise, the conditional distributions we need to sample from are the posterior distributions given the observed variables. The posterior distributions are usually not explicitly specified and parameterized in the model. Infering these posterior distributions can be costly. Ancestral sampling is no longer efficient.
+
+Sample from undirected model, conceptually simplest approach is Gibbes sampling. e.g: n-D vector x. We interactively visit each variable :math:`x_i` and dram a sample conditioned on all other variables from :math:`p(x_1 | x\__i)`. Due to the seperation properties of the graphical model, we can equivalentely condition on only the neighbors of :math:`x_i`. We mut repeat the process and resample all n variables using the updated values fo their neighbors. Asymptitically, after many repetitions, this process converges to sampling from the correct distribution. It can be difficult to determine when the samples have reached a sufficient accurate approximation of the desierd distribution.
+

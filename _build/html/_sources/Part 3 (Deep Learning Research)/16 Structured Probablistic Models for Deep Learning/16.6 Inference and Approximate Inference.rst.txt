@@ -1,0 +1,11 @@
+16.6 Inference and Approximate Inference
+==========================================
+
+In latent variable model, we might want to extract features E[h | v]. Sometime we need to solve such problems in order to perform other tasks. We often train our model using the principle of maximum likehood. Because; 
+
+.. math::
+	\log p(v) = E_{h~p(h|v)} [\log p(h, v) - \log p(h|v)]
+
+we often want to compute p(h|v) in order to implement a learning rule. All these are examples of inference problem in which we must predict the vvalue of some variables gieb other variables, or predict the probability distribution over some variables given the value of other variables.
+
+For most deep models, these inference problems are intractable, even when we use a structured graphical model to simplify them. This motivates the use of approximate inference. In the context of DL, this usually refer to variational inference, which we approximate the true distribution p(h|v) by seeking an approximate distribution q(h|v) that is as close to the true one as possible. 

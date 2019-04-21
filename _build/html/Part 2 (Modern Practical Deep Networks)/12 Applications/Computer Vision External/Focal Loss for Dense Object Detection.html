@@ -223,10 +223,112 @@
 <blockquote>
 <div><ul class="simple">
 <li>shares many similarities with previous dense detector, such as anchor in RPN, features pyramids in SSD and FPN</li>
+<<<<<<< HEAD
+=======
+<li>simple detector achieves top results not based on innovations in design but due to novel loss.</li>
+>>>>>>> 953ac8f04884a9dbbf9e52322e8be305fca688ba
 </ul>
 </div></blockquote>
 </li>
 </ul>
+<<<<<<< HEAD
+=======
+<p>Classic 1-stage object detection methods, and more recent methods face a large class imbalance during training. These detector evaluate <span class="math notranslate nohighlight">\(10^4 - 10^5\)</span> candidate locations per image but only a few location contain objects. Cause 2 problems</p>
+<ol class="arabic simple">
+<li>Training is inefficient as most locations are easy negatives that contributes no useful learning signal.</li>
+<li>The easy negatives can overwhelm training and lead to degenerate models.</li>
+</ol>
+<div class="line-block">
+<div class="line">Common solution: hard negative mining that samples hard examples during training or more complex sampling/reweighing schemes.</div>
+<div class="line">Proposal: focal loss natually handles the class imbalance faced by one stage detector and allow us to efficiently train on all examples without sampling and without easy negatives overwhelming the loss and computed gradients.</div>
+</div>
+<ul class="simple">
+<li>Robust loss: down-weighting the loss of examples with large error (hard examples).</li>
+<li>Focal loss: down-weighting the loss of easy examples. It focus on training in a sparse set of hard examples.</li>
+</ul>
+</div>
+<div class="section" id="focal-loss">
+<h2>3. Focal Loss<a class="headerlink" href="#focal-loss" title="Permalink to this headline">¶</a></h2>
+<p>I am not using the example of binary class in the paper, instead, I found a great explanation tutorial from <a class="reference external" href="https://towardsdatascience.com/retinanet-how-focal-loss-fixes-single-shot-detection-cb320e3bb0de">here</a></p>
+<p>Cross Entropy:</p>
+<div class="math notranslate nohighlight">
+\[CE = - \sum y_i(log P_i)\]</div>
+<p>Where <span class="math notranslate nohighlight">\(y_i = 1\)</span> if the training example belongs to class i (<span class="math notranslate nohighlight">\(\vec{y}\)</span> is an one-hot vector), <span class="math notranslate nohighlight">\(P_i\)</span> is the predicted probability. Even examples that are easily classified with <span class="math notranslate nohighlight">\(P_i &gt;&gt; 0.5\)</span> incur a loss with non-trivial magnitude. Because, even though the contribution from a single example to the loss is small, the total contribution from a large amount of examples can be non-trivial. When summed over a large number of easy examples, these small loss values can be overwhelm the rare class.</p>
+<div class="section" id="focal-loss-definition">
+<h3>3.2 Focal Loss Definition<a class="headerlink" href="#focal-loss-definition" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[C(p, y) = - \sum y_i(1 - p_i)^\gamma \log p_i\]</div>
+<p><span class="math notranslate nohighlight">\((1 - p_i)\)</span>: Modulating factor. <span class="math notranslate nohighlight">\(\gamma\)</span> focusing parameter.</p>
+<ul class="simple">
+<li>When the class is misclassified and <span class="math notranslate nohighlight">\(p_i\)</span> is small, the modulating factor is close to 1, the loss is unaffected. As <span class="math notranslate nohighlight">\(p_i \to 1\)</span>, the factor goes to 0, the well-classified examples is down-weighted.</li>
+<li>The focusing paramter <span class="math notranslate nohighlight">\(\gamma\)</span> smoothly adjusts the rate at which easy examples are down weighted. When <span class="math notranslate nohighlight">\(\gamma = 0\)</span>, FL is equivalent to cross entropy. As <span class="math notranslate nohighlight">\(\gamma\)</span> is increased the effect of the modulating fatcor is likewise increased.</li>
+</ul>
+<p>In practice, we use <span class="math notranslate nohighlight">\(\alpha-balanced\)</span> varient of the focal loss</p>
+<div class="math notranslate nohighlight">
+\[C(p, y) = - \sum y_i \alpha_i (1 - p_i)^\gamma \log p_i\]</div>
+<p>Slightly improved accuracy over the <span class="math notranslate nohighlight">\(non-\alpha-balanced\)</span> form. Implementation of the loss layer combines the sigmoid operation for computing p with the loss computation, resulting in greater numerical stability.</p>
+</div>
+<div class="section" id="class-imbalance-and-model-initialization">
+<h3>3.3 Class Imbalance and Model Initialization<a class="headerlink" href="#class-imbalance-and-model-initialization" title="Permalink to this headline">¶</a></h3>
+<p>Problem: initialize equal probability to all classes, the loss due to the fequent class can domintate total loss and cause instability in the early training.
+Solution: introduce “prior” for the value of p etimated by the model for the rare class at the start of training. We denote the prior by <span class="math notranslate nohighlight">\(\pi\)</span> and set it so that the model’s estimated p for examples of the rare class is low. This improve training stability for both the cross entropy and focal loss in the case of heavy class imbalance.</p>
+</div>
+<div class="section" id="class-imbalance-and-2-stage-detectors">
+<h3>3.4 Class Imbalance and 2-stage detectors<a class="headerlink" href="#class-imbalance-and-2-stage-detectors" title="Permalink to this headline">¶</a></h3>
+<p>How 2-stage detector address class imbalance:</p>
+<ul>
+<li><p class="first">cascase</p>
+<blockquote>
+<div><ul class="simple">
+<li>reduce nearly infinite set of possible object locations down to 1000 or 2000.</li>
+<li>not random, likely to correspond to true object locations, which removes vast majority of easy negatives.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">biased minibatch</p>
+<blockquote>
+<div><ul class="simple">
+<li>construct mini-batch that contains, for instance, 1:3 ratio of positive and negative examples. The ratio is like an implicit <span class="math notranslate nohighlight">\(\alpha-balance\)</span> factor that is implemented via sampling.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="retinanet-detector">
+<h2>4. RetinaNet Detector<a class="headerlink" href="#retinanet-detector" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">One backbone network: compute convolutional feature map over an entire image, off-the-shelf conv net.</p>
+</li>
+<li><p class="first">Two task specific subnetworks</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Convolutional object classification on the backbone’s output</li>
+<li>Bounding box regression</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+<img alt="../../../_images/RetinaNetFigure3.PNG" src="../../../_images/RetinaNetFigure3.PNG" />
+<p>Feature Pyramid Network (FPN) Backbone: augments a std convolutional network with a top-dwon pathway and lateral connections so the network efficiently construcs a rich, multi-scale feature pyramid from a single resolution imput image. Each level of the pyramid can be used for detecting objectes at a different scale. The use of FPN backbone is preliminary; experience using features from only the final ResNet layer yield low AP.</p>
+<p><a class="reference external" href="https://www.coursera.org/lecture/convolutional-neural-networks/anchor-boxes-yNwO0">Anchors</a> : In total there are A = 9 anchors per level and cross levels they cover the scale range 32 - 813 pixels with respect to the network input image. Each anchor is assigned a length K one-hot vector of classification targets where K is the number of object classes, and a 4-vector of box regression targets. Anchors are assigned to ground-truth object boxes using an IoU threshold of 0.5 and to background if their IoU is in [0, 0.4). As each anchor is assigned to at most one object box, we set the corresponding entry in its length K label vector to 1 and all other entries to 0. If an anchor is unassigned, which may happen with IoY in [0.4, 0.5), it is ignored during training. Box regression targets are compued as the offset between each anchor and its assigned object box or omitted if there is no assignment.</p>
+<p>Classification Subnets: predicts the probability of object presence at each spatial position for each of the A anchors and K object classes. This subnet is a small FCN attatched to each FPN level. parameters of this subnet are shared accross all pyramid levels. Taking an input feature map with C channels from a given pyramid level, the subnet applies 4 3 * 3 conv layers, each with C filters and each followed by RelU, followed by a 3 * 3 conv layer with KA filters. Finally sigmoid activations are attached to output the KA binary predictions per spatial location.</p>
+<p>Box regression subnet: In parallel with the object classification subnet, we attatch another small FCN to each pyramid level for the purpose of regression the offset from each anchor box to a nearby ground-truth object. The design of the box regression subnet is identical to the classification subnet except that it ternubates in 4A linear outputs per spatial location, these 4 output predict the relatibe offset between the anchor and the ground truth box</p>
+</div>
+<div class="section" id="inference-and-training">
+<h2>4.1 Inference and training<a class="headerlink" href="#inference-and-training" title="Permalink to this headline">¶</a></h2>
+<p>Inference: Inference involves simply forwarding an image through the network. To improve speed, we only decode box predictions from at most 1k top scoring prediction per FPN level, after thresholding detector confidence at 0.05. The top predictions from all levels are merged and non-maximim suppression with a threshold of 0.5 is applied to yield the final detections.</p>
+<p>Focal loss: it is applied to all ~100k anchors in each sampled image. The total focal loss of an image is computed as the sum of the focal loss over all ~100k anchors, normalized by the number of anchors assigned to a ground truth box. Reason: vast majority of anchors are easy negatives and receive negligible loss value value under the focal loss. In general, <span class="math notranslate nohighlight">\(\alpha\)</span> should be decreased slightly as <span class="math notranslate nohighlight">\(\gamma\)</span> is increased.</p>
+<p>Initialization: pretrained on ImageNet 1k. All new conv layers except the final one in the RetinaNet subnets are intialized with bias b=0 and a Gaussian weight fill with <span class="math notranslate nohighlight">\(\sigma=0.01\)</span>. For the final layer of classification subnet, we set the bias initialization to be <span class="math notranslate nohighlight">\(b = -log((1-\pi)/\pi)\)</span>, where <span class="math notranslate nohighlight">\(\pi\)</span> the start of training every anchor should be labeled as foreground with confidence of <span class="math notranslate nohighlight">\(\pi\)</span>. This init prevents the large number of background anchors from generating a large, destabilizing loss value in the first iteration of training.</p>
+</div>
+<div class="section" id="external-resources">
+<h2>External Resources<a class="headerlink" href="#external-resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://towardsdatascience.com/retinanet-how-focal-loss-fixes-single-shot-detection-cb320e3bb0de">RetinaNet how Focal Loss fixes Single Shot Detection</a></li>
+<li><a class="reference external" href="https://www.coursera.org/lecture/convolutional-neural-networks/anchor-boxes-yNwO0">Anchor Box</a></li>
+<li><a class="reference external" href="https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/">Faster RCNN Down the rabbit hole of modern object detection</a></li>
+</ul>
+>>>>>>> 953ac8f04884a9dbbf9e52322e8be305fca688ba
 </div>
 </div>
 
