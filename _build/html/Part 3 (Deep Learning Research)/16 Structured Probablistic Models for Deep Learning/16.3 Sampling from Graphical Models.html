@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>16 Structured Probablistic Models for Deep Learning &mdash; dl 0.0.1 documentation</title>
+  <title>16.3 Sampling from Graphical Models &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="16.1 The Challenge of Unstructured Modeling" href="16.1 The Challenge of Unstructured Modeling.html" />
-    <link rel="prev" title="15.6 Providing Clues to Discover Underlying Causes" href="../15 Representation Learning/15.6 Providing Clues to Discover Underlying Causes.html" /> 
+    <link rel="next" title="16.4 Advantages of Structured Modeling" href="16.4 Advantages of Structured Modeling.html" />
+    <link rel="prev" title="16.2 Using Graphs to Describe Model Structure" href="16.2 Using Graphs to Describe Model Structure.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -85,14 +85,11 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">16 Structured Probablistic Models for Deep Learning</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">16 Structured Probablistic Models for Deep Learning</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="16.1 The Challenge of Unstructured Modeling.html">16.1 The Challenge of Unstructured Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.2 Using Graphs to Describe Model Structure.html">16.2 Using Graphs to Describe Model Structure</a></li>
-<li class="toctree-l3"><a class="reference internal" href="16.3 Sampling from Graphical Models.html">16.3 Sampling from Graphical Models</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">16.3 Sampling from Graphical Models</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.4 Advantages of Structured Modeling.html">16.4 Advantages of Structured Modeling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="16.5 Learning about Dependencies.html">16.5 Learning about Dependencies</a></li>
-<li class="toctree-l3"><a class="reference internal" href="16.6 Inference and Approximate Inference.html">16.6 Inference and Approximate Inference</a></li>
-<li class="toctree-l3"><a class="reference internal" href="16.7 The Deep Learning Approach to Structured Prob.html">16.7 The Deep Learning Approach to Structured Probabilistic Models</a></li>
 </ul>
 </li>
 </ul>
@@ -145,13 +142,15 @@
         
           <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>16 Structured Probablistic Models for Deep Learning</li>
+          <li><a href="index.html">16 Structured Probablistic Models for Deep Learning</a> &raquo;</li>
+        
+      <li>16.3 Sampling from Graphical Models</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/16 Structured Probablistic Models for Deep Learning/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/16 Structured Probablistic Models for Deep Learning/16.3 Sampling from Graphical Models.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,20 +163,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="structured-probablistic-models-for-deep-learning">
-<h1>16 Structured Probablistic Models for Deep Learning<a class="headerlink" href="#structured-probablistic-models-for-deep-learning" title="Permalink to this headline">¶</a></h1>
-<p>A structured probablistic model is a way of describing a probablistic distribution, using a graph to descrie which random variable in the probablistic distribution interact with each other directly.</p>
-<div class="toctree-wrapper compound">
+  <div class="section" id="sampling-from-graphical-models">
+<h1>16.3 Sampling from Graphical Models<a class="headerlink" href="#sampling-from-graphical-models" title="Permalink to this headline">¶</a></h1>
+<p>Advantage of directed model: ancestral sampling can produce a sample from the joint distribution represented by the model.</p>
+<p>Sort the variables in the graph into a topological ordering: for all i and j, j &gt; i if <span class="math notranslate nohighlight">\(x_i\)</span> is parent of <span class="math notranslate nohighlight">\(x_j\)</span>. We first sample <span class="math notranslate nohighlight">\(x1~p(x_1)\)</span> then sample <span class="math notranslate nohighlight">\(p(x_2|Pa_G(x2))\)</span> and so on.</p>
+<p>Ancestral sampling could be used with any of other available topological ordering.</p>
+<p>Drawback of ancestral sampling</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="16.1 The Challenge of Unstructured Modeling.html">16.1 The Challenge of Unstructured Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.2 Using Graphs to Describe Model Structure.html">16.2 Using Graphs to Describe Model Structure</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.3 Sampling from Graphical Models.html">16.3 Sampling from Graphical Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.4 Advantages of Structured Modeling.html">16.4 Advantages of Structured Modeling</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.5 Learning about Dependencies.html">16.5 Learning about Dependencies</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.6 Inference and Approximate Inference.html">16.6 Inference and Approximate Inference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="16.7 The Deep Learning Approach to Structured Prob.html">16.7 The Deep Learning Approach to Structured Probabilistic Models</a></li>
+<li><p class="first">only applies to directed graphical model.</p>
+<blockquote>
+<div><ul class="simple">
+<li>We can sample from undirected models by converting them into directed models: requires solving intractable inference problems or requiring introducing so many edges that the resulting directed model becomes intractable.</li>
+<li>Sample from undirected model without converting them into directed models: require resolving cyclical dependencies. Expensive multipass process.</li>
 </ul>
-</div>
+</div></blockquote>
+</li>
+<li><p class="first">does not support every conditional sampling operation.</p>
+<blockquote>
+<div><ul class="simple">
+<li>we often require that all conditioning variables come earlier than the variables to be sampled in the ordered graph. In this case we sample from the local conditional probability distributions specified by the model distribution.</li>
+<li>Otherwise, the conditional distributions we need to sample from are the posterior distributions given the observed variables. The posterior distributions are usually not explicitly specified and parameterized in the model. Infering these posterior distributions can be costly. Ancestral sampling is no longer efficient.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Sample from undirected model, conceptually simplest approach is Gibbes sampling. e.g: n-D vector x. We interactively visit each variable <span class="math notranslate nohighlight">\(x_i\)</span> and dram a sample conditioned on all other variables from <span class="math notranslate nohighlight">\(p(x_1 | x\__i)\)</span>. Due to the seperation properties of the graphical model, we can equivalentely condition on only the neighbors of <span class="math notranslate nohighlight">\(x_i\)</span>. We mut repeat the process and resample all n variables using the updated values fo their neighbors. Asymptitically, after many repetitions, this process converges to sampling from the correct distribution. It can be difficult to determine when the samples have reached a sufficient accurate approximation of the desierd distribution.</p>
 </div>
 
 
@@ -188,10 +198,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="16.1 The Challenge of Unstructured Modeling.html" class="btn btn-neutral float-right" title="16.1 The Challenge of Unstructured Modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="16.4 Advantages of Structured Modeling.html" class="btn btn-neutral float-right" title="16.4 Advantages of Structured Modeling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../15 Representation Learning/15.6 Providing Clues to Discover Underlying Causes.html" class="btn btn-neutral" title="15.6 Providing Clues to Discover Underlying Causes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="16.2 Using Graphs to Describe Model Structure.html" class="btn btn-neutral" title="16.2 Using Graphs to Describe Model Structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

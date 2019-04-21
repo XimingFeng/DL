@@ -1,0 +1,19 @@
+16.7 The Deep Learning Approach to Structured Probabilistic Models
+====================================================================
+
+In the context of graphical model, the depth of a model: a latent variable :math:`h_i` as being at depth j if shortest path from :math:`h_i` to an observed variable is j steps. 
+
+Many genarative models used for DL have no latent variables or only one layer of latent variables but use deep learning computational graphs to define the conditional distribution within a model. 
+
+* DL  
+
+	* always makes use of the idea of distributed representations. 
+	* DL models typically have more latent variables than observed variables. 
+	* Complicated nonlinear interaction between variable are accomplished via indirect connection that flow through multiple latent variables. 
+	* does not intend for the latent variables to take on any specific semantic ahead of time, training algorithms is free to invent the concepts it needs to model a particular dataset.Hard to interpret, easier to scale and reuse. 
+
+* Traditional graphical model 
+
+	* usually contain mostly variables that are at least occasionally observed, even if many many of the variables are missing at random from some training examples. 
+	* Use high order terms and structure learning to capture complicated nonlinear interactions between variables.
+	* latent variable designed with some specific semantic in mind. Easier to interpret have more theoretical guarantees, less able to scale to complex problem and not reusable 

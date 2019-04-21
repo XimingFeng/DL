@@ -1,0 +1,10 @@
+16.4 Advantages of Structured Modeling
+=============================================
+
+* Allow us to dramatically reduce the cost of representing probability distributions as well as learning and inference. 
+* Sampling accelerated in the case of directed model. 
+* Allow us to explicitly seperate representation of knowledge from learning of knowledge or inference given existing knowledge. Makes our model easier to model or debug. 
+	
+	* We can design, analyze and evaluating learning algorithms and inference algorithmsthat are applicable to broad class of grapgs.
+	* Independently, wen can design models that capture the relationships we believe are important in our data. 
+	* Then combine different algorithms and structures.
