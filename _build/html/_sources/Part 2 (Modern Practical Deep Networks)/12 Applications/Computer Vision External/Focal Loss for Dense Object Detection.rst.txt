@@ -28,3 +28,21 @@ This paper: one-stage object detector, matches state of art COCO AP of more comp
 
 This scaling factor can automatically down-weight the contribution of easy examples during training and rapidly focus the model on hard exampls. Finally we note that the exact form of the focal loss is not crucial, and we show other instantials can achive similar results.
 
+#####################################
+2. Related work
+#####################################
+
+* Classic object detectors: sliding window paradigm, in which a classifier is applied on dense image grid. 
+* 2-stage detectors
+	
+	1. generates a sparse set of condidate proposals that should contain all objects while filtering out the majority of negative locations
+	2. classify the proposal into forground classes/background
+
+* 1-stage detectors
+	
+	* Tuned for speed but accuracy trails that of two-stage method
+	* 2-stage detectors can be made fast simply by reducing image resolution and number of proposal
+
+* RetinaNet
+	
+	* shares many similarities with previous dense detector, such as anchor in RPN, features pyramids in SSD and FPN

@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Part III: Deep Learning Research" href="../../../Part 3 (Deep Learning Research)/index.html" />
-    <link rel="prev" title="YOLO 2" href="YOLO 2.html" /> 
+    <link rel="prev" title="RCNN" href="RCNN.html" /> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -89,6 +89,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">External Resources On Computer Vision</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="YOLO.html">YOLO</a></li>
 <li class="toctree-l4"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCNN.html">RCNN</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Focal Loss for Dense Object Detection</a></li>
 </ul>
 </li>
@@ -197,6 +198,36 @@
 <img alt="../../../_images/RetinaNetFigure1.PNG" src="../../../_images/RetinaNetFigure1.PNG" />
 <p>This scaling factor can automatically down-weight the contribution of easy examples during training and rapidly focus the model on hard exampls. Finally we note that the exact form of the focal loss is not crucial, and we show other instantials can achive similar results.</p>
 </div>
+<div class="section" id="related-work">
+<h2>2. Related work<a class="headerlink" href="#related-work" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Classic object detectors: sliding window paradigm, in which a classifier is applied on dense image grid.</p>
+</li>
+<li><p class="first">2-stage detectors</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>generates a sparse set of condidate proposals that should contain all objects while filtering out the majority of negative locations</li>
+<li>classify the proposal into forground classes/background</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">1-stage detectors</p>
+<blockquote>
+<div><ul class="simple">
+<li>Tuned for speed but accuracy trails that of two-stage method</li>
+<li>2-stage detectors can be made fast simply by reducing image resolution and number of proposal</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">RetinaNet</p>
+<blockquote>
+<div><ul class="simple">
+<li>shares many similarities with previous dense detector, such as anchor in RPN, features pyramids in SSD and FPN</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+</div>
 </div>
 
 
@@ -210,7 +241,7 @@
         <a href="../../../Part 3 (Deep Learning Research)/index.html" class="btn btn-neutral float-right" title="Part III: Deep Learning Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="YOLO 2.html" class="btn btn-neutral" title="YOLO 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="RCNN.html" class="btn btn-neutral" title="RCNN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
