@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Part III: Deep Learning Research" href="../../../Part 3 (Deep Learning Research)/index.html" />
-    <link rel="prev" title="YOLO 2" href="YOLO 2.html" /> 
+    <link rel="prev" title="RCNN" href="RCNN.html" /> 
 
   
   <script src="../../../_static/js/modernizr.min.js"></script>
@@ -89,6 +89,7 @@
 <li class="toctree-l3 current"><a class="reference internal" href="index.html">External Resources On Computer Vision</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="YOLO.html">YOLO</a></li>
 <li class="toctree-l4"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCNN.html">RCNN</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Focal Loss for Dense Object Detection</a></li>
 </ul>
 </li>
@@ -316,6 +317,59 @@ Solution: introduce “prior” for the value of p etimated by the model for the
 <p>Initialization: pretrained on ImageNet 1k. All new conv layers except the final one in the RetinaNet subnets are intialized with bias b=0 and a Gaussian weight fill with <span class="math notranslate nohighlight">\(\sigma=0.01\)</span>. For the final layer of classification subnet, we set the bias initialization to be <span class="math notranslate nohighlight">\(b = -log((1-\pi)/\pi)\)</span>, where <span class="math notranslate nohighlight">\(\pi\)</span> the start of training every anchor should be labeled as foreground with confidence of <span class="math notranslate nohighlight">\(\pi\)</span>. This init prevents the large number of background anchors from generating a large, destabilizing loss value in the first iteration of training.</p>
 <p>Optimization: trained with stochastic gradient descent (SGD).</p>
 </div>
+<div class="section" id="experiments">
+<h2>5. Experiments<a class="headerlink" href="#experiments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="training-on-dense-detection">
+<h3>5.1 Training on dense detection<a class="headerlink" href="#training-on-dense-detection" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>Depth 50 or 101 Resnet</li>
+<li>Feature Pyramid Network constructed on Resnet</li>
+<li>600 Pixel image</li>
+</ul>
+<p>Belows are the attemps to improve the learning</p>
+<ol class="arabic">
+<li><p class="first">Network Initialization</p>
+<blockquote>
+<div><ul class="simple">
+<li>No modification, fail quickly</li>
+<li>Simply change last layer such that the prior probability of detecting an object is 0.01 enables effective learning.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Use <span class="math notranslate nohighlight">\(\alpha-balanced\)</span> learning.</p>
+</li>
+<li><p class="first">Use Focal Loss</p>
+</li>
+<li><p class="first">Analyze Focal Loss</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Model: Resnet-101, trained with <span class="math notranslate nohighlight">\(\gamma = 2\)</span></li>
+<li>Apply this model to large number of random images</li>
+<li>Sample the predicted distribution for ~ <span class="math notranslate nohighlight">\(10^7\)</span> negative window and <span class="math notranslate nohighlight">\(10^5\)</span> postive window.</li>
+<li>Sperately for positive and negative, compute Focal Loss. Normalize the loss so that it will sum to 1.</li>
+<li>Given the normalized loss, we can sort the loss from the lowest to the highest and plot its cumulative distribution function (CDF) for both positive and negative samples and for different settings of <span class="math notranslate nohighlight">\(\gamma\)</span></li>
+<li>Observed that CDF looks fairly similar for different value of <span class="math notranslate nohighlight">\(\gamma\)</span>.</li>
+<li>Observed that CDF looks dramatically different for different value of <span class="math notranslate nohighlight">\(\gamma\)</span>. As <span class="math notranslate nohighlight">\(\gamma\)</span> increases, subtantially more weights become more concentrated on the hard negative examples. With <span class="math notranslate nohighlight">\(\gamma = 2\)</span>, vast majority of the loss comes from a small fraction of samples.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Online Hard Example Mining, proposed to train 2-stage detector by constructing Mini batch using high-loss examples. Result: FL is more effective than OHEM for training dense detector</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Each example is score by its loss</li>
+<li>Non-maximum suppression is then applied</li>
+<li>Minibatch is then constructed with highest-loss examples.</li>
+<li>Unlike FL, OHEM completely discards easy examples.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Hinge loss</p>
+</li>
+</ol>
+<img alt="../../../_images/RetinaNetFigure4.PNG" src="../../../_images/RetinaNetFigure4.PNG" />
+<img alt="../../../_images/RetinaNetTable1.PNG" src="../../../_images/RetinaNetTable1.PNG" />
+</div>
+</div>
 <div class="section" id="external-resources">
 <h2>External Resources<a class="headerlink" href="#external-resources" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -337,7 +391,7 @@ Solution: introduce “prior” for the value of p etimated by the model for the
         <a href="../../../Part 3 (Deep Learning Research)/index.html" class="btn btn-neutral float-right" title="Part III: Deep Learning Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="YOLO 2.html" class="btn btn-neutral" title="YOLO 2" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="RCNN.html" class="btn btn-neutral" title="RCNN" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
