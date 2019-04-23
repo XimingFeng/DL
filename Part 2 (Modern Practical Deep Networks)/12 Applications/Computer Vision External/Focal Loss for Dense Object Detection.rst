@@ -147,6 +147,60 @@ Focal loss: it is applied to all ~100k anchors in each sampled image. The total 
 
 Initialization: pretrained on ImageNet 1k. All new conv layers except the final one in the RetinaNet subnets are intialized with bias b=0 and a Gaussian weight fill with :math:`\sigma=0.01`. For the final layer of classification subnet, we set the bias initialization to be :math:`b = -log((1-\pi)/\pi)`, where :math:`\pi` the start of training every anchor should be labeled as foreground with confidence of :math:`\pi`. This init prevents the large number of background anchors from generating a large, destabilizing loss value in the first iteration of training.
 
+############################
+5. Experiments
+############################
+
+*******************************
+5.1 Training on dense detection
+*******************************
+
+* Depth 50 or 101 Resnet 
+* Feature Pyramid Network constructed on Resnet
+* 600 Pixel image
+
+Belows are the attemps to improve the learning 
+
+1.  Network Initialization
+
+	* No modification, fail quickly
+	* Simply change last layer such that the prior probability of detecting an object is 0.01 enables effective learning.
+
+2. Use :math:`\alpha-balanced` learning. 
+3. Use Focal Loss
+4. Analyze Focal Loss
+	
+	1. Model: Resnet-101, trained with :math:`\gamma = 2` 
+	2. Apply this model to large number of random images
+	3. Sample the predicted distribution for ~ :math:`10^7` negative window and :math:`10^5` postive window.
+	4. Sperately for positive and negative, compute Focal Loss. Normalize the loss so that it will sum to 1.
+	5. Given the normalized loss, we can sort the loss from the lowest to the highest and plot its cumulative distribution function (CDF) for both positive and negative samples and for different settings of :math:`\gamma`
+	6. Observed that CDF looks fairly similar for different value of :math:`\gamma`. 
+	7. Observed that CDF looks dramatically different for different value of :math:`\gamma`. As :math:`\gamma` increases, subtantially more weights become more concentrated on the hard negative examples. With :math:`\gamma = 2`, vast majority of the loss comes from a small fraction of samples.
+
+5. Online Hard Example Mining, proposed to train 2-stage detector by constructing Mini batch using high-loss examples. Result: FL is more effective than OHEM for training dense detector
+
+	1. Each example is score by its loss
+	2. Non-maximum suppression is then applied
+	3. Minibatch is then constructed with highest-loss examples.
+	4. Unlike FL, OHEM completely discards easy examples. 
+
+6. Hinge loss. Set loss to 0 above certain value of :math:`p_t`.  
+
+.. image:: rsc/RetinaNetFigure4.PNG 
+
+.. image:: rsc/RetinaNetTable1.PNG
+
+
+**************************************************************
+5.2 Model Architecture Design
+**************************************************************
+
+Anchor Density: sweep over number of scales and aspect ratio anchors used at each spatial position and each pyramid level in FPN. 3 scales and 3 aspects ratio yield the best result. 
+
+Speed vs. Accuracy: larger backbone better accuracy, slower inference time. 
+
+
 
 
 
@@ -157,6 +211,7 @@ External Resources
 * `RetinaNet how Focal Loss fixes Single Shot Detection <https://towardsdatascience.com/retinanet-how-focal-loss-fixes-single-shot-detection-cb320e3bb0de>`_
 * `Anchor Box <https://www.coursera.org/lecture/convolutional-neural-networks/anchor-boxes-yNwO0>`_
 * `Faster RCNN Down the rabbit hole of modern object detection <https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/>`_
+* `Cumulative Distribution Function <https://en.wikipedia.org/wiki/Cumulative_distribution_function>`_
 
 
 
