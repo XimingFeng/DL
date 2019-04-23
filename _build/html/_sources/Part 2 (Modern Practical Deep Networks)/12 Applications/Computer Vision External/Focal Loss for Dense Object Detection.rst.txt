@@ -147,7 +147,7 @@ Focal loss: it is applied to all ~100k anchors in each sampled image. The total 
 
 Initialization: pretrained on ImageNet 1k. All new conv layers except the final one in the RetinaNet subnets are intialized with bias b=0 and a Gaussian weight fill with :math:`\sigma=0.01`. For the final layer of classification subnet, we set the bias initialization to be :math:`b = -log((1-\pi)/\pi)`, where :math:`\pi` the start of training every anchor should be labeled as foreground with confidence of :math:`\pi`. This init prevents the large number of background anchors from generating a large, destabilizing loss value in the first iteration of training.
 
-
+Optimization: trained with stochastic gradient descent (SGD). 
 
 
 #########################

@@ -239,3 +239,9 @@ Factor graphs are another way of drawing undirected models that resolve an ambig
 .. image:: rsc/Figure16.13.PNG
 
 No factor maybe connected to another factor in the graph, nor can a variable be connected to a variable. 
+
+##################################
+Resources
+##################################
+
+* `Restricted Boltzmann Machines Part I <https://towardsdatascience.com/deep-learning-meets-physics-restricted-boltzmann-machines-part-i-6df5c4918c15>`_

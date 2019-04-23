@@ -92,7 +92,10 @@
 <li class="toctree-l3"><a class="reference internal" href="16.4 Advantages of Structured Modeling.html">16.4 Advantages of Structured Modeling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.5 Learning about Dependencies.html">16.5 Learning about Dependencies</a></li>
 <li class="toctree-l3"><a class="reference internal" href="16.6 Inference and Approximate Inference.html">16.6 Inference and Approximate Inference</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">16.7 The Deep Learning Approach to Structured Probabilistic Models</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">16.7 The Deep Learning Approach to Structured Probabilistic Models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#example-the-restricted-boltzman-machine">16.7.1 Example: The Restricted Boltzman Machine</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -178,6 +181,10 @@
 <li>DL models typically have more latent variables than observed variables.</li>
 <li>Complicated nonlinear interaction between variable are accomplished via indirect connection that flow through multiple latent variables.</li>
 <li>does not intend for the latent variables to take on any specific semantic ahead of time, training algorithms is free to invent the concepts it needs to model a particular dataset.Hard to interpret, easier to scale and reuse.</li>
+<li>Large group of units are typically all connected to other groups of units, so that the interaction between 2 groups can be described by a single matrix.</li>
+<li>Loopy belief propagation is almost never used for DL. Most deep models are instead designed to make Gibbs sampling or variational inference algorithms efficient.</li>
+<li>Large number of latent varible makes efficient numerical code essential. Additionally motivates: grouping the units into layers with a matrix describing the interaction between 2 layers. This allows individual steps of the algorithm to be implemented with efficient matrix product operation, or sparsely connected generalization.</li>
+<li>Increase the power of model until it is just barely possible to train. The DL approach is often to figure out what the minimum amount if info we absolutely need is, and then to figure out how to get a reasonable approximation of that information as quickly as possible.</li>
 </ul>
 </div></blockquote>
 </li>
@@ -187,10 +194,78 @@
 <li>usually contain mostly variables that are at least occasionally observed, even if many many of the variables are missing at random from some training examples.</li>
 <li>Use high order terms and structure learning to capture complicated nonlinear interactions between variables.</li>
 <li>latent variable designed with some specific semantic in mind. Easier to interpret have more theoretical guarantees, less able to scale to complex problem and not reusable</li>
+<li>Typically have very few connections. The choice of each variable might be individually designed.</li>
+<li>The design of the model structure is tightly linked with the choice of inference algorithms.</li>
+<li>Typically aim to maintain the tractability of exact inference. When this constraint is too limiting, a popular approximate approach algorithms are called loopy belief propagation.</li>
 </ul>
 </div></blockquote>
 </li>
 </ul>
+<div class="section" id="example-the-restricted-boltzman-machine">
+<h2>16.7.1 Example: The Restricted Boltzman Machine<a class="headerlink" href="#example-the-restricted-boltzman-machine" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Units are organized into large groups called layers</li>
+<li>Connectivilty described by matrix</li>
+<li>Connectivity relatively dense</li>
+<li>Desiged to allow efficient Gibbs Sampling</li>
+<li>Freeing the training algorithm to learn latent variables whose semantics design is not specified by the designer.</li>
+</ul>
+<p><strong>Review on undirected model and energy based model:</strong></p>
+<p>An undirected graphical model is a structured probabilitic model defined on an undirected graph G. For each clique C in the graph, a factor <span class="math notranslate nohighlight">\(\phi(C)\)</span> (also called a clique protential) measures the affinity of the variables in that clique for being in each of their possible joint states. <span class="math notranslate nohighlight">\(\phi(C) &gt; 0\)</span>. Unnormalized probability distribution:</p>
+<div class="math notranslate nohighlight">
+\[\hat{p}(x) = \prod_{C\in G}\phi(C)\]</div>
+<p>A clique of the graph is a subset of nodes that are all connected to each other by an edge of the graph.</p>
+<p>Many interesting theoretical results about undirected models depend on the assumption that <span class="math notranslate nohighlight">\(\forall x, \hat{p}(x) &gt; 0\)</span>. A convinient way to enforce this condition is to use energy based model (EBM) where</p>
+<div class="math notranslate nohighlight">
+\[\hat{p}(x) = exp(-E(x))\]</div>
+<p>and E(x), aka, energy function. By learning the energy function, we can use unconstrained optimization. Any distriburuib of the form given by the equation above is an example to Boltzmann distribution.</p>
+<ul class="simple">
+<li>Boltzmann Machine is today most often used to disignate models with latent variables</li>
+<li>Boltzmann machines without latent variables are more often called Markov random field or log-linear models.</li>
+</ul>
+<p><strong>Now we come back to RBM</strong></p>
+<img alt="../../_images/Figure16.14.PNG" src="../../_images/Figure16.14.PNG" />
+<p>The canonical RBM RBM is an energy based model with binary visible and hidden units</p>
+<p>With the graph above, we can see that there is no triangle clique. So each edge forms 1 clique and its factor function of clique <span class="math notranslate nohighlight">\(\{v_i, h_j\}\)</span> would look like this:</p>
+<div class="math notranslate nohighlight">
+\[\phi(C_{i, j}) = exp(b_i*v_i + c_j*h_j + v_i*w_{i, j}*h_j)\]</div>
+<p>That is why the factor function with the graph as a whole looks like:</p>
+<div class="math notranslate nohighlight">
+\[\phi(\vec{v}, \vec{h}) = \prod_{i, j} \phi(C_{i, j}) = exp(\vec{b}^T\vec{v} + \vec{c}^T\vec{h} + \vec{v}^TW\vec{h})\]</div>
+<p>We also have Z as normalizing constant:</p>
+<div class="math notranslate nohighlight">
+\[Z = \sum_\vec{v}\sum_\vec{h}exp(\vec{b}^T\vec{v} + \vec{c}^T\vec{h} + \vec{v}^TW\vec{h})\]</div>
+<p>Now we derive the conditional distribution from the joint distribution (ignored the vector sign for simplicity):</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+P(h, v) &amp; = \frac{P(h, v)}{P(v)} \\
+&amp; = \frac{1}{P(v)}\frac{1}{Z}exp\{b^Tv + c^Th + v^TWh\} \\
+&amp; = \frac{1}{Z'}exp\{c^Th + v^TWh\} \\
+&amp; = \frac{1}{Z'}exp\{ \sum_{j=1}^{n_h}c_jh_j + \sum_{j=1}^{n_h}v^TW_{:, j}h_j \} \\
+&amp; = \frac{1}{Z'} \prod_{j=1}^{n_h}exp\{ c_jh_j +  v^TW_{:, j}h_j \}
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Since we are conditioning on the visible units v, we can treat these as constant with respect to the distribution P(h|v). Next, we can derive:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+p(h_j = 1|v) &amp; = \frac{\hat{P}(h_j = 1)| v}{\hat{P}(h_j = 1) + \hat{P}(h_j = 0)} \\
+&amp; = \frac{exp\{c_j + v^TW_{:, j}\}}{exp\{ 0 \} + exp\{c_j + v^TW_{:, j}\}}\\
+&amp; = \sigma(c_j + v^TW_{:, j})
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Together, those properties allow for efficient block Gibbs sampling, which alternates between:</p>
+<ul class="simple">
+<li>sample all of h simultaneously</li>
+<li>sample all of v simultaneously</li>
+</ul>
+<img alt="../../_images/Figure16.15.PNG" src="../../_images/Figure16.15.PNG" />
+<p>Compare to linear factor model:</p>
+<img alt="../../_images/Figure13.2.PNG" src="../../_images/Figure13.2.PNG" />
+<p>Efficient Gibbs sampling and efficient derivatives makes training convenient.</p>
+<p>RBM demonstrats the typical DL approach to graphical models: representation learning accomplished via layers of latent variables, combined with efficient interaction between layers parameterized by matrices.</p>
+</div>
 </div>
 
 
