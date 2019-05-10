@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>17.5 The challenge of Mixing between Seperated Modes &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="17.4 Gibbs Sampling" href="17.4 Gibbs sampling.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">17 Monte Carlo Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="17.1 Sampling and Monte Carlo Methods.html">17.1 Sampling and Monte Carlo Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="17.2 Importance Sampling.html">17.2 Importance Sampling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="17.3 Markov Chain Monte Carlo Methods.html">17.3 Markov Chain Monte Carlo Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="17.4 Gibbs sampling.html">17.4 Gibbs Sampling</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">17.5 The challenge of Mixing between Seperated Modes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tempering-to-mix-between-modes">17.5.1 Tempering to Mix between Modes</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#depth-may-help-mixing">17.5.2 Depth May Help Mixing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">17 Monte Carlo Methods</a> &raquo;</li>
+        
+      <li>17.5 The challenge of Mixing between Seperated Modes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/17 Monte Carlo Methods/17.5 The challenge of Mixing between Seperated Mod.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="the-challenge-of-mixing-between-seperated-modes">
+<h1>17.5 The challenge of Mixing between Seperated Modes<a class="headerlink" href="#the-challenge-of-mixing-between-seperated-modes" title="Permalink to this headline">¶</a></h1>
+<p>Primary difficulty involved in with Monte Carlo Markov Chain: tendency to mix poorly.</p>
+<p>Slow mixing or failure to mix: Especially in high-D cases, MCMC samples become very correlated. Could be seen as inacdertently performing noisy gradient descent on the energy function. The chain tends to take small steps, from configuration <span class="math notranslate nohighlight">\(x^{(i-1)}\)</span> to a configuration <span class="math notranslate nohighlight">\(x^{(i)}\)</span>, with the energy <span class="math notranslate nohighlight">\(E(x^{(i)})\)</span> lower or approximately equal to the energy <span class="math notranslate nohighlight">\(E(x^{(i - 1)})\)</span>, with preference for moves that yield lower energy configuration.</p>
+<p>Once the chain has found a region of low energy, which we call a mode, the chain will tend to walk around that mode. Once in a while it will step out of that mode and generally return to it or move toward another mode. Problem: seccessful escape routes are rare for many interesting distribution.</p>
+<p>Consider the probability of going from one mode to a nearby mode within a given number of steps. Determined by shape of the “energy barrier” between those mode. Transition with between two modes are seperated by a high energy barrier (a region of low barrier) are exponetially less likely.</p>
+<p>Problem arrises when: there are multiple modes with high probability are seperated by region of low probability, especially when each Gibbs sampling step must update only a small subset of variables whose values are largely determined by the other variables.</p>
+<img alt="../../_images/Figure17.1.PNG" src="../../_images/Figure17.1.PNG" />
+<p>Example:</p>
+<ul class="simple">
+<li>variable a and b, taking on values -1 and 1</li>
+<li>E(a, b) = -wab for some large positie value of w</li>
+</ul>
+<p>The model express a strong belief that a and b habe the same sign. Consider updating b using Gibbs sampling step with a = 1. The conditional distribution over b is given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+P(b=1|a=1) &amp;= \frac{P(b=1, a=1)}{P(a=1)}\\
+&amp; = \frac{P(b=1, a=1)}{P(b=1, a=1) + P(b=-1, a=1)} \\
+&amp; = \sigma(w)
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>I still don’t understand how the <span class="math notranslate nohighlight">\(\sigma(w)\)</span> get derived.</p>
+<p>If w is large</p>
+<ul class="simple">
+<li>when a = 1, the probability of b assigned with 1 is close to 1</li>
+<li>when a = -1, the probability of b assigned with -1 is close to -1</li>
+</ul>
+<p>According to <span class="math notranslate nohighlight">\(P_{model}(a, b)\)</span>, both signs of both variable are equally likely. According to <span class="math notranslate nohighlight">\(P_{model}(a|b)\)</span> This means that Gibbs sampling will only rarely flip the sign of these variables.</p>
+<p>In more practical scenarios, we care about making transition between all the many modes that a real model might contain -&gt; greater challenge.</p>
+<p>Sometimes this problem could be solved by finding groups of highly dependent units and updating all of them simultaneously in a block. Unfortunately, when the dependencies are complicated, it can be computationally intractable to draw a sample from the group. After all, the problem that the Monte Carlo Markov Chain was originally introduced to solve is this problem of sampling from a large group of variables.</p>
+<p>In the context of models with latent variables, we often draw samples of x by alternating between sampling from <span class="math notranslate nohighlight">\(p_{model}(x|h)\)</span> and sampling from :math:’p_{model}(h|x)’.</p>
+<ul class="simple">
+<li>From the point of view of mixing rapidly, we would like :math:’p_{model}(h|x)’ to have high entropy.</li>
+<li>From the point of view of learning a useful representation of h, we would like h to encode enough information about x to reconstruct it well, which implies that h and should have high mutual information</li>
+</ul>
+<p>These two goals are at odds with each other. We often learn generative that very precisely encode x into h but are not able to mix very well.</p>
+<div class="section" id="tempering-to-mix-between-modes">
+<h2>17.5.1 Tempering to Mix between Modes<a class="headerlink" href="#tempering-to-mix-between-modes" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Problem: when a distribution has sharp peaks of high probability surrounded by region of low probability, it is difficult to mix between the different modes of distribution.</li>
+<li>Solution: Several techniques for faster mixing are based on constructing alternative version of the target distribution in which the perks are not as high and surrounding valleys are not as low.</li>
+</ul>
+<p>Energy based model:</p>
+<div class="math notranslate nohighlight">
+\[p(x) \propto e^{-E(x)}\]</div>
+<p>Energy based models may be augmented with an extra parameter <span class="math notranslate nohighlight">\(\beta\)</span> controlling how sharply peaked the distribution is</p>
+<div class="math notranslate nohighlight">
+\[p_{\beta}(x) \propto e^{-\beta E(x)}\]</div>
+<p><span class="math notranslate nohighlight">\(\beta\)</span> : The recoprocal of the temperature.</p>
+<ul class="simple">
+<li>When the temperature falls to zero, and <span class="math notranslate nohighlight">\(\beta\)</span> rises to infinity, the energy based model becomes deterministic</li>
+<li>Wehn the temperature rises to infinity, and <span class="math notranslate nohighlight">\(\beta\)</span> falls to 0, the distribution becomes uniform</li>
+</ul>
+<p>Typically, a model is trained to evaluated at <span class="math notranslate nohighlight">\(\beta = 1\)</span>, we can also make use of other temperature, particular those where <span class="math notranslate nohighlight">\(\beta &lt; 1\)</span>.</p>
+<p>Tempering: general strategy of mixing between modes of <span class="math notranslate nohighlight">\(p_1\)</span>  rapidly by drawing samples with <span class="math notranslate nohighlight">\(\beta &lt; 1\)</span></p>
+<p>Markov chain based on tempered transitions: temporarily resume sampling from higher-temperature distribution to mix to different modes, then resume sampling from the unit temperature distribution</p>
+<p>Parallel tempering: Markov chain simulates many different states in parallel, at different termperature. The highest temperature states mix slowly, which the lowest temperature  states, at temperature 1, provide accurate samples from the model. The transition operator includes stochasticelly swapping states between 2 different temperature levels, so that a sufficiently high-probability sample from a high temperature slot can jump into a lower temperature slow</p>
+</div>
+<div class="section" id="depth-may-help-mixing">
+<h2>17.5.2 Depth May Help Mixing<a class="headerlink" href="#depth-may-help-mixing" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Problem: When drawing samples from a latent variable model p(h, x), we have seen that if p(h|x) encodes x too well, the sampling from p(x|h) will not change x very much, and mixing will be poor.</li>
+<li>Solution: one way to solve this problem is to make h a deep representation, encoding x into h in such a way that a Markov chain in the space of h can mix more easily.</li>
+</ul>
+<p>Many representation learning algorithms, such as RBM tend to yield a marginal distribution over h that is more uniform and more unimodal than the original data distribution over x.</p>
+<p>Training an RBM in that higher-level space allowed Gibbs sampling to mix faster between modes.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="17.4 Gibbs sampling.html" class="btn btn-neutral" title="17.4 Gibbs Sampling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

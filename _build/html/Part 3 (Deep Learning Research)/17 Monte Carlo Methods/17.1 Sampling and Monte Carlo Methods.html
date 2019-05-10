@@ -1,0 +1,289 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>17.1 Sampling and Monte Carlo Methods &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="17 Monte Carlo Methods" href="index.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">17 Monte Carlo Methods</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">17.1 Sampling and Monte Carlo Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#why-sampling">17.1.1 Why sampling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#basics-of-monte-carlo-sampling">17.1.2 Basics of Monte Carlo Sampling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">17 Monte Carlo Methods</a> &raquo;</li>
+        
+      <li>17.1 Sampling and Monte Carlo Methods</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/17 Monte Carlo Methods/17.1 Sampling and Monte Carlo Methods.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="sampling-and-monte-carlo-methods">
+<h1>17.1 Sampling and Monte Carlo Methods<a class="headerlink" href="#sampling-and-monte-carlo-methods" title="Permalink to this headline">¶</a></h1>
+<p>Many ML goals:</p>
+<ol class="arabic simple">
+<li>drawing samples from some probability distribution</li>
+<li>using these samples to from a Monte Carlo estimate of some desired quantity.</li>
+</ol>
+<div class="section" id="why-sampling">
+<h2>17.1.1 Why sampling<a class="headerlink" href="#why-sampling" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Sampling provides a flexible way to approximate many sum and integrals at reduced cost.</li>
+<li>Intractable sum or integral, such as gradient of the log partition function of an undirected model.</li>
+<li>We want to train a model that can sample from the training disrtibution.</li>
+</ul>
+</div>
+<div class="section" id="basics-of-monte-carlo-sampling">
+<h2>17.1.2 Basics of Monte Carlo Sampling<a class="headerlink" href="#basics-of-monte-carlo-sampling" title="Permalink to this headline">¶</a></h2>
+<p>The idea: view the sum or integral as if it were an expectation under some distribution and to approximate the expectation by a corresponding average. The sum or integral to estimate:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}s = \sum_x p(x)f(x) = E_p[f(x)] \\
+or \\
+s = \int p(x)f(x) = E_p[f(x)]\end{split}\]</div>
+<p>We can approximate s by drawing n samples <span class="math notranslate nohighlight">\(x^{(1)}, x^{(2)} .... x^{(n)}\)</span> from p and then forming the empirical average</p>
+<div class="math notranslate nohighlight">
+\[\hat{s}_n = \frac{1}{n} \sum_{i=1}^{n}f(x^{(i)})\]</div>
+<p>Properties of this approximation</p>
+<ul class="simple">
+<li>estimator is unbiased</li>
+<li><a class="reference external" href="https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/">law of large number</a></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[E[\hat{s}_n] = \frac{1}{n} \sum_{i=1}^{n} E(f(x^{(i)})) = s\]</div>
+<p>The <a class="reference external" href="https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/">law of large number</a>, if samples <span class="math notranslate nohighlight">\(x^{(i)}\)</span> are i.i.d, then the average converges almost surely to the expected value:</p>
+<div class="math notranslate nohighlight">
+\[\lim_{n \to \infty} \hat{s}_n = s\]</div>
+<p>provided that the variance of the individual tarms, <span class="math notranslate nohighlight">\(Var[f(x^{(i)})]\)</span> is bounded.</p>
+<div class="math notranslate nohighlight">
+\[Var[\hat{s}_n] = \frac{1}{n^2} \sum_{i=1}^{n} Var(f(x)) = \frac{Var[f(x)]}{n}\]</div>
+<p>The variance <span class="math notranslate nohighlight">\(Var[\hat{s}_n]\)</span> decreases and converges to 0, so long as <span class="math notranslate nohighlight">\(Var[\hat{s}_n] &lt; 0\)</span>.</p>
+<p>This result also tells us how to estimate the uncertainty in a Monte Carlo average or equivalently the amount of expected error of the Monte Carlo approximation:</p>
+<ol class="arabic simple">
+<li>Compute empirical average: <span class="math notranslate nohighlight">\(E(f(x))\)</span></li>
+<li>Compute empirical variance: <span class="math notranslate nohighlight">\(Var[f(x)]\)</span></li>
+<li>Divide the estimated variance by number of samples n to obtain an estimator of <span class="math notranslate nohighlight">\(Var[\hat{s}_n]\)</span></li>
+</ol>
+<p>Review on Central limit thorem (3.9.3 P-62):</p>
+<p><strong>The central limit theorem shows that the sum of many independent random variables is approximately normally distributed. This means that in practice, many complicated systems can be modeled successfully as normally distributed noise, even if the system can be decomposed into parts with more structured behavior</strong></p>
+<p>So, the distrution of the average, <span class="math notranslate nohighlight">\(\hat{s}_n\)</span>, converges to a normal distribution with mean s and variance <span class="math notranslate nohighlight">\(\frac{Var[f(x)]}{n}\)</span>, allowing us to estimate the confidence intervals around the estimate <span class="math notranslate nohighlight">\(\hat{s}_n\)</span> using the cumulative distribution of the normal density.</p>
+<p>All this relies on our abibilty sample from base distribution p(x). When it is not feasible to sample from p</p>
+<ul class="simple">
+<li>use important sampling</li>
+<li>form a sequence of estimators that converge toward the distribution of interest. This is the approach of Monte Carlo Markov chains.</li>
+</ul>
+<div class="section" id="resources">
+<h3>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><a class="reference external" href="https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/">law of large number</a></li>
+</ul>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="17 Monte Carlo Methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

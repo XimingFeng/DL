@@ -8,3 +8,4 @@ External Resources On Computer Vision
 	YOLO 2
 	RCNN
 	Focal Loss for Dense Object Detection
+	Learning Affordance for Direct Perception in Auton

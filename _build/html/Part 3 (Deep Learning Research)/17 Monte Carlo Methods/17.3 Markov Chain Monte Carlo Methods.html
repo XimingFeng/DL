@@ -1,0 +1,313 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>17.3 Markov Chain Monte Carlo Methods &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="17.4 Gibbs Sampling" href="17.4 Gibbs sampling.html" />
+    <link rel="prev" title="17.2 Importance Sampling" href="17.2 Importance Sampling.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">17 Monte Carlo Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="17.1 Sampling and Monte Carlo Methods.html">17.1 Sampling and Monte Carlo Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="17.2 Importance Sampling.html">17.2 Importance Sampling</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">17.3 Markov Chain Monte Carlo Methods</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resource">Resource</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="17.4 Gibbs sampling.html">17.4 Gibbs Sampling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">17 Monte Carlo Methods</a> &raquo;</li>
+        
+      <li>17.3 Markov Chain Monte Carlo Methods</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/17 Monte Carlo Methods/17.3 Markov Chain Monte Carlo Methods.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="markov-chain-monte-carlo-methods">
+<h1>17.3 Markov Chain Monte Carlo Methods<a class="headerlink" href="#markov-chain-monte-carlo-methods" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Problem: we wish to use Monte Carlo technique but there is no tractible method for drawing exact samples from the distribution <span class="math notranslate nohighlight">\(p_{model}\)</span> or from a good (low variance) importance sampling distribution q(x). In DL, most happens when <span class="math notranslate nohighlight">\(p_{model}\)</span> is represneted by an undirected model.</li>
+<li>Solution: Markov chain to to approximately sample from <span class="math notranslate nohighlight">\(p_{model}\)</span>.</li>
+</ul>
+<p>Markov chain Monte Carlo (MCMC): Use Markov chain to perform Monte Carlo estimates.</p>
+<p>Most std generic guarantees for MCMC techniques are only applicable when the model does not assign zeros probability to any state. It is most convenient to present these techniques as sampling from an energy-based model.</p>
+<p>Review on Energy based model</p>
+<p>Many interesting theoretical results about undirected models depend on the assumption that <span class="math notranslate nohighlight">\(\forall x, \hat{p}(x) &gt; 0\)</span>. A convinient way to enforce this condition is to use energy based model (EBM) where</p>
+<div class="math notranslate nohighlight">
+\[\hat{p}(x) = exp(-E(x))\]</div>
+<p>and E(x), aka, energy function. By learning the energy function, we can use unconstrained optimization. Any distriburuib of the form given by the equation above is an example to Boltzmann distribution.</p>
+<ul class="simple">
+<li>Boltzmann Machine is today most often used to disignate models with latent variables</li>
+<li>Boltzmann machines without latent variables are more often called Markov random field or log-linear models.</li>
+</ul>
+<p>Problem of sample from EBM. E.g: 2 variables, defining a distribution p(a, b). In order to sample a, we must draw a from p(a|b), vice versa. Chicken egg problem. Could be solved by Markov Chain.</p>
+<p>Core idea of Markov Chain: have a state x that begins as a arbitrary value. Over time, we randomly update x repeately. Eventually x becomes (very nearly) a fair sample from p(x). Formally:</p>
+<ul class="simple">
+<li>random state x</li>
+<li>transition distribution <span class="math notranslate nohighlight">\(T(x'|x)\)</span> specifying the probability that a random update will go to state <span class="math notranslate nohighlight">\(x'\)</span> if it starts in state x</li>
+<li>repeately updating the state x to a value x sampled from <span class="math notranslate nohighlight">\(T(x'|x)\)</span></li>
+</ul>
+<p>We restrict our attention to the case where the random variable <span class="math notranslate nohighlight">\(\vec{x}\)</span> has countably many states. We can then represent the state as just a positive integer x.</p>
+<p>Consider run infinitely many Markov chains in parallel. All the states of different Markov chains are drawn from some distribution <span class="math notranslate nohighlight">\(q{(t)}(x)\)</span>, where t indicate the number of times steps that have elapsed. <span class="math notranslate nohighlight">\(q{(t)}(x)\)</span> is influenced by all the Markov chain steps that have run so far.</p>
+<p>v: a vector to describe probability distribution q. <span class="math notranslate nohighlight">\(q(x = i) = v_i\)</span></p>
+<p>The probability of a single state ladnding in a state <span class="math notranslate nohighlight">\(x'\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[q^{(t+1)}(x') = \sum_x q{(t)}(x)T(x'|x)\]</div>
+<p>Define matrix A</p>
+<div class="math notranslate nohighlight">
+\[A_{i, j} = T(x'=i|x=j)\]</div>
+<p>rewrite the Markov Chain update:</p>
+<div class="math notranslate nohighlight">
+\[v^{(t)} = Av^{(t-1)}\]</div>
+<p>Applying Markov chain repeatedly</p>
+<div class="math notranslate nohighlight">
+\[v^{(t)} = A^tv^{(0)}\]</div>
+<p>Each column represents a probability disrtibution. Such matrices are called stochastic matrices.</p>
+<p><strong>If there is a non-zero probability transitioning from any state x to any other state x’ for some power t, it can be guanranteed that the largest eigenvalue is real and equal to 1.</strong></p>
+<div class="math notranslate nohighlight">
+\[v^{(t)} = (V diag(\lambda)v^{-1})^tv{(0)} = V diag(\lambda)^tV^{-1}v^{(0)}\]</div>
+<p>This process causes all the eigenvalues that are not equal to 1 to decay to zero. Under some additional mild conditions, A is guaranteed to have only one eigenvector with eigenvalue 1. The process thus converges to a stationary distribution, sometimes also called the equilibrium distribution. At convergence,</p>
+<div class="math notranslate nohighlight">
+\[v' = Av = v\]</div>
+<p>and this same condition holds for every additional step. To be a stationary point, v must be an eigenvector with corresponding eigenvalue 1. This condition gurantees that once we have reached the stationary distribution. Repeated applications of the transition sampling procedure do not change the distribution over the state of all the various Markov chain.</p>
+<p>If choose T correctly, the stationary distribution q will be equal to the distribution p we wish to sample from.</p>
+<p>In general, a Markov chain with transition operator T will coverge, under mild conditions, to a fixed point described by the equation.</p>
+<div class="math notranslate nohighlight">
+\[q'(x') = E_{x\sim q} T(x'|x)\]</div>
+<p>Running Markov chain until it reaches its equilibrium distribution is called burning in the Markov chain. After the chain has reached equilibrium, a sequence of infinitely many samples may be drawn from the equilibrium distribution.</p>
+<ul>
+<li><p class="first">Problem: 2 successive samples highly correlated with each other.</p>
+</li>
+<li><p class="first">Solution:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>return only every n successive samples, so that our estimate of the statistics of the equilibrium distribution is not as biased by the correlation between MCMC sample and the next several samples. Expensive: burn in time + time required to transition from one sample to another reasonably decorrelated samples.</li>
+<li>Run multiple Markov chain in parallel. Extra computation.</li>
+<li>DL practitioners usually use a number of chains that is similar to the number of examples in a Minibatch and then draw as many samples as are needed from this fixed set of Markov chains. Common used number of Markov chain: 100.</li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+<p>How many steps the Markov chain must run before reaching its equilibrium distribution: Mixing time. The difficulties to know whether a Markov chain has mixed:</p>
+<ul class="simple">
+<li>To know the mixing time is difficult</li>
+<li>To test whether a Markov chain has reached equilibrium is difficult.</li>
+<li>Number of states that our probabilistic model can visit is exponentially large in the number of variables, so it is in feasible to represent v, A or the eigenvalues of A.</li>
+</ul>
+<p>Instead, we simply run Markov chain for an amount of time that we roughly estimate to be sufficient, then use heuristic methods to determine whether the chain has mixed. Those heuristic methods:</p>
+<ul class="simple">
+<li>manually inspect samples</li>
+<li>measure correlations between successive samples.</li>
+</ul>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li><a class="reference external" href="https://www.youtube.com/watch?v=M1fpAJArJA0&amp;list=PLsXu9MHQGs8df5A4PzQGw-kfviylC-R9b&amp;index=22&amp;t=488s">Live Stream Chapter 17 Monte Carlo Methods with Don Dini</a></li>
+</ol>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="17.4 Gibbs sampling.html" class="btn btn-neutral float-right" title="17.4 Gibbs Sampling" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="17.2 Importance Sampling.html" class="btn btn-neutral" title="17.2 Importance Sampling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

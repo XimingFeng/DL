@@ -1,0 +1,82 @@
+17.1 Sampling and Monte Carlo Methods
+=========================================
+
+Many ML goals: 
+
+1. drawing samples from some probability distribution
+2. using these samples to from a Monte Carlo estimate of some desired quantity.
+
+*****************************************************
+17.1.1 Why sampling 
+*****************************************************
+
+* Sampling provides a flexible way to approximate many sum and integrals at reduced cost.
+* Intractable sum or integral, such as gradient of the log partition function of an undirected model.
+* We want to train a model that can sample from the training disrtibution.
+
+*****************************************************
+17.1.2 Basics of Monte Carlo Sampling 
+*****************************************************
+
+The idea: view the sum or integral as if it were an expectation under some distribution and to approximate the expectation by a corresponding average. The sum or integral to estimate:
+
+.. math::
+	
+	s = \sum_x p(x)f(x) = E_p[f(x)] \\
+	or \\
+	s = \int p(x)f(x) = E_p[f(x)]
+
+We can approximate s by drawing n samples :math:`x^{(1)}, x^{(2)} .... x^{(n)}` from p and then forming the empirical average 
+
+.. math::
+	\hat{s}_n = \frac{1}{n} \sum_{i=1}^{n}f(x^{(i)})
+
+Properties of this approximation 
+
+* estimator is unbiased
+* `law of large number <https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/>`_
+
+.. math:: 
+	
+	E[\hat{s}_n] = \frac{1}{n} \sum_{i=1}^{n} E(f(x^{(i)})) = s
+
+The `law of large number <https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/>`_, if samples :math:`x^{(i)}` are i.i.d, then the average converges almost surely to the expected value:
+
+.. math::
+	\lim_{n \to \infty} \hat{s}_n = s
+
+provided that the variance of the individual tarms, :math:`Var[f(x^{(i)})]` is bounded. 
+
+.. math::
+	Var[\hat{s}_n] = \frac{1}{n^2} \sum_{i=1}^{n} Var(f(x)) = \frac{Var[f(x)]}{n}
+
+The variance :math:`Var[\hat{s}_n]` decreases and converges to 0, so long as :math:`Var[\hat{s}_n] < 0`.
+
+This result also tells us how to estimate the uncertainty in a Monte Carlo average or equivalently the amount of expected error of the Monte Carlo approximation:
+
+1. Compute empirical average: :math:`E(f(x))`
+2. Compute empirical variance: :math:`Var[f(x)]`
+3. Divide the estimated variance by number of samples n to obtain an estimator of :math:`Var[\hat{s}_n]`
+
+Review on Central limit thorem (3.9.3 P-62):
+
+**The central limit theorem shows that the sum of many independent random variables is approximately normally distributed. This means that in practice, many complicated systems can be modeled successfully as normally distributed noise, even if the system can be decomposed into parts with more structured behavior**
+
+So, the distrution of the average, :math:`\hat{s}_n`, converges to a normal distribution with mean s and variance :math:`\frac{Var[f(x)]}{n}`, allowing us to estimate the confidence intervals around the estimate :math:`\hat{s}_n` using the cumulative distribution of the normal density.
+
+All this relies on our abibilty sample from base distribution p(x). When it is not feasible to sample from p
+
+* use important sampling 
+* form a sequence of estimators that converge toward the distribution of interest. This is the approach of Monte Carlo Markov chains.
+
+
+##################################
+Resources
+##################################
+
+* `law of large number <https://machinelearningmastery.com/a-gentle-introduction-to-the-law-of-large-numbers-in-machine-learning/>`_
+
+
+
+
+

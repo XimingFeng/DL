@@ -1,0 +1,79 @@
+17.2 Importance Sampling 
+==================================
+
+Review basics of Monte Carlo Samplings:
+
+.. math::
+	
+	s = \sum_x p(x)f(x) = E_p[f(x)] \\
+	or \\
+	s = \int p(x)f(x) = E_p[f(x)]
+
+Note that there is no unique decomposition because
+
+.. math::
+	p(x)f(x) = q(x)\frac{p(x)f(x)}{q(x)}
+
+now we sample from q and average :math:`\frac{pf}{q}`. The optimal :math:`q^*` corresponds to what is called optimal importance sampling.
+
+Monte Carlo estimator:
+
+.. math::
+	\hat{s}_p = \frac{1}{n} \sum^n_{i=1, x^{(i)}\sim p}f(x^{(i)})
+
+is now transformed into:
+
+.. math::
+	\hat{s}_q = \frac{1}{n} \sum^n_{i=1, x^{(i)}\sim q}\frac{p(x^{(i)})f(x^{(i)})}{q(x^{(i)})}
+
+Expected value of estimator:
+
+.. math::
+	E_q[\hat{s}_q] = E_q[\hat{s}_p] = s
+
+The variance of an importance sampling:
+
+.. math::
+	Var[\hat{s}_q] = Var[\frac{p(x)f(x)}{q(x)}]/n
+
+The minimum variance occurs when q is 
+
+.. math::
+	q^*(x) = \frac{p(x)|f(x)|}{Z}
+
+where Z is the normalization constant, chosen so that :math:`q^*(x)` sums or integrates to 1 as appropriate.
+
+Better importance sampling distribution put more weight where the integrant is larger. When f(x) does not change sign, :math:`Var[\hat{s}_{q^*}] = 0`, meaning that a single example is sufficient when the optimal distribution is used. This is only because the computation of :math:`q^*` has essentially solved the original problem, os it is usually not practical to use this approach.
+
+Sampling from :math:`q^*` is usually infeasible, but other choices of q can be feasible while still reducing the variance somewhat
+
+Biased importance sampling, not require normalizing p or q
+
+.. math::
+	\hat{s}_{BIS} = \frac{\sum^n_{i=1} \frac{p(x^{(i)})}{q(x^{(i)})} f(x^{(i)})}{\sum^n_{i=1} \frac{p(x^{(i)})}{q(x^{(i)})} } \\
+	= \frac{\sum^n_{i=1} \frac{\tilde{p}(x^{(i)})}{\tilde{q}(x^{(i)})} f(x^{(i)})}{\sum^n_{i=1} \frac{\tilde{p}(x^{(i)})}{\tilde{q}(x^{(i)})} }
+
+where :math:`\tilde{p}, \tilde{q}` are the unormalized form of p and q and the :math:`x^{(i)}` are the samples from q. This estimator is biased because :math:`E[\hat{s}_{BIS}] \neq s`, exexpt when :math:`n \to \infty` and the denominator  of the first equation above  converges to 1. Hence this estimator is called asymptotically unbiased.
+
+q distribution is usually chosen to be simple distribution so that it is easy to sample from. When x is high dimensional, this simplicity in q causes it to match p or p|f| poorly. 
+
+* When :math:`q(x^{(i)}) >> p(x^{(i)})|f(x^{(i)})|`, importance sampling collects useless samples (summing up tiny numbers or zeros)
+* When :math:`q(x^{(i)}) << p(x^{(i)})|f(x^{(i)})|` (more rarely), the ratio can be huge
+
+yield typical underestimation of s, compensated rarely by gross overestimation. Such very large or very small numbers are typical when x is high D, because in high D the dynamic range of joint probabilistic can be very large
+
+Very useful 
+
+* section 12.4.3.3 P457: accelerate training in neural language model with a large vocabulary.
+* section 18.7 p614
+* 20.10 p687
+
+Importance sampling may also be used to improve the estimate of the gradient of the cost function used to train model parameters with stochastic gradient descent. Sampling more difficult examples more frequently can reduce the variance of the gradient in such case.
+
+
+##################################################
+Resources
+##################################################
+
+* `Importance Sampling Tutorial <https://statweb.stanford.edu/~owen/mc/Ch-var-is.pdf>`_
+* `Live Stream Chapter 17 Monte Carlo Methods with Don Dini <https://www.youtube.com/watch?v=M1fpAJArJA0&list=PLsXu9MHQGs8df5A4PzQGw-kfviylC-R9b&index=22&t=488s>`_

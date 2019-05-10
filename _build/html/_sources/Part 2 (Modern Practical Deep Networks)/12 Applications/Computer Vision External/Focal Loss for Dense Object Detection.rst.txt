@@ -188,15 +188,20 @@ Belows are the attemps to improve the learning
 	3. Minibatch is then constructed with highest-loss examples.
 	4. Unlike FL, OHEM completely discards easy examples. 
 
-6. Hinge loss
+6. Hinge loss. Set loss to 0 above certain value of :math:`p_t`.  
 
 .. image:: rsc/RetinaNetFigure4.PNG 
 
 .. image:: rsc/RetinaNetTable1.PNG
 
 
+**************************************************************
+5.2 Model Architecture Design
+**************************************************************
 
->>>>>>> 7863d7786ae3ba41ee31217919b832e0d24c5c51
+Anchor Density: sweep over number of scales and aspect ratio anchors used at each spatial position and each pyramid level in FPN. 3 scales and 3 aspects ratio yield the best result. 
+
+Speed vs. Accuracy: larger backbone better accuracy, slower inference time. 
 
 
 #########################
@@ -206,6 +211,7 @@ External Resources
 * `RetinaNet how Focal Loss fixes Single Shot Detection <https://towardsdatascience.com/retinanet-how-focal-loss-fixes-single-shot-detection-cb320e3bb0de>`_
 * `Anchor Box <https://www.coursera.org/lecture/convolutional-neural-networks/anchor-boxes-yNwO0>`_
 * `Faster RCNN Down the rabbit hole of modern object detection <https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/>`_
+* `Cumulative Distribution Function <https://en.wikipedia.org/wiki/Cumulative_distribution_function>`_
 
 
 

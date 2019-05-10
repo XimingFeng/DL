@@ -315,10 +315,12 @@ Solution: introduce “prior” for the value of p etimated by the model for the
 <p>Inference: Inference involves simply forwarding an image through the network. To improve speed, we only decode box predictions from at most 1k top scoring prediction per FPN level, after thresholding detector confidence at 0.05. The top predictions from all levels are merged and non-maximim suppression with a threshold of 0.5 is applied to yield the final detections.</p>
 <p>Focal loss: it is applied to all ~100k anchors in each sampled image. The total focal loss of an image is computed as the sum of the focal loss over all ~100k anchors, normalized by the number of anchors assigned to a ground truth box. Reason: vast majority of anchors are easy negatives and receive negligible loss value value under the focal loss. In general, <span class="math notranslate nohighlight">\(\alpha\)</span> should be decreased slightly as <span class="math notranslate nohighlight">\(\gamma\)</span> is increased.</p>
 <p>Initialization: pretrained on ImageNet 1k. All new conv layers except the final one in the RetinaNet subnets are intialized with bias b=0 and a Gaussian weight fill with <span class="math notranslate nohighlight">\(\sigma=0.01\)</span>. For the final layer of classification subnet, we set the bias initialization to be <span class="math notranslate nohighlight">\(b = -log((1-\pi)/\pi)\)</span>, where <span class="math notranslate nohighlight">\(\pi\)</span> the start of training every anchor should be labeled as foreground with confidence of <span class="math notranslate nohighlight">\(\pi\)</span>. This init prevents the large number of background anchors from generating a large, destabilizing loss value in the first iteration of training.</p>
-<p>Optimization: trained with stochastic gradient descent (SGD).</p>
-</div>
-<div class="section" id="experiments">
-<h2>5. Experiments<a class="headerlink" href="#experiments" title="Permalink to this headline">¶</a></h2>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+Optimization: trained with stochastic gradient descent (SGD).
+=======
+############################
+5. Experiments
+############################</p>
 <div class="section" id="training-on-dense-detection">
 <h3>5.1 Training on dense detection<a class="headerlink" href="#training-on-dense-detection" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
@@ -363,11 +365,16 @@ Solution: introduce “prior” for the value of p etimated by the model for the
 </ol>
 </div></blockquote>
 </li>
-<li><p class="first">Hinge loss</p>
+<li><p class="first">Hinge loss. Set loss to 0 above certain value of <span class="math notranslate nohighlight">\(p_t\)</span>.</p>
 </li>
 </ol>
 <img alt="../../../_images/RetinaNetFigure4.PNG" src="../../../_images/RetinaNetFigure4.PNG" />
 <img alt="../../../_images/RetinaNetTable1.PNG" src="../../../_images/RetinaNetTable1.PNG" />
+</div>
+<div class="section" id="model-architecture-design">
+<h3>5.2 Model Architecture Design<a class="headerlink" href="#model-architecture-design" title="Permalink to this headline">¶</a></h3>
+<p>Anchor Density: sweep over number of scales and aspect ratio anchors used at each spatial position and each pyramid level in FPN. 3 scales and 3 aspects ratio yield the best result.</p>
+<p>Speed vs. Accuracy: larger backbone better accuracy, slower inference time.</p>
 </div>
 </div>
 <div class="section" id="external-resources">
@@ -376,6 +383,7 @@ Solution: introduce “prior” for the value of p etimated by the model for the
 <li><a class="reference external" href="https://towardsdatascience.com/retinanet-how-focal-loss-fixes-single-shot-detection-cb320e3bb0de">RetinaNet how Focal Loss fixes Single Shot Detection</a></li>
 <li><a class="reference external" href="https://www.coursera.org/lecture/convolutional-neural-networks/anchor-boxes-yNwO0">Anchor Box</a></li>
 <li><a class="reference external" href="https://tryolabs.com/blog/2018/01/18/faster-r-cnn-down-the-rabbit-hole-of-modern-object-detection/">Faster RCNN Down the rabbit hole of modern object detection</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">Cumulative Distribution Function</a></li>
 </ul>
 </div>
 </div>

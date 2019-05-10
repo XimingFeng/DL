@@ -1,0 +1,110 @@
+17.3 Markov Chain Monte Carlo Methods
+==========================================
+
+* Problem: we wish to use Monte Carlo technique but there is no tractible method for drawing exact samples from the distribution :math:`p_{model}` or from a good (low variance) importance sampling distribution q(x). In DL, most happens when :math:`p_{model}` is represneted by an undirected model.
+* Solution: Markov chain to to approximately sample from :math:`p_{model}`.  
+
+Markov chain Monte Carlo (MCMC): Use Markov chain to perform Monte Carlo estimates.
+
+Most std generic guarantees for MCMC techniques are only applicable when the model does not assign zeros probability to any state. It is most convenient to present these techniques as sampling from an energy-based model. 
+
+Review on Energy based model
+
+Many interesting theoretical results about undirected models depend on the assumption that :math:`\forall x, \hat{p}(x) > 0`. A convinient way to enforce this condition is to use energy based model (EBM) where
+
+.. math::
+	\hat{p}(x) = exp(-E(x))
+
+and E(x), aka, energy function. By learning the energy function, we can use unconstrained optimization. Any distriburuib of the form given by the equation above is an example to Boltzmann distribution. 
+
+* Boltzmann Machine is today most often used to disignate models with latent variables
+* Boltzmann machines without latent variables are more often called Markov random field or log-linear models.
+
+Problem of sample from EBM. E.g: 2 variables, defining a distribution p(a, b). In order to sample a, we must draw a from p(a|b), vice versa. Chicken egg problem. Could be solved by Markov Chain.
+
+Core idea of Markov Chain: have a state x that begins as a arbitrary value. Over time, we randomly update x repeately. Eventually x becomes (very nearly) a fair sample from p(x). Formally:
+
+
+* random state x
+* transition distribution :math:`T(x'|x)` specifying the probability that a random update will go to state :math:`x'` if it starts in state x 
+* repeately updating the state x to a value x sampled from :math:`T(x'|x)`
+
+
+We restrict our attention to the case where the random variable :math:`\vec{x}` has countably many states. We can then represent the state as just a positive integer x.
+
+Consider run infinitely many Markov chains in parallel. All the states of different Markov chains are drawn from some distribution :math:`q{(t)}(x)`, where t indicate the number of times steps that have elapsed. :math:`q{(t)}(x)` is influenced by all the Markov chain steps that have run so far. 
+
+v: a vector to describe probability distribution q. :math:`q(x = i) = v_i` 
+
+The probability of a single state ladnding in a state :math:`x'` is given by
+
+.. math::
+	q^{(t+1)}(x') = \sum_x q{(t)}(x)T(x'|x)
+
+Define matrix A
+
+.. math::
+	A_{i, j} = T(x'=i|x=j)
+
+rewrite the Markov Chain update:
+
+.. math::
+	v^{(t)} = Av^{(t-1)}
+
+Applying Markov chain repeatedly
+
+.. math::
+	v^{(t)} = A^tv^{(0)}
+
+Each column represents a probability disrtibution. Such matrices are called stochastic matrices. 
+
+**If there is a non-zero probability transitioning from any state x to any other state x' for some power t, it can be guanranteed that the largest eigenvalue is real and equal to 1.**
+
+.. math::
+	v^{(t)} = (V diag(\lambda)v^{-1})^tv{(0)} = V diag(\lambda)^tV^{-1}v^{(0)}
+
+This process causes all the eigenvalues that are not equal to 1 to decay to zero. Under some additional mild conditions, A is guaranteed to have only one eigenvector with eigenvalue 1. The process thus converges to a stationary distribution, sometimes also called the equilibrium distribution. At convergence,
+
+.. math::
+	v' = Av = v
+
+and this same condition holds for every additional step. To be a stationary point, v must be an eigenvector with corresponding eigenvalue 1. This condition gurantees that once we have reached the stationary distribution. Repeated applications of the transition sampling procedure do not change the distribution over the state of all the various Markov chain.
+
+If choose T correctly, the stationary distribution q will be equal to the distribution p we wish to sample from. 
+
+In general, a Markov chain with transition operator T will coverge, under mild conditions, to a fixed point described by the equation.
+
+.. math::
+	q'(x') = E_{x\sim q} T(x'|x)
+
+Running Markov chain until it reaches its equilibrium distribution is called burning in the Markov chain. After the chain has reached equilibrium, a sequence of infinitely many samples may be drawn from the equilibrium distribution. 
+
+* Problem: 2 successive samples highly correlated with each other. 
+* Solution:
+	
+	1. return only every n successive samples, so that our estimate of the statistics of the equilibrium distribution is not as biased by the correlation between MCMC sample and the next several samples. Expensive: burn in time + time required to transition from one sample to another reasonably decorrelated samples.
+	2. Run multiple Markov chain in parallel. Extra computation.
+	3. DL practitioners usually use a number of chains that is similar to the number of examples in a Minibatch and then draw as many samples as are needed from this fixed set of Markov chains. Common used number of Markov chain: 100.
+
+How many steps the Markov chain must run before reaching its equilibrium distribution: Mixing time. The difficulties to know whether a Markov chain has mixed: 
+
+* To know the mixing time is difficult
+* To test whether a Markov chain has reached equilibrium is difficult.
+* Number of states that our probabilistic model can visit is exponentially large in the number of variables, so it is in feasible to represent v, A or the eigenvalues of A. 
+
+Instead, we simply run Markov chain for an amount of time that we roughly estimate to be sufficient, then use heuristic methods to determine whether the chain has mixed. Those heuristic methods:
+
+* manually inspect samples
+* measure correlations between successive samples.
+
+
+###########################################
+Resource
+###########################################
+
+1. `Live Stream Chapter 17 Monte Carlo Methods with Don Dini <https://www.youtube.com/watch?v=M1fpAJArJA0&list=PLsXu9MHQGs8df5A4PzQGw-kfviylC-R9b&index=22&t=488s>`_
+
+
+
+
+

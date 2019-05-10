@@ -1,0 +1,385 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Deep Driving: Learning Affordance for Direct Perception in Autonomous Driving &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Part III: Deep Learning Research" href="../../../Part 3 (Deep Learning Research)/index.html" />
+    <link rel="prev" title="Focal Loss for Dense Object Detection" href="Focal Loss for Dense Object Detection.html" /> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../9 Convolutional Networks/index.html">9 The convolutional Networks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html">12 Applications</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="index.html">External Resources On Computer Vision</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="YOLO.html">YOLO</a></li>
+<li class="toctree-l4"><a class="reference internal" href="YOLO 2.html">YOLO 2</a></li>
+<li class="toctree-l4"><a class="reference internal" href="RCNN.html">RCNN</a></li>
+<li class="toctree-l4"><a class="reference internal" href="Focal Loss for Dense Object Detection.html">Focal Loss for Dense Object Detection</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Deep Driving: Learning Affordance for Direct Perception in Autonomous Driving</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Part 3 (Deep Learning Research)/index.html">Part III: Deep Learning Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
+        
+          <li><a href="../index.html">12 Applications</a> &raquo;</li>
+        
+          <li><a href="index.html">External Resources On Computer Vision</a> &raquo;</li>
+        
+      <li>Deep Driving: Learning Affordance for Direct Perception in Autonomous Driving</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../../_sources/Part 2 (Modern Practical Deep Networks)/12 Applications/Computer Vision External/Learning Affordance for Direct Perception in Auton.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="deep-driving-learning-affordance-for-direct-perception-in-autonomous-driving">
+<h1>Deep Driving: Learning Affordance for Direct Perception in Autonomous Driving<a class="headerlink" href="#deep-driving-learning-affordance-for-direct-perception-in-autonomous-driving" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://deepdriving.cs.princeton.edu/paper.pdf">paper</a></p>
+<div class="section" id="introduction">
+<h2>1 Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="mediated-perception-approach">
+<h3>Mediated perception approach<a class="headerlink" href="#mediated-perception-approach" title="Permalink to this headline">¶</a></h3>
+<p>involve multiple components:</p>
+<ol class="arabic simple">
+<li>recognizing driving relevant objects: lanes, traffic light …</li>
+<li>combinen recognizing result with world representation of the cars immediate surroundings</li>
+<li>AI based engine takes akk of this inform into account and make decision.</li>
+</ol>
+<p>Encompasses the current state of the art approaches for autonomous driving.</p>
+<p>Small portion of the detected objects are relevant to driving decision, unnecessary complexity. Final output:</p>
+<ul class="simple">
+<li>direction</li>
+<li>speed</li>
+</ul>
+<p>Mediated perceptiion computes a high-D world representation, possibly redundant information.</p>
+<p>Most of these system rely on laser range finders, GPS, radar and very accurate maps of the environment to reliable parse objects in a scene. Many open challenges, increase complexity and cost.</p>
+</div>
+<div class="section" id="behavior-reflex-approach">
+<h3>Behavior reflex approach<a class="headerlink" href="#behavior-reflex-approach" title="Permalink to this headline">¶</a></h3>
+<p>Construct a direct mapping from the sensory input to a driving action.</p>
+<p>Struggle to deal with traffic and complicated driving maneuvers for several reasons.</p>
+<ul class="simple">
+<li>even when input images are similar, different drivers may make completely different decisions, resulting in ill-posed problem that is confusing when training a regressor.</li>
+<li>decision-making for behaviour reflex is too low-level. Direct mapping cannot see a bigger picture of the situation. E.g. passing a car: turning slighly in one direction and the in the other direction for some period of time. This level of abstraction fails to capture what is really going on.</li>
+<li>Input: whole image. Learning algorithm must determine which part of the image are relevant. The level of supervision too weak to force the alogrithm to learn this critical information.</li>
+</ul>
+</div>
+<div class="section" id="proposal">
+<h3>Proposal<a class="headerlink" href="#proposal" title="Permalink to this headline">¶</a></h3>
+<p>Directly predicts the affordance for driving action, instead of visually parsing the entire scene or blindly mapping an image to steering angles. Learn a mapping from an image to several meaningful affordance indicators of the road situation, including</p>
+<ul class="simple">
+<li>angle of the car relative to the road</li>
+<li>distance to the lane markings</li>
+<li>distance to the cars in the current and adjacent lanes</li>
+</ul>
+<p>training: ConvNet. screen shot playing video game for 12 hours.</p>
+<p>Define <a class="reference external" href="https://www.google.com/search?q=affordances&amp;rlz=1C1GCEU_enUS821US821&amp;oq=affordance&amp;aqs=chrome.0.0j69i57j0j69i59j35i39j0.2367j0j7&amp;sourceid=chrome&amp;ie=UTF-8">affordance</a>: Affordances are clues about how an object should be used, typically provided by the object itself or its context. For example, even if you’ve never seen a coffee mug before, its use is fairly natural. The handle is shaped for easy grasping and the vessel has a large opening at the top with an empty well inside.</p>
+</div>
+<div class="section" id="related-work">
+<h3>1.1 Related work<a class="headerlink" href="#related-work" title="Permalink to this headline">¶</a></h3>
+<p>2 Key elements of an autonoumous driving system:</p>
+<ul class="simple">
+<li>Car detection: use bounding box</li>
+<li>Lane detection: use slines</li>
+</ul>
+<p>however, not direct affordance information we use for driving. Conversion results in extra noise.</p>
+<p><a class="reference external" href="http://people.idsia.ch/~juergen/gecco2013torcs.pdf">RNN with RL approach</a>
+<a class="reference external" href="https://apps.dtic.mil/dtic/tr/fulltext/u2/a249972.pdf">Neural network perception for mobile robot guidance</a></p>
+<p>Check this section for all the work that has been done in this field</p>
+</div>
+</div>
+<div class="section" id="learning-affordance-for-driving-preception">
+<h2>2. Learning affordance for driving preception<a class="headerlink" href="#learning-affordance-for-driving-preception" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="http://torcs.sourceforge.net/">TORCS</a></p>
+<p>from the game engine, collect</p>
+<ul class="simple">
+<li>speed of host car</li>
+<li>relative position to the roads’s central line</li>
+<li>distance to the preceding cars</li>
+</ul>
+<ol class="arabic">
+<li><p class="first">prepare:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>drive the label collecting car, first person view</li>
+<li>collect the ground truth values of affordance indicators.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">training</p>
+</li>
+<li><p class="first">testing: at each time step</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>the trained model takes a driving scene image from the game and estimates the affordance indicators for driving.</li>
+<li>A driving controller processes the indicator and computes the steering the acceleration/brake command.</li>
+<li>Driving commands are then sent back to the game and drive the host car.</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+<div class="section" id="mapping-from-an-image-to-affordance">
+<h3>2.1 Mapping from an image to affordance<a class="headerlink" href="#mapping-from-an-image-to-affordance" title="Permalink to this headline">¶</a></h3>
+<p>ConvNet as direct preception model to map an image to the affordance indicators.</p>
+<p>Train a single ConvNet to handle 3 configurations: 1 lane, 2 lanes and 3 lanes.</p>
+<img alt="../../../_images/SelfDrivingAffordanceFigure2.PNG" src="../../../_images/SelfDrivingAffordanceFigure2.PNG" />
+<p>two major types of action:</p>
+<ol class="arabic simple">
+<li>follow the lane certer line</li>
+<li>change lane and slow down to avoid collision with proceding cars</li>
+</ol>
+<p>to support these action, define two sets of representation under 2 coordinate system</p>
+<ol class="arabic simple">
+<li>In lane system</li>
+<li>On marking system</li>
+</ol>
+<p>3 types of indicators to represent driving situation:</p>
+<ul class="simple">
+<li>heading angle</li>
+<li>distance to nearby lane markings</li>
+<li>distance to the precding cars</li>
+</ul>
+<p>In total, 13 indicators:</p>
+<img alt="../../../_images/SelfDrivingAffordanceFigure3.PNG" src="../../../_images/SelfDrivingAffordanceFigure3.PNG" />
+<p>All 13 indicators:</p>
+<ol class="arabic">
+<li><p class="first">Always</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>angle: angle between the car’s heading and the tangent of the road</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">“in lane system”, when driving in the lane</p>
+<blockquote>
+<div><ol class="arabic simple" start="2">
+<li>toMarking_LL: distance to the left lane marking of the left lane</li>
+<li>toMarking_ML: distance to the left lane marking of the current lane</li>
+<li>toMarking_MR: distance to the right lane marking of the current lane</li>
+<li>toMarking_RR: distance to the right lane marking of the right lane</li>
+<li>dist_LL: distance to the proceding car in the left lane</li>
+<li>dist_MM: distance to the proceding car in the current lane</li>
+<li>dist_RR: distance to the proceduing car in the right lane</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">“on marking system”, when driving on the lane marking</p>
+<blockquote>
+<div><ol class="arabic simple" start="9">
+<li>toMarking_L: distance to the left lane marking</li>
+<li>toMarking_M: distance to the central lane marking</li>
+<li>toMarking_R: distance to the right lane marking</li>
+<li>dist_L: distance to the proceding car in the left lane</li>
+<li>dist_R: distance to the proceding car in the right lane</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+<p>The inline system and on marking system are activated under different conditions. To have smooth transition, we define an overlapping area.</p>
+<p>Except for the heading angle, all the indicators may output an inactive  state. There are 2 cases in which a indicator will be inactive:</p>
+<ol class="arabic simple">
+<li>when the car is driving in either the “inlane system” or “on marking system” and the other system is deactivated, then all the indicators belonging to that system is inactive.</li>
+<li>when the car is driving on boundary lanes (left most or right most lane), and there is either no left lane or no right lane, then the indicators corresponding to the non-existing adjacent lane is inactive.</li>
+</ol>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../../Part 3 (Deep Learning Research)/index.html" class="btn btn-neutral float-right" title="Part III: Deep Learning Research" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Focal Loss for Dense Object Detection.html" class="btn btn-neutral" title="Focal Loss for Dense Object Detection" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

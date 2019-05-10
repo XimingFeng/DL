@@ -1,0 +1,285 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>17.2 Importance Sampling &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="17.3 Markov Chain Monte Carlo Methods" href="17.3 Markov Chain Monte Carlo Methods.html" />
+    <link rel="prev" title="17.1 Sampling and Monte Carlo Methods" href="17.1 Sampling and Monte Carlo Methods.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">17 Monte Carlo Methods</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="17.1 Sampling and Monte Carlo Methods.html">17.1 Sampling and Monte Carlo Methods</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">17.2 Importance Sampling</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resources">Resources</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="17.3 Markov Chain Monte Carlo Methods.html">17.3 Markov Chain Monte Carlo Methods</a></li>
+<li class="toctree-l3"><a class="reference internal" href="17.4 Gibbs sampling.html">17.4 Gibbs Sampling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">17 Monte Carlo Methods</a> &raquo;</li>
+        
+      <li>17.2 Importance Sampling</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/17 Monte Carlo Methods/17.2 Importance Sampling.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="importance-sampling">
+<h1>17.2 Importance Sampling<a class="headerlink" href="#importance-sampling" title="Permalink to this headline">¶</a></h1>
+<p>Review basics of Monte Carlo Samplings:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}s = \sum_x p(x)f(x) = E_p[f(x)] \\
+or \\
+s = \int p(x)f(x) = E_p[f(x)]\end{split}\]</div>
+<p>Note that there is no unique decomposition because</p>
+<div class="math notranslate nohighlight">
+\[p(x)f(x) = q(x)\frac{p(x)f(x)}{q(x)}\]</div>
+<p>now we sample from q and average <span class="math notranslate nohighlight">\(\frac{pf}{q}\)</span>. The optimal <span class="math notranslate nohighlight">\(q^*\)</span> corresponds to what is called optimal importance sampling.</p>
+<p>Monte Carlo estimator:</p>
+<div class="math notranslate nohighlight">
+\[\hat{s}_p = \frac{1}{n} \sum^n_{i=1, x^{(i)}\sim p}f(x^{(i)})\]</div>
+<p>is now transformed into:</p>
+<div class="math notranslate nohighlight">
+\[\hat{s}_q = \frac{1}{n} \sum^n_{i=1, x^{(i)}\sim q}\frac{p(x^{(i)})f(x^{(i)})}{q(x^{(i)})}\]</div>
+<p>Expected value of estimator:</p>
+<div class="math notranslate nohighlight">
+\[E_q[\hat{s}_q] = E_q[\hat{s}_p] = s\]</div>
+<p>The variance of an importance sampling:</p>
+<div class="math notranslate nohighlight">
+\[Var[\hat{s}_q] = Var[\frac{p(x)f(x)}{q(x)}]/n\]</div>
+<p>The minimum variance occurs when q is</p>
+<div class="math notranslate nohighlight">
+\[q^*(x) = \frac{p(x)|f(x)|}{Z}\]</div>
+<p>where Z is the normalization constant, chosen so that <span class="math notranslate nohighlight">\(q^*(x)\)</span> sums or integrates to 1 as appropriate.</p>
+<p>Better importance sampling distribution put more weight where the integrant is larger. When f(x) does not change sign, <span class="math notranslate nohighlight">\(Var[\hat{s}_{q^*}] = 0\)</span>, meaning that a single example is sufficient when the optimal distribution is used. This is only because the computation of <span class="math notranslate nohighlight">\(q^*\)</span> has essentially solved the original problem, os it is usually not practical to use this approach.</p>
+<p>Sampling from <span class="math notranslate nohighlight">\(q^*\)</span> is usually infeasible, but other choices of q can be feasible while still reducing the variance somewhat</p>
+<p>Biased importance sampling, not require normalizing p or q</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{s}_{BIS} = \frac{\sum^n_{i=1} \frac{p(x^{(i)})}{q(x^{(i)})} f(x^{(i)})}{\sum^n_{i=1} \frac{p(x^{(i)})}{q(x^{(i)})} } \\
+= \frac{\sum^n_{i=1} \frac{\tilde{p}(x^{(i)})}{\tilde{q}(x^{(i)})} f(x^{(i)})}{\sum^n_{i=1} \frac{\tilde{p}(x^{(i)})}{\tilde{q}(x^{(i)})} }\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\tilde{p}, \tilde{q}\)</span> are the unormalized form of p and q and the <span class="math notranslate nohighlight">\(x^{(i)}\)</span> are the samples from q. This estimator is biased because <span class="math notranslate nohighlight">\(E[\hat{s}_{BIS}] \neq s\)</span>, exexpt when <span class="math notranslate nohighlight">\(n \to \infty\)</span> and the denominator  of the first equation above  converges to 1. Hence this estimator is called asymptotically unbiased.</p>
+<p>q distribution is usually chosen to be simple distribution so that it is easy to sample from. When x is high dimensional, this simplicity in q causes it to match p or p|f| poorly.</p>
+<ul class="simple">
+<li>When <span class="math notranslate nohighlight">\(q(x^{(i)}) &gt;&gt; p(x^{(i)})|f(x^{(i)})|\)</span>, importance sampling collects useless samples (summing up tiny numbers or zeros)</li>
+<li>When <span class="math notranslate nohighlight">\(q(x^{(i)}) &lt;&lt; p(x^{(i)})|f(x^{(i)})|\)</span> (more rarely), the ratio can be huge</li>
+</ul>
+<p>yield typical underestimation of s, compensated rarely by gross overestimation. Such very large or very small numbers are typical when x is high D, because in high D the dynamic range of joint probabilistic can be very large</p>
+<p>Very useful</p>
+<ul class="simple">
+<li>section 12.4.3.3 P457: accelerate training in neural language model with a large vocabulary.</li>
+<li>section 18.7 p614</li>
+<li>20.10 p687</li>
+</ul>
+<p>Importance sampling may also be used to improve the estimate of the gradient of the cost function used to train model parameters with stochastic gradient descent. Sampling more difficult examples more frequently can reduce the variance of the gradient in such case.</p>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://statweb.stanford.edu/~owen/mc/Ch-var-is.pdf">Importance Sampling Tutorial</a></li>
+<li><a class="reference external" href="https://www.youtube.com/watch?v=M1fpAJArJA0&amp;list=PLsXu9MHQGs8df5A4PzQGw-kfviylC-R9b&amp;index=22&amp;t=488s">Live Stream Chapter 17 Monte Carlo Methods with Don Dini</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="17.3 Markov Chain Monte Carlo Methods.html" class="btn btn-neutral float-right" title="17.3 Markov Chain Monte Carlo Methods" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="17.1 Sampling and Monte Carlo Methods.html" class="btn btn-neutral" title="17.1 Sampling and Monte Carlo Methods" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
