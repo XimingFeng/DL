@@ -1,0 +1,15 @@
+18.5 Denoising Score Matching
+=======================================
+
+We may wish to regularize score matching, by fitting a distribution
+
+.. math::
+	p_{smoothed}(x) = \int p_{data}(y)q(x|y)dy
+
+rather than the true :math:`p_{data}`. The distribution q(x|y) is a corruption process, usually one that form x by adding a small amount of noise to y.
+
+Denoising score matching is epecially useful because in practice, we usually do not have access to the true :math:`p_{data}` but rather only  an emprirical distribution defined by samples from it. 
+
+Several autoencoder training algorithms are equivalent to score matching or denoising score matching. These autoencoder training algorithms are therefore a way of overcoming the partition function problem.
+
+

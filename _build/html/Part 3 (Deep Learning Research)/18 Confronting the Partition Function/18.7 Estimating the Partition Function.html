@@ -1,0 +1,317 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>18.7 Estimating the Partition Function &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="18.6 Noise-Contrastive Estimation" href="18.6 Noise-Contrastive Estimation.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">18 Confronting the Partition Function</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="18.1 The log-likehood Gradient.html">18.1 The log-likehood Gradient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="18.2 Stochastic Maximum Likehood and Contrastive.html">18.2 Stochastic Maximum Likehood and Contrastive Divergence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="18.3 Pseudolikehood.html">18.3 Pseudolikehood</a></li>
+<li class="toctree-l3"><a class="reference internal" href="18.4 Score Matching and Ratio Matching.html">18.4 Score Matching and Ratio Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="18.5 Denoising Score Matching.html">18.5 Denoising Score Matching</a></li>
+<li class="toctree-l3"><a class="reference internal" href="18.6 Noise-Contrastive Estimation.html">18.6 Noise-Contrastive Estimation</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">18.7 Estimating the Partition Function</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#annealed-importance-sampling">18.7.1 Annealed Importance Sampling</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bridge-sampling">18.7.2 Bridge Sampling</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">18 Confronting the Partition Function</a> &raquo;</li>
+        
+      <li>18.7 Estimating the Partition Function</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/18 Confronting the Partition Function/18.7 Estimating the Partition Function.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="estimating-the-partition-function">
+<h1>18.7 Estimating the Partition Function<a class="headerlink" href="#estimating-the-partition-function" title="Permalink to this headline">¶</a></h1>
+<p>eg:</p>
+<ul class="simple">
+<li>Model A: <span class="math notranslate nohighlight">\(p_A(x, \theta_A) = \frac{1}{Z_A}\hat{p}_A(x,; \theta_A)\)</span></li>
+<li>Model B: <span class="math notranslate nohighlight">\(p_B(x, \theta_B) = \frac{1}{Z_B}\hat{p}_B(x,; \theta_B)\)</span></li>
+</ul>
+<p>Suppose the test set consists of m examples <span class="math notranslate nohighlight">\(\{  x^{(1)}, ..., x^{(m)} \}\)</span>, if</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\prod_i p_A(x^{(i)}; \theta_A) &gt; \prod_i p_B(x^{(i)}; \theta_B) \\
+or \\
+\sum_i \log p_A(x^{(i)}; \theta_A) - \sum_i \log p_B(x^{(i)}; \theta_B) = \sum_i( \log \frac{\hat{p}_A(x,; \theta_A)}{\hat{p}_B(x,; \theta_B)} ) - m \log \frac{Z(\theta_A)}{Z(\theta_B)} &gt; 0 \\\end{split}\]</div>
+<p>we say that model A is a better model than model B, in the sense that it has a better log-liekhood. If we knew the ratio of two partition functions, <span class="math notranslate nohighlight">\(r=\frac{Z(\theta_B)}{Z(\theta_A)}\)</span> and we knew that actual value of just one of the two, we could compute the value of the other:</p>
+<div class="math notranslate nohighlight">
+\[Z(\theta_B) = rZ(\theta_A)\]</div>
+<p>A simple way to estimate the partition function is to use Monte Carlo method such as simple importance sampling:</p>
+<p>Proposal distribution: <span class="math notranslate nohighlight">\(p_0 = \frac{1}{Z_0}\hat{p}_0(x)\)</span>, which support tractable sampling and tractable evaluation of both the partition function and unnormalized distribution.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+Z_1 &amp;= \int \hat{p}_1(x)dx \\
+&amp; = \int \frac{p_0}{p_0} \hat{p}_1(x)dx \\
+&amp; = Z_0 \int p_0(x)\frac{\hat{p}_1(x)}{\hat{p}_0(x)}dx
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>So, we make a Monte Carlo estimator, <span class="math notranslate nohighlight">\(\hat{Z}_1\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{Z}_1 = \frac{Z_0}{K} \sum_{k=1}^{K} \frac{\hat{p}_1(x)}{\hat{p}_0(x)} \\
+s.t: x^{(k)} \sim p_0\end{split}\]</div>
+<p>This value also allow us to estimate the ratio between the partition function as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\frac{1}{K} \sum_{k=1}^{K} \frac{\hat{p}_1(x)}{\hat{p}_0(x)} \\
+s.t: x^{(k)} \sim p_0\end{split}\]</div>
+<ul class="simple">
+<li>If <span class="math notranslate nohighlight">\(p_0\)</span> is close to <span class="math notranslate nohighlight">\(p_1\)</span>: effective way of estimating partition function</li>
+<li>If not, which in most cases, it is difficult to find a tractable <span class="math notranslate nohighlight">\(p_0\)</span> that is simple enough to evaluate while still being close enough to <span class="math notranslate nohighlight">\(p_1\)</span> to result in a high-quality approximation. Most samples from <span class="math notranslate nohighlight">\(p_0\)</span> will have low probability under <span class="math notranslate nohighlight">\(p_1\)</span> and therefore make relatively negative contribution to the sum.</li>
+</ul>
+<p>Two strategies to cope with the challenging task of estimating partition functions for complex distribution over high D spaces:</p>
+<ul class="simple">
+<li>Annealed Importance Sampling</li>
+<li>Bridge Sampling</li>
+</ul>
+<p>Both attempt to overcome the problem of the proposal <span class="math notranslate nohighlight">\(p_0\)</span> being too far from <span class="math notranslate nohighlight">\(p_1\)</span> by introducing intermediate distribution that attempt to bridge the gap between <span class="math notranslate nohighlight">\(p_0\)</span> and <span class="math notranslate nohighlight">\(p_1\)</span> (<span class="math notranslate nohighlight">\(D_{KL}(p_0||p_1)\)</span> is large).</p>
+<div class="section" id="annealed-importance-sampling">
+<h2>18.7.1 Annealed Importance Sampling<a class="headerlink" href="#annealed-importance-sampling" title="Permalink to this headline">¶</a></h2>
+<p>Annealed importance sampling attempts to bridge the gap by introducing intermediate distributions: <span class="math notranslate nohighlight">\(p_{\eta_0}, .... p_{\eta_n}\)</span>, where <span class="math notranslate nohighlight">\(0=\eta_0&lt; \eta_1 &lt; ... &lt; \eta_n=1\)</span>.</p>
+<p>We begin with a simpler model with a known partition function and estimate the ratio between the 2 model’s partition functions. The estimate of this ratio is based on the estimate of the ratios of a sequence of many similar distributions, such as the sequence of RBMs with weights interpolating between 0 and the learned weights.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+\frac{Z_1}{Z_0} &amp;= \frac{Z_1}{Z_0} \frac{Z_{\eta_1}}{Z_{\eta_1}} ..... \frac{Z_{\eta_{n-1}}}{Z_{\eta_{n-1}}} \\
+&amp;= \frac{Z_{\eta_1}}{Z_0} \frac{Z_{\eta_2}}{Z_{\eta_1}} ..... \frac{Z_{\eta_n}}{Z_{\eta_{n-1}}} \\
+&amp;= \prod_{j=0}^{n-1} \frac{Z_{\eta_{j+1}}}{Z_{\eta_j}}
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>provided the distribution <span class="math notranslate nohighlight">\(p_{\eta_j}\)</span> and <span class="math notranslate nohighlight">\(p_{\eta_{j+1}}\)</span> for all 0&lt;=j&lt;=n-1 are sufficiently close, we can reliably estimate each of the factors <span class="math notranslate nohighlight">\(\frac{Z_{\eta_{j+1}}}{Z_{\eta_j}}\)</span> using simple importance sampling and the use these to obtain an estimation of <span class="math notranslate nohighlight">\(\frac{Z_1}{Z_0}\)</span>.</p>
+<p>One general purpose and popular choice for the intermediate distribution is to use the weighted geometric average of the target distribution <span class="math notranslate nohighlight">\(p_1\)</span> and the starting proposal distribution <span class="math notranslate nohighlight">\(p_0\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[p_{\eta_j} \propto p_1^{\eta_j}p_0^{1 - \eta_j}\]</div>
+<p>In order to sample from these intermediate distributions, we define a series of Markov chain transition functions <span class="math notranslate nohighlight">\(T_{\eta_j}(x'|x)\)</span> that define conditional probability distribution of transition to x’ given we are currently at x. The transition operator <span class="math notranslate nohighlight">\(T_{\eta_j}(x'|x)\)</span> is defined to leave <span class="math notranslate nohighlight">\(p_{\eta_j}(x)\)</span> invariant:</p>
+<div class="math notranslate nohighlight">
+\[p_{\eta_j}(x) = \int p_{\eta_j}(x')T_{\eta_j}(x|x') dx'\]</div>
+<p>Strategy of AIS: generate sample from <span class="math notranslate nohighlight">\(p_0\)</span> and use the transition operator to sequentially generate samples from the intermediate distribution until we arrive at samples from the target distribution <span class="math notranslate nohighlight">\(p_1\)</span>:</p>
+<img alt="../../_images/AIS.PNG" src="../../_images/AIS.PNG" />
+<p>for sampel k we can derive the importance weight by chaining together importance weights for the jumps between the intermediate distributions</p>
+<div class="math notranslate nohighlight">
+\[W^{(K)} = \frac{\hat{p}_{\eta_1}(x^{(k)}_{\eta_1})}{\hat{p}_0(x^{(k)}_0)}\frac{\hat{p}_{\eta_2}(x^{(k)}_{\eta_1})}{\hat{p}_{\eta_1}(x^{(k)}_{\eta_1})} ... \frac{\hat{p}_1(x^{(k)}_1)}{\hat{p}_{\eta_{n-1}}(x^{(k)}_{\eta_n})}\]</div>
+<p>To avoid numerical issues such as overflow, it is probably best to compute <span class="math notranslate nohighlight">\(\log w^{(k)}\)</span> by adding and substracting log probabilities rather than computing <span class="math notranslate nohighlight">\(w^{(k)}\)</span> by multipling and dividing probabilities.</p>
+<p>The estimate of ratio of partition function:</p>
+<div class="math notranslate nohighlight">
+\[\frac{Z_1}{Z_0} \approx \frac{1}{K}\sum_{k=1}^K w^{(k)}\]</div>
+<p>AIS is currently the most common way of estimating the partition function for undirected probability models.</p>
+</div>
+<div class="section" id="bridge-sampling">
+<h2>18.7.2 Bridge Sampling<a class="headerlink" href="#bridge-sampling" title="Permalink to this headline">¶</a></h2>
+<p>Bridge sampling relies on a single distribution <span class="math notranslate nohighlight">\(p_*\)</span>, known as the bridge to interpolate between a distribution with known partition function, <span class="math notranslate nohighlight">\(p_0\)</span>, and a distribution <span class="math notranslate nohighlight">\(p_0\)</span> for whivh we want to estimate the partition function <span class="math notranslate nohighlight">\(Z_1\)</span></p>
+<p>Bridge sampling estimates the ratio as the ratio of the expected improtance weights between <span class="math notranslate nohighlight">\(\hat{p}_0\)</span> and <span class="math notranslate nohighlight">\(\hat{p}_*\)</span>, and between <span class="math notranslate nohighlight">\(\hat{p}_*\)</span> and <span class="math notranslate nohighlight">\(\hat{p}_1\)</span></p>
+<div class="math notranslate nohighlight">
+\[\frac{Z_1}{Z_0} = \sum_{k=1}^K \frac{\hat{p}_*(x_0^{(k)})}{\hat{p}_0(x_0^{(k)})} / \sum_{k=1}^K \frac{\hat{p}_*(x_1^{(k)})}{\hat{p}_1(x_1^{(k)})}\]</div>
+<p>If the bridge distribution <span class="math notranslate nohighlight">\(p_*\)</span> is chosen carefully to have a large overlap of support with both <span class="math notranslate nohighlight">\(p_0\)</span> and <span class="math notranslate nohighlight">\(p_1\)</span>, the bridge sampling can allow the distance between 2 distributions (or <span class="math notranslate nohighlight">\(D_{KL}(p_0||p_1)\)</span>) to be much larger with standard importance sampling.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="18.6 Noise-Contrastive Estimation.html" class="btn btn-neutral" title="18.6 Noise-Contrastive Estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

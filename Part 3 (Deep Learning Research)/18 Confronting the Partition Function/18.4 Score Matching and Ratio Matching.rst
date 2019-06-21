@@ -1,0 +1,47 @@
+18.4 Score Matching and Ratio Matching
+=========================================
+
+Score:
+
+.. math::
+	\nabla_x \log p(x)
+
+The strategy of score matching: minimize the expected squared difference between the derivatives of the model's log density with respect to the input and the direvative of the data's log density with respect to the input
+
+.. math::
+	
+	\begin {equation}
+	\begin{split}
+	L(x, \theta) &= \frac{1}{2} || \nabla_x \log p_{model}(x; \theta) -  \nabla_x \log p_{data}(x; \theta)||_2^2
+	\end{split}
+	\end {equation}
+
+This objective function avoids the difficulties associated with differentiating the partition function Z because Z is not a function of x and therefor :math:`\nabla_x Z = 0`.
+
+Minimizing the expected value of :math:`L(x, \theta)` is the equivalent to minimizing the expected value of 
+
+.. math::
+	\hat{L}(x, \theta) = \sum_{j=1}^n(\frac{\partial^2}{\partial x^2_j} \log p_{model}(x;\theta) + \frac{1}{2}(\frac{\partial}{\partial x_j }\log p_{model}(x; \theta))^2)
+
+where n is the dimensionality of x. Score matching is not applicable to discrete data. The latent variable in the model may be discrete.
+
+It is not compatible with methods that provide only a lower bound on :math:`\log \hat{p}(x)`, because score matching requires the derivatives and second derivative of :math:`\log \hat{p}(x)`, and lower bound conveys no information about its derivative. This means that score matching cannot be applied to estimating models with complicated interaction between the hidden units, such as sparse coding models and deep Boltzman machine. While score mathcing can be used to pretrain the first hidden layer of a large model, it has not been applied as pretraining strategy for the deeper layers of a larger model. 
+
+An approach to extending the basic ideas of score matching to discrete data is ratio matchin. Ratio matching applies specifically to ratio data. Objective function:
+
+.. math::
+
+	L^{(RM)}(x, \theta) = \sum_{j=1}^n (\frac{1}{1 + \frac{p_{model}((x;\theta))}{p_{model}(f(x, j);\theta)}})
+
+where f(x, j) returns x with the bit at position j flipped. Ratio matching avoids the partition function using the same trick as the pseudolikehood estimator: in a ration of two probabilities, the partition function cancels out. 
+
+Ratio matching requires n evaluations of :math:`\hat{p}` per data point, computational cost per update roughly n times higher than that of SML
+
+review: stochastic maximum likehood (SML), AKA, persistent contrastive divergence (PCD). Initialize the markov chains at each gradient step with their states from the previous gradient step. 
+
+.. image:: rsc/algo18.3.PNG
+
+As with pseudolikehood, ratio matching can be thought of as pushing down all fantasy states that have only one variable different from a training example. 
+
+Ratio matching can be useful as the basis for dealing with high D sparse data, such as word count vectors. This kind of data poses a challenge for MCMC-based methods because the data is extremely expensive to represent in dense format, yet the MCMC sampler does not yield sparse values until the model has learned to represent the sparsity in the data distribution.
+

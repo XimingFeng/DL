@@ -1,0 +1,120 @@
+18.7 Estimating the Partition Function
+========================================
+
+eg:
+
+* Model A: :math:`p_A(x, \theta_A) = \frac{1}{Z_A}\hat{p}_A(x,; \theta_A)`
+* Model B: :math:`p_B(x, \theta_B) = \frac{1}{Z_B}\hat{p}_B(x,; \theta_B)`
+
+Suppose the test set consists of m examples :math:`\{  x^{(1)}, ..., x^{(m)} \}`, if
+
+.. math::
+	\prod_i p_A(x^{(i)}; \theta_A) > \prod_i p_B(x^{(i)}; \theta_B) \\
+	or \\
+	\sum_i \log p_A(x^{(i)}; \theta_A) - \sum_i \log p_B(x^{(i)}; \theta_B) = \sum_i( \log \frac{\hat{p}_A(x,; \theta_A)}{\hat{p}_B(x,; \theta_B)} ) - m \log \frac{Z(\theta_A)}{Z(\theta_B)} > 0 \\
+
+we say that model A is a better model than model B, in the sense that it has a better log-liekhood. If we knew the ratio of two partition functions, :math:`r=\frac{Z(\theta_B)}{Z(\theta_A)}` and we knew that actual value of just one of the two, we could compute the value of the other:
+
+.. math::
+	Z(\theta_B) = rZ(\theta_A)
+
+A simple way to estimate the partition function is to use Monte Carlo method such as simple importance sampling:
+
+Proposal distribution: :math:`p_0 = \frac{1}{Z_0}\hat{p}_0(x)`, which support tractable sampling and tractable evaluation of both the partition function and unnormalized distribution.
+
+.. math::
+
+	\begin {equation}
+	\begin{split}
+	Z_1 &= \int \hat{p}_1(x)dx \\
+	& = \int \frac{p_0}{p_0} \hat{p}_1(x)dx \\
+	& = Z_0 \int p_0(x)\frac{\hat{p}_1(x)}{\hat{p}_0(x)}dx
+	\end{split}
+	\end {equation}
+
+So, we make a Monte Carlo estimator, :math:`\hat{Z}_1`
+
+.. math::
+	
+	\hat{Z}_1 = \frac{Z_0}{K} \sum_{k=1}^{K} \frac{\hat{p}_1(x)}{\hat{p}_0(x)} \\      
+	s.t: x^{(k)} \sim p_0
+
+This value also allow us to estimate the ratio between the partition function as 
+
+.. math::
+	
+	\frac{1}{K} \sum_{k=1}^{K} \frac{\hat{p}_1(x)}{\hat{p}_0(x)} \\      
+	s.t: x^{(k)} \sim p_0
+
+* If :math:`p_0` is close to :math:`p_1`: effective way of estimating partition function
+* If not, which in most cases, it is difficult to find a tractable :math:`p_0` that is simple enough to evaluate while still being close enough to :math:`p_1` to result in a high-quality approximation. Most samples from :math:`p_0` will have low probability under :math:`p_1` and therefore make relatively negative contribution to the sum. 
+
+Two strategies to cope with the challenging task of estimating partition functions for complex distribution over high D spaces:
+
+* Annealed Importance Sampling
+* Bridge Sampling
+
+Both attempt to overcome the problem of the proposal :math:`p_0` being too far from :math:`p_1` by introducing intermediate distribution that attempt to bridge the gap between :math:`p_0` and :math:`p_1` (:math:`D_{KL}(p_0||p_1)` is large).
+
+#########################################################
+18.7.1 Annealed Importance Sampling
+#########################################################
+
+Annealed importance sampling attempts to bridge the gap by introducing intermediate distributions: :math:`p_{\eta_0}, .... p_{\eta_n}`, where :math:`0=\eta_0< \eta_1 < ... < \eta_n=1`.
+
+We begin with a simpler model with a known partition function and estimate the ratio between the 2 model's partition functions. The estimate of this ratio is based on the estimate of the ratios of a sequence of many similar distributions, such as the sequence of RBMs with weights interpolating between 0 and the learned weights.
+
+.. math::
+	
+	\begin {equation}
+	\begin{split}
+	\frac{Z_1}{Z_0} &= \frac{Z_1}{Z_0} \frac{Z_{\eta_1}}{Z_{\eta_1}} ..... \frac{Z_{\eta_{n-1}}}{Z_{\eta_{n-1}}} \\
+	&= \frac{Z_{\eta_1}}{Z_0} \frac{Z_{\eta_2}}{Z_{\eta_1}} ..... \frac{Z_{\eta_n}}{Z_{\eta_{n-1}}} \\
+	&= \prod_{j=0}^{n-1} \frac{Z_{\eta_{j+1}}}{Z_{\eta_j}}
+	\end{split}
+	\end {equation}
+
+provided the distribution :math:`p_{\eta_j}` and :math:`p_{\eta_{j+1}}` for all 0<=j<=n-1 are sufficiently close, we can reliably estimate each of the factors :math:`\frac{Z_{\eta_{j+1}}}{Z_{\eta_j}}` using simple importance sampling and the use these to obtain an estimation of :math:`\frac{Z_1}{Z_0}`.
+
+One general purpose and popular choice for the intermediate distribution is to use the weighted geometric average of the target distribution :math:`p_1` and the starting proposal distribution :math:`p_0`:
+
+.. math::
+	p_{\eta_j} \propto p_1^{\eta_j}p_0^{1 - \eta_j}
+
+In order to sample from these intermediate distributions, we define a series of Markov chain transition functions :math:`T_{\eta_j}(x'|x)` that define conditional probability distribution of transition to x' given we are currently at x. The transition operator :math:`T_{\eta_j}(x'|x)` is defined to leave :math:`p_{\eta_j}(x)` invariant:
+
+.. math::
+	p_{\eta_j}(x) = \int p_{\eta_j}(x')T_{\eta_j}(x|x') dx'
+
+Strategy of AIS: generate sample from :math:`p_0` and use the transition operator to sequentially generate samples from the intermediate distribution until we arrive at samples from the target distribution :math:`p_1`:
+
+.. image:: rsc/AIS.PNG
+
+for sampel k we can derive the importance weight by chaining together importance weights for the jumps between the intermediate distributions
+
+.. math::
+	W^{(K)} = \frac{\hat{p}_{\eta_1}(x^{(k)}_{\eta_1})}{\hat{p}_0(x^{(k)}_0)}\frac{\hat{p}_{\eta_2}(x^{(k)}_{\eta_1})}{\hat{p}_{\eta_1}(x^{(k)}_{\eta_1})} ... \frac{\hat{p}_1(x^{(k)}_1)}{\hat{p}_{\eta_{n-1}}(x^{(k)}_{\eta_n})}
+
+To avoid numerical issues such as overflow, it is probably best to compute :math:`\log w^{(k)}` by adding and substracting log probabilities rather than computing :math:`w^{(k)}` by multipling and dividing probabilities.
+
+The estimate of ratio of partition function:
+
+.. math::
+	\frac{Z_1}{Z_0} \approx \frac{1}{K}\sum_{k=1}^K w^{(k)}
+
+AIS is currently the most common way of estimating the partition function for undirected probability models. 
+
+
+#########################################################
+18.7.2 Bridge Sampling
+#########################################################
+
+Bridge sampling relies on a single distribution :math:`p_*`, known as the bridge to interpolate between a distribution with known partition function, :math:`p_0`, and a distribution :math:`p_0` for whivh we want to estimate the partition function :math:`Z_1` 
+
+Bridge sampling estimates the ratio as the ratio of the expected improtance weights between :math:`\hat{p}_0` and :math:`\hat{p}_*`, and between :math:`\hat{p}_*` and :math:`\hat{p}_1`
+
+.. math::
+	\frac{Z_1}{Z_0} = \sum_{k=1}^K \frac{\hat{p}_*(x_0^{(k)})}{\hat{p}_0(x_0^{(k)})} / \sum_{k=1}^K \frac{\hat{p}_*(x_1^{(k)})}{\hat{p}_1(x_1^{(k)})}
+
+If the bridge distribution :math:`p_*` is chosen carefully to have a large overlap of support with both :math:`p_0` and :math:`p_1`, the bridge sampling can allow the distance between 2 distributions (or :math:`D_{KL}(p_0||p_1)`) to be much larger with standard importance sampling.
+

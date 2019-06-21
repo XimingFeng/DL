@@ -1,0 +1,273 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>18.3 Pseudolikehood &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="18.2 Stochastic Maximum Likehood and Contrastive Divergence" href="18.2 Stochastic Maximum Likehood and Contrastive.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">18 Confronting the Partition Function</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="18.1 The log-likehood Gradient.html">18.1 The log-likehood Gradient</a></li>
+<li class="toctree-l3"><a class="reference internal" href="18.2 Stochastic Maximum Likehood and Contrastive.html">18.2 Stochastic Maximum Likehood and Contrastive Divergence</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">18.3 Pseudolikehood</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resources">Resources</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">18 Confronting the Partition Function</a> &raquo;</li>
+        
+      <li>18.3 Pseudolikehood</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/18 Confronting the Partition Function/18.3 Pseudolikehood.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="pseudolikehood">
+<h1>18.3 Pseudolikehood<a class="headerlink" href="#pseudolikehood" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Monte Carlo approximation to partition function and its gradient: directly confront the partition function.</li>
+<li>Some other approach: based on the observation that it is easy to compute ratios of probabilities in an undirected probablistic model. No need to compute the partition function.</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\frac{p(x)}{p(y)} = \frac{\frac{1}{Z}\hat{p}(x)}{\frac{1}{Z}\hat{p}(y)} = \frac{\hat{p}(x)}{\hat{p}(y)}\]</div>
+<p>Pseudolikehood is based on the observation that conditional probabilities take this ratio-based form and thus can be computed without knowledge of the partition function. Suppose that we partition x into a, b and c where</p>
+<ul class="simple">
+<li>a: variables we want to find the conditional distribution over</li>
+<li>b: variables we want to condition on</li>
+<li>c: variables that are not part of our query</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[p(a|b) = \frac{p(a, b)}{p(b)} = \frac{p(a, b)}{\sum_{a, c} p(a, b, c)} = \frac{\hat{p}(a, b)}{\sum_{a, c} \hat{p}(a, b, c)}\]</div>
+<p>This quantity requires <a class="reference external" href="https://www.quora.com/What-is-marginalization-in-probability">marginalizing</a> out a, which bca be a very efficient operation provided that a and c do not contain many variables.</p>
+<p>In order to compyte the log likehood, we need to marginalize out large sets of variables. If there are n variables total, we must marginalize a set of size n - 1.</p>
+<div class="math notranslate nohighlight">
+\[\log p(x) = \log p(x_1) + \log p(x_2 | x_1) + ..... \log p(x_n | x_{1: n-1})\]</div>
+<p>In this case, we have made a maximally small, but c can be as large as <span class="math notranslate nohighlight">\(x_{2:n}\)</span>. This yield the pseudolikehood objective function, based on predicting the value of feature <span class="math notranslate nohighlight">\(x_i\)</span> given all the other features <span class="math notranslate nohighlight">\(x_{-i}\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\sum^{n}_{i=1} \log p(x_i| x_{-i})\]</div>
+<p>If each random variable has k different values, this requires only k * n evaluations of <span class="math notranslate nohighlight">\(\hat{p}\)</span> to compute. As opposed to the <span class="math notranslate nohighlight">\(k^n\)</span> evaluations needed to compute the partition function.</p>
+<p>Generalized peeudolikehood estimator: uses m different set <span class="math notranslate nohighlight">\(S^{(i)}, i = 1, 2, 3 ... m\)</span> of indices of variables that appear together on the left side of the conditioning bar. The objective function:</p>
+<div class="math notranslate nohighlight">
+\[\sum^m_{i=1} \log p(x_{S^{(i)}}| x_{-S^{(i)}})\]</div>
+<p>Pseudolikehood tends to perform</p>
+<ul class="simple">
+<li>poorly on tasks that require a good model of the full joint distribution of p(x), such as density estimation and sampling</li>
+<li>better than maximum likehood for tasks that require only the conditional distribution used during training, such as filling in small amount of missing values.</li>
+</ul>
+<p>Generalized pseudolikehood techniques are especially powerful if the data has regular structure that allows the S index sets to be designed to capture the most important correlations while leaving out groups of variables that have only negligible correlation.</p>
+<p>Weakness of pseudolikehood estimator: cannot be used with other approaximations that provide only a lower bound on <span class="math notranslate nohighlight">\(\hat{p}(x)\)</span>, such as variational inference. This is because <span class="math notranslate nohighlight">\(\hat{p}\)</span> appears in the denominator. A lower bound on the denominator provides only an upper bound on the expression as a whole, and there is no benefit to maximizing an upper bound. -&gt; hard to apply to deep models such as deep Boltzman Machines.  Variational methods are one of the dominant approaches to an approaximately marginalizing out the many layers of hidden variable that interact with each other.</p>
+<p>Pseudolikehood can be used to train single layer models or deep models using approximate inference methods that are not based on lower bound.</p>
+<p>Pseudolikehood can be thought of as having something resembling a negative phase. The denominators of each conditional distribution result in the learning algorithm suppressing the probability of all states that have only one variable differing from a training exmaple.</p>
+<div class="section" id="resources">
+<h2>Resources<a class="headerlink" href="#resources" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.quora.com/What-is-marginalization-in-probability">What is marginalization in probability</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="18.2 Stochastic Maximum Likehood and Contrastive.html" class="btn btn-neutral" title="18.2 Stochastic Maximum Likehood and Contrastive Divergence" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

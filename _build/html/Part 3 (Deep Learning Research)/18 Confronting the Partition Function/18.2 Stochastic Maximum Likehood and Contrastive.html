@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>18.2 Stochastic Maximum Likehood and Contrastive Divergence &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="18.3 Pseudolikehood" href="18.3 Pseudolikehood.html" />
+    <link rel="prev" title="18.1 The log-likehood Gradient" href="18.1 The log-likehood Gradient.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">18 Confronting the Partition Function</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="18.1 The log-likehood Gradient.html">18.1 The log-likehood Gradient</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">18.2 Stochastic Maximum Likehood and Contrastive Divergence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="18.3 Pseudolikehood.html">18.3 Pseudolikehood</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">18 Confronting the Partition Function</a> &raquo;</li>
+        
+      <li>18.2 Stochastic Maximum Likehood and Contrastive Divergence</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/18 Confronting the Partition Function/18.2 Stochastic Maximum Likehood and Contrastive.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="stochastic-maximum-likehood-and-contrastive-divergence">
+<h1>18.2 Stochastic Maximum Likehood and Contrastive Divergence<a class="headerlink" href="#stochastic-maximum-likehood-and-contrastive-divergence" title="Permalink to this headline">¶</a></h1>
+<p>Naive way of implement:</p>
+<div class="math notranslate nohighlight">
+\[\nabla_{\theta} \log Z = E_{x\sim p(x)} \nabla_{\theta} \log\hat{p}(x)\]</div>
+<p>is by burning in a set of Markov chains from a random initialization everytime the gradient is needed. When learning is performed using stochastic gradient decent, the chains must be burned in once per gradient step.</p>
+<p>Review on Monte Carlo Markov Chain:</p>
+<p>Core idea of Markov Chain: have a state x that begins as a arbitrary value. Over time, we randomly update x repeately. Eventually x becomes (very nearly) a fair sample from p(x). Formally:</p>
+<ul class="simple">
+<li>random state x</li>
+<li>transition distribution <span class="math notranslate nohighlight">\(T(x'|x)\)</span> specifying the probability that a random update will go to state <span class="math notranslate nohighlight">\(x'\)</span> if it starts in state x</li>
+<li>repeately updating the state x to a value x sampled from <span class="math notranslate nohighlight">\(T(x'|x)\)</span></li>
+</ul>
+<p>algorithm 1: A naive MCMC</p>
+<img alt="../../_images/algo18.1.PNG" src="../../_images/algo18.1.PNG" />
+<p>The hight cost of burning in the Markov chains in the inner loop makes this procudure computationally infeasible.</p>
+<p>We can view the MCMC approach to maximum likehood as trying to achive balance between two forces:</p>
+<ul class="simple">
+<li>one pushing up on the model distribution where the data occurs. It corresponds to maximize <span class="math notranslate nohighlight">\(\log \hat{p}(x)\)</span></li>
+<li>another pushing down on the model distribution where the model samples occurs. It corresponds to minimize <span class="math notranslate nohighlight">\(\log Z\)</span>.</li>
+</ul>
+<img alt="../../_images/Figure18.1.PNG" src="../../_images/Figure18.1.PNG" />
+<p>Because the negative phase involves drawing samples from the model’s distribution, we can think of it as finding points that the model belives in strongly. Because the negative phase acts to reduce the probability of those points, they are generally considered to represent the model’s incorrect beliefs about the world.</p>
+<ul class="simple">
+<li>problem: The main cost of naive MCMC algo: the cost of burning in Markove Chains from a random initialization at each step.</li>
+<li>solution: natural solution, initialize the Markove chain from a distrbution that is very close to the model distribution, so that the burn in operation does not take as many steps, as described below</li>
+</ul>
+<p>algorithm 2: contrastive divergence (CD or CD-k to indicate CD with k Gibbs sampling). CD initializes the Markov chain at each step with samples from the data distribution.</p>
+<img alt="../../_images/algo18.2.PNG" src="../../_images/algo18.2.PNG" />
+<p>Initially, the data distribution is not close to the model distribution, so the negative phase is not accurate. Positive phase can still accurately increase the model probability of the data. After positive phase had some time to act, the model distribution is closer to the data distribution, and the negative phase starts to become accurate.</p>
+<p>Where CD qualitatively fails: it fails to suppress region of high probability that are far from actual traininng examples.</p>
+<p>Spurious modes: regions that have probability under the model but low probability under the data-generating distribution. Modes in the model distribution that are far from the data distribution that are far from the data distribution will not be visited by Markov chains initialized at training points, unless k is very large.</p>
+<img alt="../../_images/Figure18.2.PNG" src="../../_images/Figure18.2.PNG" />
+<p>Review:</p>
+<ul class="simple">
+<li>Boltzmann Machine is today most often used to disignate models with latent variables</li>
+<li>Boltzmann machines without latent variables are more often called Markov random field or log-linear models.</li>
+</ul>
+<p>CD estimator is biased for RBM and fully visible Boltzman machiens. It is useful for training shallow models like RBMs. These can in turn be stacked to intialize deeper models like DBNs or DBMs. It does not provide much help for training deep models directly,. Because it is difficult to obtain samples of the hidden units given samples of the visible units.</p>
+<p>CD algorithm can be thought of as penalizing the model for having Markov Chain that changes the input rapidly when the input comes from the data. Useful for pretraining shallow models that will later be stacked. This is because the earlist model in the stack are encouraged to copy more information up to the latent variables, thereby making it available to the later models.</p>
+<p>algorithm 3: stochastic maximum likehood (SML), AKA, persistent contrastive divergence (PCD). Initialize the markov chains at each gradient step with their states from the previous gradient step.</p>
+<img alt="../../_images/algo18.3.PNG" src="../../_images/algo18.3.PNG" />
+<p>Basic idea of SML: as long as the steps taken by the stochastic gradient algorithm are small, the model from the previous step will be similar to the model from the current step. It follows that the samples from the previous model’s distribution will be very close to being fair samples from the current model’s distribution, so Markov chain initialized with these samples will not require much time to mix.</p>
+<p>Pros:</p>
+<ol class="arabic simple">
+<li>Considerably more resistant to forming models with spurious modes than CD is.</li>
+<li>Because it is possible to store the state of all the sampled variables, whether visible or latent, SML provides an initialization point for both the hidden and visible units. SML is able to train deep models efficiently.</li>
+</ol>
+<p>Cons:</p>
+<ol class="arabic simple">
+<li>SML is vulnerable to becoming inaccurate if the stochastic gradient algorithm can move the model faster than the Markov chian can mix between steps. This can happen when k is too small or <span class="math notranslate nohighlight">\(\epsilon\)</span> is too large. If the <span class="math notranslate nohighlight">\(\epsilon\)</span> is too high for k, the human operator will be able to observe much more variance in the negative phase samples accross gradient steps than accross different Markov Chain.</li>
+<li>Care must be taken when evaluating the samples from a model trained with SML. It is neccessary to draw the samples starting from a fresh Markov chain initialized from a random starting point after the models is done training.</li>
+<li>CD proves to have lower variance than the estimator based on exact sampling. SML has higher variance.</li>
+</ol>
+<p>All these methods based on using MCMC to draw samples from model can in principle be used with almost any variant of MCMC</p>
+<p>Fast PCD involves replacing parameters <span class="math notranslate nohighlight">\(\theta\)</span> with</p>
+<div class="math notranslate nohighlight">
+\[\theta = \theta^{slow} + \theta^{fast}\]</div>
+<p>There are twice as many parameters as before and they are added together element-wise to provide the parameters used by the original model definition. The fast copy of the parameters is trained with a much larger learning rate, allowing it to adapt rapidly in respond to the negative phase of learning and push Markov chain to new territory. Typically one also applies significant weight decay while the fast weights, encouraging them to converge to small values, after transiently taking on large values long enough to encourage the Markov chain to change modes.</p>
+<p>Key benefit of MCMC based methods: we can decompose the problem into the <span class="math notranslate nohighlight">\(\log \hat{p}\)</span> contribution and log Z contribution.</p>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="18.3 Pseudolikehood.html" class="btn btn-neutral float-right" title="18.3 Pseudolikehood" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="18.1 The log-likehood Gradient.html" class="btn btn-neutral" title="18.1 The log-likehood Gradient" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

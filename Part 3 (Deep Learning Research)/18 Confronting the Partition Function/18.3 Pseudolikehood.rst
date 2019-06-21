@@ -1,0 +1,59 @@
+18.3 Pseudolikehood
+============================
+
+* Monte Carlo approximation to partition function and its gradient: directly confront the partition function.
+* Some other approach: based on the observation that it is easy to compute ratios of probabilities in an undirected probablistic model. No need to compute the partition function.
+
+.. math::
+
+	\frac{p(x)}{p(y)} = \frac{\frac{1}{Z}\hat{p}(x)}{\frac{1}{Z}\hat{p}(y)} = \frac{\hat{p}(x)}{\hat{p}(y)}
+
+Pseudolikehood is based on the observation that conditional probabilities take this ratio-based form and thus can be computed without knowledge of the partition function. Suppose that we partition x into a, b and c where
+
+* a: variables we want to find the conditional distribution over
+* b: variables we want to condition on 
+* c: variables that are not part of our query
+
+.. math::
+	
+	p(a|b) = \frac{p(a, b)}{p(b)} = \frac{p(a, b)}{\sum_{a, c} p(a, b, c)} = \frac{\hat{p}(a, b)}{\sum_{a, c} \hat{p}(a, b, c)}
+
+This quantity requires `marginalizing <https://www.quora.com/What-is-marginalization-in-probability>`_ out a, which bca be a very efficient operation provided that a and c do not contain many variables. 
+
+In order to compyte the log likehood, we need to marginalize out large sets of variables. If there are n variables total, we must marginalize a set of size n - 1.
+
+.. math::
+	\log p(x) = \log p(x_1) + \log p(x_2 | x_1) + ..... \log p(x_n | x_{1: n-1})
+
+In this case, we have made a maximally small, but c can be as large as :math:`x_{2:n}`. This yield the pseudolikehood objective function, based on predicting the value of feature :math:`x_i` given all the other features :math:`x_{-i}`:
+
+.. math::
+
+	\sum^{n}_{i=1} \log p(x_i| x_{-i})
+
+If each random variable has k different values, this requires only k * n evaluations of :math:`\hat{p}` to compute. As opposed to the :math:`k^n` evaluations needed to compute the partition function. 
+
+Generalized peeudolikehood estimator: uses m different set :math:`S^{(i)}, i = 1, 2, 3 ... m` of indices of variables that appear together on the left side of the conditioning bar. The objective function:
+
+.. math::
+	\sum^m_{i=1} \log p(x_{S^{(i)}}| x_{-S^{(i)}})
+
+Pseudolikehood tends to perform 
+
+* poorly on tasks that require a good model of the full joint distribution of p(x), such as density estimation and sampling
+* better than maximum likehood for tasks that require only the conditional distribution used during training, such as filling in small amount of missing values.
+
+Generalized pseudolikehood techniques are especially powerful if the data has regular structure that allows the S index sets to be designed to capture the most important correlations while leaving out groups of variables that have only negligible correlation. 
+
+Weakness of pseudolikehood estimator: cannot be used with other approaximations that provide only a lower bound on :math:`\hat{p}(x)`, such as variational inference. This is because :math:`\hat{p}` appears in the denominator. A lower bound on the denominator provides only an upper bound on the expression as a whole, and there is no benefit to maximizing an upper bound. -> hard to apply to deep models such as deep Boltzman Machines.  Variational methods are one of the dominant approaches to an approaximately marginalizing out the many layers of hidden variable that interact with each other. 
+
+Pseudolikehood can be used to train single layer models or deep models using approximate inference methods that are not based on lower bound.
+
+Pseudolikehood can be thought of as having something resembling a negative phase. The denominators of each conditional distribution result in the learning algorithm suppressing the probability of all states that have only one variable differing from a training exmaple.
+
+
+############################################
+Resources
+############################################
+
+* `What is marginalization in probability <https://www.quora.com/What-is-marginalization-in-probability>`_
