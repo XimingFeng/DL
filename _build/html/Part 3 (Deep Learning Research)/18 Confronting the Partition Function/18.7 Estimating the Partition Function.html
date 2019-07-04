@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="next" title="19 Approximate Inference" href="../19 Approximate Inference/index.html" />
     <link rel="prev" title="18.6 Noise-Contrastive Estimation" href="18.6 Noise-Contrastive Estimation.html" /> 
 
   
@@ -101,6 +101,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
@@ -252,6 +253,12 @@ s.t: x^{(k)} \sim p_0\end{split}\]</div>
 <div class="math notranslate nohighlight">
 \[\frac{Z_1}{Z_0} = \sum_{k=1}^K \frac{\hat{p}_*(x_0^{(k)})}{\hat{p}_0(x_0^{(k)})} / \sum_{k=1}^K \frac{\hat{p}_*(x_1^{(k)})}{\hat{p}_1(x_1^{(k)})}\]</div>
 <p>If the bridge distribution <span class="math notranslate nohighlight">\(p_*\)</span> is chosen carefully to have a large overlap of support with both <span class="math notranslate nohighlight">\(p_0\)</span> and <span class="math notranslate nohighlight">\(p_1\)</span>, the bridge sampling can allow the distance between 2 distributions (or <span class="math notranslate nohighlight">\(D_{KL}(p_0||p_1)\)</span>) to be much larger with standard importance sampling.</p>
+<p>Optimal bridging distribution:</p>
+<div class="math notranslate nohighlight">
+\[p_*^{opt}(x) \propto \frac{\hat{p}_0(x)\hat{p}_1(x)}{r\hat{p}_0(x) + \hat{p}_1(x)}\]</div>
+<p>where <span class="math notranslate nohighlight">\(r=Z_0/Z_1\)</span>. It is possible to start with a caorse estimate of r and use resulting bridge distribution to refine our estimate iteratively.</p>
+<p><strong>Linked Importance Sampling</strong>: leverage the power of the bridge sampling strategy to bridge the intermediate distribution used in AIS and significantly improve the overall partition function estimateion.</p>
+<p><strong>Estimating the partition function while training</strong>. AIS: standard method for estimating the partition function for many undirected model. However, it is computationally intensive that it remains infeasible to use during training. Alternative strategies have been explored to maintain an estimate of the partition function throughout training.</p>
 </div>
 </div>
 
@@ -263,7 +270,7 @@ s.t: x^{(k)} \sim p_0\end{split}\]</div>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../19 Approximate Inference/index.html" class="btn btn-neutral float-right" title="19 Approximate Inference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="18.6 Noise-Contrastive Estimation.html" class="btn btn-neutral" title="18.6 Noise-Contrastive Estimation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>18 Confronting the Partition Function &mdash; dl 0.0.1 documentation</title>
+  <title>19.1 Inference as Optimization &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="18.1 The log-likehood Gradient" href="18.1 The log-likehood Gradient.html" />
-    <link rel="prev" title="17.5 The challenge of Mixing between Seperated Modes" href="../17 Monte Carlo Methods/17.5 The challenge of Mixing between Seperated Mod.html" /> 
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="19 Approximate Inference" href="index.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -87,17 +87,14 @@
 <li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">18 Confronting the Partition Function</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="18.1 The log-likehood Gradient.html">18.1 The log-likehood Gradient</a></li>
-<li class="toctree-l3"><a class="reference internal" href="18.2 Stochastic Maximum Likehood and Contrastive.html">18.2 Stochastic Maximum Likehood and Contrastive Divergence</a></li>
-<li class="toctree-l3"><a class="reference internal" href="18.3 Pseudolikehood.html">18.3 Pseudolikehood</a></li>
-<li class="toctree-l3"><a class="reference internal" href="18.4 Score Matching and Ratio Matching.html">18.4 Score Matching and Ratio Matching</a></li>
-<li class="toctree-l3"><a class="reference internal" href="18.5 Denoising Score Matching.html">18.5 Denoising Score Matching</a></li>
-<li class="toctree-l3"><a class="reference internal" href="18.6 Noise-Contrastive Estimation.html">18.6 Noise-Contrastive Estimation</a></li>
-<li class="toctree-l3"><a class="reference internal" href="18.7 Estimating the Partition Function.html">18.7 Estimating the Partition Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">19 Approximate Inference</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">19.1 Inference as Optimization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resource">Resource</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
@@ -148,13 +145,15 @@
         
           <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>18 Confronting the Partition Function</li>
+          <li><a href="index.html">19 Approximate Inference</a> &raquo;</li>
+        
+      <li>19.1 Inference as Optimization</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/18 Confronting the Partition Function/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/19.1 Inference as Optimization.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -167,35 +166,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="confronting-the-partition-function">
-<h1>18 Confronting the Partition Function<a class="headerlink" href="#confronting-the-partition-function" title="Permalink to this headline">¶</a></h1>
-<p>Review:</p>
-<p>An undirected graphical model is a structured probabilitic model defined on an undirected graph G. For each clique C in the graph, a factor <span class="math notranslate nohighlight">\(\phi(C)\)</span> (also called a clique protential) measures the affinity of the variables in that clique for being in each of their possible joint states. <span class="math notranslate nohighlight">\(\phi(C) &gt; 0\)</span>. Unnormalized probability distribution:</p>
-<div class="math notranslate nohighlight">
-\[\hat{p}(x) = \prod_{C\in G}\phi(C)\]</div>
-<p><strong>A clique of the graph is a subset of nodes that are all connected to each other by an edge of the graph.</strong></p>
-<p><strong>To obtain a valid probability distribution, we must use the corresponding normalized probability distribution.</strong></p>
-<div class="math notranslate nohighlight">
-\[p(x) = \frac{1}{Z}\hat{p}(x)\]</div>
-<p><strong>where Z is the value that results in the probability distribution summing or integrting to 1</strong></p>
-<div class="math notranslate nohighlight">
-\[Z = \int \hat{p}(x)dx\]</div>
-<p>You can think of Z as constant when <span class="math notranslate nohighlight">\(\phi\)</span> functions are held constant. Note that if the <span class="math notranslate nohighlight">\(\phi\)</span> functions have parameters, then Z is a function of those parameters. Normalizing function Z is known as partition function.</p>
-<p>Computing Z is intractable for many interesting models. How to confront the challenge</p>
+  <div class="section" id="inference-as-optimization">
+<h1>19.1 Inference as Optimization<a class="headerlink" href="#inference-as-optimization" title="Permalink to this headline">¶</a></h1>
+<p>Exact inference can be described as an optimization problem.</p>
 <ul class="simple">
-<li>models designed to have a tractable normalizing constant</li>
-<li>designed to be used in ways that do not involve comupting p(x) at all.</li>
-<li>directly confront the challenge of intractable partition function, as described in this chapter</li>
+<li>Goal: compute <span class="math notranslate nohighlight">\(\log p(v; \theta)\)</span></li>
+<li>Challenge: costly to marginalize out h</li>
+<li>Solution: Compute the lower bound of <span class="math notranslate nohighlight">\(\log p(v; \theta)\)</span>, aka evidence lower bound (ELBO).</li>
 </ul>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="18.1 The log-likehood Gradient.html">18.1 The log-likehood Gradient</a></li>
-<li class="toctree-l1"><a class="reference internal" href="18.2 Stochastic Maximum Likehood and Contrastive.html">18.2 Stochastic Maximum Likehood and Contrastive Divergence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="18.3 Pseudolikehood.html">18.3 Pseudolikehood</a></li>
-<li class="toctree-l1"><a class="reference internal" href="18.4 Score Matching and Ratio Matching.html">18.4 Score Matching and Ratio Matching</a></li>
-<li class="toctree-l1"><a class="reference internal" href="18.5 Denoising Score Matching.html">18.5 Denoising Score Matching</a></li>
-<li class="toctree-l1"><a class="reference internal" href="18.6 Noise-Contrastive Estimation.html">18.6 Noise-Contrastive Estimation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="18.7 Estimating the Partition Function.html">18.7 Estimating the Partition Function</a></li>
+<p>Introduce q as an arbitrary distribution over h</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+KL[q(h) || p(h|x)] &amp;= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
+&amp;= \sum_h q(h) \log \frac{q(h)}{\frac {p(x, h)}{p(x)}} \\
+&amp;= \sum_h q(h) \log p(x) + \sum_h q(h) \log q(h) - \sum_h q(h) \log p(x, h) \\
+&amp;= \log p(x) - H(q) - E_{h\sim q}[\log p(x, h)]
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>Now we have</p>
+<div class="math notranslate nohighlight">
+\[\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)\]</div>
+<p>Because KL divergence is always nonnegative we have lower bound</p>
+<div class="math notranslate nohighlight">
+\[L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)\]</div>
+<p>Review on Shannon entropy</p>
+<p>We can quantify the amount of uncertainty in an entire probability distribution using the Shannon entropy:</p>
+<div class="math notranslate nohighlight">
+\[H(x) = E_{x \sim P}(I(x)) = - E_{x \sim P}(\log P(x))\]</div>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://users.umiacs.umd.edu/~xyang35/files/understanding-variational-lower.pdf">Understanding the Variational Lower Bound</a></li>
+<li><a class="reference external" href="https://www.youtube.com/watch?v=uaaqyVS9-rM">Variational Autoencoder</a></li>
 </ul>
 </div>
 </div>
@@ -208,10 +211,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="18.1 The log-likehood Gradient.html" class="btn btn-neutral float-right" title="18.1 The log-likehood Gradient" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../17 Monte Carlo Methods/17.5 The challenge of Mixing between Seperated Mod.html" class="btn btn-neutral" title="17.5 The challenge of Mixing between Seperated Modes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="19 Approximate Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

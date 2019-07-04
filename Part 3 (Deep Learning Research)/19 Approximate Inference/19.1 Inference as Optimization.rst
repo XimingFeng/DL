@@ -1,0 +1,49 @@
+19.1 Inference as Optimization
+=================================
+
+Exact inference can be described as an optimization problem. 
+
+* Goal: compute :math:`\log p(v; \theta)`
+* Challenge: costly to marginalize out h
+* Solution: Compute the lower bound of :math:`\log p(v; \theta)`, aka evidence lower bound (ELBO).
+
+Introduce q as an arbitrary distribution over h
+
+
+
+.. math::
+
+	\begin {equation}
+	\begin{split}
+	KL[q(h) || p(h|x)] &= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
+	&= \sum_h q(h) \log \frac{q(h)}{\frac {p(x, h)}{p(x)}} \\
+	&= \sum_h q(h) \log p(x) + \sum_h q(h) \log q(h) - \sum_h q(h) \log p(x, h) \\
+	&= \log p(x) - H(q) - E_{h\sim q}[\log p(x, h)]  
+	\end{split}
+	\end {equation}
+
+Now we have 
+
+.. math::
+	
+	\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)
+
+Because KL divergence is always nonnegative we have lower bound 
+
+.. math::
+	L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)
+
+
+Review on Shannon entropy
+
+We can quantify the amount of uncertainty in an entire probability distribution using the Shannon entropy:
+
+.. math::
+	H(x) = E_{x \sim P}(I(x)) = - E_{x \sim P}(\log P(x))
+
+####################################
+Resource
+####################################
+
+* `Understanding the Variational Lower Bound <http://users.umiacs.umd.edu/~xyang35/files/understanding-variational-lower.pdf>`_
+* `Variational Autoencoder <https://www.youtube.com/watch?v=uaaqyVS9-rM>`_

@@ -9,3 +9,4 @@ Part III: Deep Learning Research
    16 Structured Probablistic Models for Deep Learning/index
    17 Monte Carlo Methods/index
    18 Confronting the Partition Function/index
+   19 Approximate Inference/index

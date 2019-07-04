@@ -118,3 +118,14 @@ Bridge sampling estimates the ratio as the ratio of the expected improtance weig
 
 If the bridge distribution :math:`p_*` is chosen carefully to have a large overlap of support with both :math:`p_0` and :math:`p_1`, the bridge sampling can allow the distance between 2 distributions (or :math:`D_{KL}(p_0||p_1)`) to be much larger with standard importance sampling.
 
+Optimal bridging distribution: 
+
+.. math::
+	p_*^{opt}(x) \propto \frac{\hat{p}_0(x)\hat{p}_1(x)}{r\hat{p}_0(x) + \hat{p}_1(x)}
+
+where :math:`r=Z_0/Z_1`. It is possible to start with a caorse estimate of r and use resulting bridge distribution to refine our estimate iteratively. 
+
+**Linked Importance Sampling**: leverage the power of the bridge sampling strategy to bridge the intermediate distribution used in AIS and significantly improve the overall partition function estimateion.
+
+**Estimating the partition function while training**. AIS: standard method for estimating the partition function for many undirected model. However, it is computationally intensive that it remains infeasible to use during training. Alternative strategies have been explored to maintain an estimate of the partition function throughout training.
+
