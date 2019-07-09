@@ -190,6 +190,13 @@ KL[q(h) || p(h|x)] &amp;= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
 <p>Because KL divergence is always nonnegative we have lower bound</p>
 <div class="math notranslate nohighlight">
 \[L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)\]</div>
+<p>For appropriate of q, L is tractable to compute. For q(h) <strong>(textbook: q(h|v))</strong> that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h) = p(v|h), the approaximation is perfect, <span class="math notranslate nohighlight">\(L(v, \theta, q) = log P(x; \theta)\)</span>.</p>
+<p>We can think of inference as the procedure for finding the q that maximizes L. Solutions</p>
+<ul class="simple">
+<li>Exact inference maximizes L perfectly by searching over a family of functions q that includes p(h|x). (Brute Force)</li>
+<li>Approximate by restricting the family of distribution q that the optimization is allowed to search over</li>
+<li>Approxiamte by using imperfect optimization procedure that may not completely maximize L but may only increase it by significant amount.</li>
+</ul>
 <p>Review on Shannon entropy</p>
 <p>We can quantify the amount of uncertainty in an entire probability distribution using the Shannon entropy:</p>
 <div class="math notranslate nohighlight">
