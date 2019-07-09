@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>19 Approximate Inference &mdash; dl 0.0.1 documentation</title>
+  <title>19.3 MAP Inference and Sparse Coding &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="19.1 Inference as Optimization" href="19.1 Inference as Optimization.html" />
-    <link rel="prev" title="18.7 Estimating the Partition Function" href="../18 Confronting the Partition Function/18.7 Estimating the Partition Function.html" /> 
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="19.1 Inference as Optimization" href="19.1 Inference as Optimization.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -88,9 +88,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">19 Approximate Inference</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">19 Approximate Inference</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="19.1 Inference as Optimization.html">19.1 Inference as Optimization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">19.3 MAP Inference and Sparse Coding</a></li>
 </ul>
 </li>
 </ul>
@@ -143,13 +143,15 @@
         
           <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>19 Approximate Inference</li>
+          <li><a href="index.html">19 Approximate Inference</a> &raquo;</li>
+        
+      <li>19.3 MAP Inference and Sparse Coding</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/19.3 MAP Inference and Sparse Coding.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -162,25 +164,45 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="approximate-inference">
-<h1>19 Approximate Inference<a class="headerlink" href="#approximate-inference" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="map-inference-and-sparse-coding">
+<h1>19.3 MAP Inference and Sparse Coding<a class="headerlink" href="#map-inference-and-sparse-coding" title="Permalink to this headline">¶</a></h1>
+<p>An alternative form of inference p(v|h) is to compute the single most likely value of the missing variables, rather than to infer the entire distribution over their possible values.</p>
+<div class="math notranslate nohighlight">
+\[h^* = argmax_h p(h|v)\]</div>
+<p>AKA, maximum a posteriori inference.</p>
+<p>It is helpful to think of MAP inference as a procedure that provides a value of q of L(v, h, q) or ELBO. In this sense we can think of MAP inference as approximate inference, because it does not provide the optimal q.</p>
+<p>Review on ELBO:</p>
+<div class="math notranslate nohighlight">
+\[L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)\]</div>
+<p>with respect to q over an unrestricted family of probablistic disrtibution, using an exact optimization algorithm. We can derive MAP inference as a form of approximate inference by restricting the family of distribution q may be drawn from.</p>
+<div class="math notranslate nohighlight">
+\[q(h|v) = \delta (h-\mu)\]</div>
+<p>This means that we can control q entirely via <span class="math notranslate nohighlight">\(\mu\)</span>. Dropping terms of L that do not vary with <span class="math notranslate nohighlight">\(\mu\)</span>, we are left with the optimization problem:</p>
+<div class="math notranslate nohighlight">
+\[\mu^* = argmax_{\mu} \log p(h=\mu, v)\]</div>
+<p>equivalent to MAP inference problem:</p>
+<div class="math notranslate nohighlight">
+\[h^* = argmax_h p(h|v)\]</div>
+<p>Learning procedure similar to EM algorithm, which alternate between:</p>
 <ul class="simple">
-<li>v: visible variables</li>
-<li>h: hidden variables</li>
+<li>Perform MAP inference to infer <span class="math notranslate nohighlight">\(h^*\)</span></li>
+<li>Update <span class="math notranslate nohighlight">\(\theta\)</span> to increase <span class="math notranslate nohighlight">\(\log p(h^*, v)\)</span></li>
 </ul>
-<p>Challenge of inference: compute p(h|v) or take expectation with respect to it.</p>
-<p>Review:</p>
-<img alt="../../_images/Figure16.61.PNG" src="../../_images/Figure16.61.PNG" />
-<img alt="../../_images/Figure16.71.PNG" src="../../_images/Figure16.71.PNG" />
-<img alt="../../_images/Figure16.81.PNG" src="../../_images/Figure16.81.PNG" />
-<p>Direct interaction in undirected model / explaining away interaction between mutual ancestors of the same visible unit in directed model ==&gt; interaction between latent variables =&gt; Intractable inference problem.</p>
-<img alt="../../_images/Figure19.1.PNG" src="../../_images/Figure19.1.PNG" />
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="19.1 Inference as Optimization.html">19.1 Inference as Optimization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
+<p>MAP inference is commonly used in DL as both a feature extractor and a learning machanism. It is primarily used for sparse coding models.</p>
+<p>Review on Sparse Coding:</p>
+<p>Sparse coding is a linear factor model that imposes a sparsity-inducing prior on its hidden units. A common choice is a factorial Laplace prior, with</p>
+<div class="math notranslate nohighlight">
+\[p(h_i) = \frac{\lambda}{2}e^{-\lambda |h_i|}\]</div>
+<p>The visible units are then generated by performing a linear transformation and adding noise:</p>
+<div class="math notranslate nohighlight">
+\[p(x|h) = N(v; Wh+b, \beta ^{-1}I)\]</div>
+<ul class="simple">
+<li>Challenge: Every pair of variables <span class="math notranslate nohighlight">\(h_i\)</span> and <span class="math notranslate nohighlight">\(h_j\)</span> are both parents of v =&gt; if v is observed, the graphical model contains an active path connecting <span class="math notranslate nohighlight">\(h_i\)</span> and <span class="math notranslate nohighlight">\(h_j\)</span> =&gt; All the hidden units participate in one massive clique in p(h|v). =&gt; Computing or even representing p(h|v) is difficult.</li>
+<li>Solution: Use MAP inference and learn parameters by maximizing ELBO defined by the Dirac distribution around the MAP estimate of h.</li>
 </ul>
-</div>
+<p>If we concatenate all h vectors in the training set into a matrix H and concatenate all the v vectors into matrix V, then sparse coding learning process consists of minimizing:</p>
+<div class="math notranslate nohighlight">
+\[J(H, W) = \sum_{i, j}|H_{i, j}| + \sum_{i. j} (V - HW^T)^2_{i, j}\]</div>
 </div>
 
 
@@ -191,10 +213,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="19.1 Inference as Optimization.html" class="btn btn-neutral float-right" title="19.1 Inference as Optimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../18 Confronting the Partition Function/18.7 Estimating the Partition Function.html" class="btn btn-neutral" title="18.7 Estimating the Partition Function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="19.1 Inference as Optimization.html" class="btn btn-neutral" title="19.1 Inference as Optimization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
