@@ -57,4 +57,7 @@ If we concatenate all h vectors in the training set into a matrix H and concaten
 .. math::
 	J(H, W) = \sum_{i, j}|H_{i, j}| + \sum_{i. j} (V - HW^T)^2_{i, j}
 
+We can minimize J by alternating between 
 
+* minimization with repect to H, convex problem 
+* minimization with repect to W, convex problem

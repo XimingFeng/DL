@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>19.2 Expectation Maximization &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="19.3 MAP Inference and Sparse Coding" href="19.3 MAP Inference and Sparse Coding.html" />
+    <link rel="prev" title="19.1 Inference as Optimization" href="19.1 Inference as Optimization.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">19 Approximate Inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="19.1 Inference as Optimization.html">19.1 Inference as Optimization</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">19.2 Expectation Maximization</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#resource">Resource</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">19 Approximate Inference</a> &raquo;</li>
+        
+      <li>19.2 Expectation Maximization</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/19.2 Expectation Maximization.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="expectation-maximization">
+<h1>19.2 Expectation Maximization<a class="headerlink" href="#expectation-maximization" title="Permalink to this headline">¶</a></h1>
+<p>Not approximate inference (p(h|v)), but learn with an appraximate pesterior.</p>
+<ul>
+<li><p class="first">E-step (expectation step):</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><span class="math notranslate nohighlight">\(\theta^{(0)}\)</span>: value of parameters at the beginning of the step.</li>
+<li>Set <span class="math notranslate nohighlight">\(q(h^{(i)}|v) = p(h^{(i)}|v^{(i)}, \theta^{(0)})\)</span> for all indices i of the training example <span class="math notranslate nohighlight">\(v^{(i)}\)</span> we want to train on (batch or minibatch)</li>
+<li>q is defined with current value of <span class="math notranslate nohighlight">\(\theta^{(0)}\)</span>. If we change <span class="math notranslate nohighlight">\(\theta\)</span>, <span class="math notranslate nohighlight">\(p(h|v, \theta)\)</span> will change, but q(h| v) will remain equal to <span class="math notranslate nohighlight">\(p(h|v, \theta^{(0)})\)</span></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">The M-step (Maximization step):</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>Completely or partially maximize <span class="math notranslate nohighlight">\(\sum_i L(v^{(i)}, h, \theta)\)</span> with respect to <span class="math notranslate nohighlight">\(\theta\)</span></li>
+</ol>
+</div></blockquote>
+</li>
+</ul>
+<p>Review on ELBO:</p>
+<div class="math notranslate nohighlight">
+\[\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)\]</div>
+<p>Because KL divergence is always nonnegative we have lower bound</p>
+<div class="math notranslate nohighlight">
+\[L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)\]</div>
+<p>E.g (Batch with size 2):</p>
+<ol class="arabic">
+<li><p class="first">Step 0 (E-step)</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><span class="math notranslate nohighlight">\(q^{(0, 0)}(h) = p(h^{(0)}|x^{(0)}; \theta^{(0)})\)</span></li>
+<li><span class="math notranslate nohighlight">\(q^{(0, 1)}(h) = p(h^{(1)}|x^{(1)}; \theta^{(0)})\)</span></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Step 0 (M-step)</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>draw h from <span class="math notranslate nohighlight">\(q^{(0, 0)}\)</span>, we have one lower bound <span class="math notranslate nohighlight">\(L^{(0, 0)}(v^{(0)}, q^{(0, 0)}, \theta^{(0)})\)</span></li>
+<li>dram h from <span class="math notranslate nohighlight">\(q^{(0, 1)}\)</span>, we have one lower bound <span class="math notranslate nohighlight">\(L^{(0, 1)}(v^{(0)}, q^{(0, 1)}, \theta^{(0)})\)</span></li>
+<li>Maximize <span class="math notranslate nohighlight">\(L^{(0, 0)} + L^{(0, 1)}\)</span> with respect to <span class="math notranslate nohighlight">\(\theta\)</span>. We get <span class="math notranslate nohighlight">\(\theta^{(1)}\)</span></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Step 1 (E-step)</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><span class="math notranslate nohighlight">\(q^{(1, 0)}(h) = p(h^{(0)}|x^{(0)}; \theta^{(1)})\)</span></li>
+<li><span class="math notranslate nohighlight">\(q^{(1, 1)}(h) = p(h^{(1)}|x^{(1)}; \theta^{(1)})\)</span></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">Step 1 (M-step)</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>draw h from <span class="math notranslate nohighlight">\(q^{(1, 0)}\)</span>, we have one lower bound <span class="math notranslate nohighlight">\(L^{(1, 0)}(v^{(1)}, q^{(1, 0)}, \theta^{(0)})\)</span></li>
+<li>dram h from <span class="math notranslate nohighlight">\(q^{(1, 1)}\)</span>, we have one lower bound <span class="math notranslate nohighlight">\(L^{(1, 1)}(v^{(0)}, q^{(1, 1)}, \theta^{(0)})\)</span></li>
+<li>Maximize <span class="math notranslate nohighlight">\(L^{(1, 0)} + L^{(1, 1)}\)</span> with respect to <span class="math notranslate nohighlight">\(\theta\)</span>. We get <span class="math notranslate nohighlight">\(\theta^{(2)}\)</span></li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">blah, blah, blah …</p>
+</li>
+<li><p class="first">Stop until <span class="math notranslate nohighlight">\(L^{(n, 0)} + L^{(n, 1)}\)</span> reached some tolerance or declare convergence if EM is improving too slowly.</p>
+</li>
+</ol>
+<p>This can be coordinate ascent algo to maximize L. On one step, we maximize L with respect to q, and on the other, we maximize L with respect to <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Statistical gradient ascent can be viewed as special case of EM algorithm where M step consists of taking a single gradient step. Other variants of EM algorithms can make much larger steps.</p>
+<p>Even though E-step involves exact inference, we can think of EM algorithm as using approximate inference in some sense: M step assume that the same value of q can be used for all values of <span class="math notranslate nohighlight">\(\theta\)</span>. This will introduce a gap between L and true log p(v).</p>
+<p>Insights from EM algo:</p>
+<ol class="arabic">
+<li><p class="first">Basic structure of learning process: we update model parameters to improve the likehood of a completed dataset. Miss variables have their value provided by an estimate of the posterior distribution. Not unique to EM. e.g gradient descent to maximize log likehood. It take expectation with respect to the posterior distribution over the hidden units.</p>
+</li>
+<li><p class="first">We can continue to use one value of q even after we have moved to different value of <span class="math notranslate nohighlight">\(\theta\)</span>. More unique to EM.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Used throughout classical ML to derive large M step</li>
+<li>In DL, most models are too complicated to admit a tractable solution for an optimal large M-step update.</li>
+</ul>
+</div></blockquote>
+</li>
+</ol>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="http://cs229.stanford.edu/notes/cs229-notes8.pdf">The EM algorithm cs229</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="19.3 MAP Inference and Sparse Coding.html" class="btn btn-neutral float-right" title="19.3 MAP Inference and Sparse Coding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="19.1 Inference as Optimization.html" class="btn btn-neutral" title="19.1 Inference as Optimization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

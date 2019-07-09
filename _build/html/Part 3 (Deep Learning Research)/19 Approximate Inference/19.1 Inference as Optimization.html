@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="next" title="19.2 Expectation Maximization" href="19.2 Expectation Maximization.html" />
     <link rel="prev" title="19 Approximate Inference" href="index.html" /> 
 
   
@@ -93,6 +93,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#resource">Resource</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="19.2 Expectation Maximization.html">19.2 Expectation Maximization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
 </ul>
 </li>
 </ul>
@@ -190,6 +192,13 @@ KL[q(h) || p(h|x)] &amp;= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
 <p>Because KL divergence is always nonnegative we have lower bound</p>
 <div class="math notranslate nohighlight">
 \[L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)\]</div>
+<p>For appropriate of q, L is tractable to compute. For q(h) <strong>(textbook: q(h|v))</strong> that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h) = p(v|h), the approaximation is perfect, <span class="math notranslate nohighlight">\(L(v, \theta, q) = log P(x; \theta)\)</span>.</p>
+<p>We can think of inference as the procedure for finding the q that maximizes L. Solutions</p>
+<ul class="simple">
+<li>Exact inference maximizes L perfectly by searching over a family of functions q that includes p(h|x). (Brute Force)</li>
+<li>Approximate by restricting the family of distribution q that the optimization is allowed to search over</li>
+<li>Approxiamte by using imperfect optimization procedure that may not completely maximize L but may only increase it by significant amount.</li>
+</ul>
 <p>Review on Shannon entropy</p>
 <p>We can quantify the amount of uncertainty in an entire probability distribution using the Shannon entropy:</p>
 <div class="math notranslate nohighlight">
@@ -211,7 +220,7 @@ KL[q(h) || p(h|x)] &amp;= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="19.2 Expectation Maximization.html" class="btn btn-neutral float-right" title="19.2 Expectation Maximization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="19 Approximate Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

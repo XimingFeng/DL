@@ -33,6 +33,14 @@ Because KL divergence is always nonnegative we have lower bound
 .. math::
 	L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)
 
+For appropriate of q, L is tractable to compute. For q(h) **(textbook: q(h|v))** that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h) = p(v|h), the approaximation is perfect, :math:`L(v, \theta, q) = log P(x; \theta)`.
+
+We can think of inference as the procedure for finding the q that maximizes L. Solutions
+
+* Exact inference maximizes L perfectly by searching over a family of functions q that includes p(h|x). (Brute Force)
+* Approximate by restricting the family of distribution q that the optimization is allowed to search over
+* Approxiamte by using imperfect optimization procedure that may not completely maximize L but may only increase it by significant amount.
+
 
 Review on Shannon entropy
 
@@ -40,6 +48,8 @@ We can quantify the amount of uncertainty in an entire probability distribution 
 
 .. math::
 	H(x) = E_{x \sim P}(I(x)) = - E_{x \sim P}(\log P(x))
+
+
 
 ####################################
 Resource

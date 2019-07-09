@@ -25,5 +25,8 @@ Direct interaction in undirected model / explaining away interaction between mut
    :maxdepth: 1
 
    19.1 Inference as Optimization
+   19.2 Expectation Maximization
    19.3 MAP Inference and Sparse Coding
+   
+
    

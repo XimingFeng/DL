@@ -61,6 +61,3 @@ We can minimize J by alternating between
 
 * minimization with repect to H, convex problem 
 * minimization with repect to W, convex problem
-
-
-

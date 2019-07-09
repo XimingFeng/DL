@@ -1,0 +1,75 @@
+19.2 Expectation Maximization
+===============================
+
+Not approximate inference (p(h|v)), but learn with an appraximate pesterior.
+
+* E-step (expectation step): 
+
+	1. :math:`\theta^{(0)}`: value of parameters at the beginning of the step.
+	2. Set :math:`q(h^{(i)}|v) = p(h^{(i)}|v^{(i)}, \theta^{(0)})` for all indices i of the training example :math:`v^{(i)}` we want to train on (batch or minibatch)
+	3. q is defined with current value of :math:`\theta^{(0)}`. If we change :math:`\theta`, :math:`p(h|v, \theta)` will change, but q(h| v) will remain equal to :math:`p(h|v, \theta^{(0)})`
+
+* The M-step (Maximization step):
+
+	1. Completely or partially maximize :math:`\sum_i L(v^{(i)}, h, \theta)` with respect to :math:`\theta`
+
+Review on ELBO:
+
+.. math::
+	
+	\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)
+
+Because KL divergence is always nonnegative we have lower bound 
+
+.. math::
+	L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)
+
+
+E.g (Batch with size 2):
+
+1. Step 0 (E-step)
+	
+	1. :math:`q^{(0, 0)}(h) = p(h^{(0)}|x^{(0)}; \theta^{(0)})` 
+	2. :math:`q^{(0, 1)}(h) = p(h^{(1)}|x^{(1)}; \theta^{(0)})`
+
+2. Step 0 (M-step)
+	
+	1. draw h from :math:`q^{(0, 0)}`, we have one lower bound :math:`L^{(0, 0)}(v^{(0)}, q^{(0, 0)}, \theta^{(0)})`
+	2. dram h from :math:`q^{(0, 1)}`, we have one lower bound :math:`L^{(0, 1)}(v^{(0)}, q^{(0, 1)}, \theta^{(0)})`
+	3. Maximize :math:`L^{(0, 0)} + L^{(0, 1)}` with respect to :math:`\theta`. We get :math:`\theta^{(1)}`
+
+3. Step 1 (E-step)
+	
+	1. :math:`q^{(1, 0)}(h) = p(h^{(0)}|x^{(0)}; \theta^{(1)})` 
+	2. :math:`q^{(1, 1)}(h) = p(h^{(1)}|x^{(1)}; \theta^{(1)})`
+
+4. Step 1 (M-step)
+	
+	1. draw h from :math:`q^{(1, 0)}`, we have one lower bound :math:`L^{(1, 0)}(v^{(1)}, q^{(1, 0)}, \theta^{(0)})`
+	2. dram h from :math:`q^{(1, 1)}`, we have one lower bound :math:`L^{(1, 1)}(v^{(0)}, q^{(1, 1)}, \theta^{(0)})`
+	3. Maximize :math:`L^{(1, 0)} + L^{(1, 1)}` with respect to :math:`\theta`. We get :math:`\theta^{(2)}`
+
+5. blah, blah, blah ...
+6. Stop until :math:`L^{(n, 0)} + L^{(n, 1)}` reached some tolerance or declare convergence if EM is improving too slowly.
+
+This can be coordinate ascent algo to maximize L. On one step, we maximize L with respect to q, and on the other, we maximize L with respect to :math:`\theta`.
+
+Statistical gradient ascent can be viewed as special case of EM algorithm where M step consists of taking a single gradient step. Other variants of EM algorithms can make much larger steps. 
+
+Even though E-step involves exact inference, we can think of EM algorithm as using approximate inference in some sense: M step assume that the same value of q can be used for all values of :math:`\theta`. This will introduce a gap between L and true log p(v).
+
+Insights from EM algo:
+
+1. Basic structure of learning process: we update model parameters to improve the likehood of a completed dataset. Miss variables have their value provided by an estimate of the posterior distribution. Not unique to EM. e.g gradient descent to maximize log likehood. It take expectation with respect to the posterior distribution over the hidden units.
+2. We can continue to use one value of q even after we have moved to different value of :math:`\theta`. More unique to EM.
+	
+	* Used throughout classical ML to derive large M step
+	* In DL, most models are too complicated to admit a tractable solution for an optimal large M-step update. 
+
+
+
+###############################
+Resource
+###############################
+
+* `The EM algorithm cs229 <http://cs229.stanford.edu/notes/cs229-notes8.pdf>`_
