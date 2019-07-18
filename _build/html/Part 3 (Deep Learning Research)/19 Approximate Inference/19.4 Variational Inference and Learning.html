@@ -1,0 +1,369 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>19.4 Variational Inference and Learning &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="19.3 MAP Inference and Sparse Coding" href="19.3 MAP Inference and Sparse Coding.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">19 Approximate Inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="19.1 Inference as Optimization.html">19.1 Inference as Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="19.2 Expectation Maximization.html">19.2 Expectation Maximization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">19.4 Variational Inference and Learning</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#discrete-latent-variables">19.4.1 Discrete Latent Variables</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#calculus-of-variations">19.4.2 Calculus of Variations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource">Resource</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">19 Approximate Inference</a> &raquo;</li>
+        
+      <li>19.4 Variational Inference and Learning</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/19.4 Variational Inference and Learning.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="variational-inference-and-learning">
+<h1>19.4 Variational Inference and Learning<a class="headerlink" href="#variational-inference-and-learning" title="Permalink to this headline">¶</a></h1>
+<p>Core idea of variational learning: We can maximize L over a restricted family of distribution q.</p>
+<p>Common restriction:</p>
+<div class="math notranslate nohighlight">
+\[q(h|v) = \prod_i q(h_i|v)\]</div>
+<p>Called <strong>mean field</strong> approach.</p>
+<p>We do not need to specify a sepecific parametric form of q. We specify how it should factorize, then optimization problem determines the optimal probability distribution within those factorization constraints.</p>
+<ul class="simple">
+<li>For discrete latent variables: use traditional optimization techniques to optimize a finite number of variables describing the q distribution.</li>
+<li>For continous latent variables: use a branch of mathmatics called caculus of variations to perform optimization over a space of functions and actually determine which function should be used to represent q.</li>
+</ul>
+<p>Because <span class="math notranslate nohighlight">\(L(v, \theta, q) = \log p(v) - KL[q(h) || p(h|v)]\)</span>, maximize L =&gt; minimize KL[q(h) || p(h|v)]. We are fitting q to p.</p>
+<ul class="simple">
+<li>When we use maximum likehood learning to fit a model to data, we minimize <span class="math notranslate nohighlight">\(D_{KL}(p_{model}|| p_{data})\)</span>, which encourage the model to have high probability everywhere that the data has high probability.</li>
+<li>Optimize based inference procedure encourage q to have low probability everywhere the true posterior has how probability.</li>
+</ul>
+<p>Review:</p>
+<img alt="../../_images/Figure3.6.PNG" src="../../_images/Figure3.6.PNG" />
+<p>In the inference optimization problem, we choose to use <span class="math notranslate nohighlight">\(D_{KL}(q(h|v) || p(h|v))\)</span> for computational reason.</p>
+<div class="section" id="discrete-latent-variables">
+<h2>19.4.1 Discrete Latent Variables<a class="headerlink" href="#discrete-latent-variables" title="Permalink to this headline">¶</a></h2>
+<p>We define a distribution q, typically one where each factor of q is just defined by a lookup table over a discrete states.</p>
+<p>After determining how to represent q, we simply optimize its parameters. In principle the selection of q could be done with any optimization algorithm, such as gradient descent.</p>
+<p>Because this optimization must occur in the inner loop of a learning algorithm, it must be very fast. We typically use special opyimzation algorithms that are designed to solve comparatively small and simple problems in few iterations. A popular choice is to iterate fixed point equitions:</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial \hat{h}_i} L = 0\]</div>
+<p>Example of applying variational inference to binary sparse coding model.</p>
+<p>Input <span class="math notranslate nohighlight">\(v \in R^n\)</span> is generated from the model by adding Gaussian noise to the sum of m different components.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p(h_i = 1) = \sigma(b_i) \\ \\
+p(v|h) = N(Wh, \beta^{-1})\end{split}\]</div>
+<ul class="simple">
+<li>b: learnable set of biases</li>
+<li>W: learnable weight matrix</li>
+<li><span class="math notranslate nohighlight">\(\beta\)</span>: learnable, diagonal precision matrix</li>
+</ul>
+<p>Now training the model with maximum likehood requires taking the derivatives with respect to the parameters. Consider the derivatives with repect to one of the biases:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+\frac{\partial}{\partial b_i} \log p(v) &amp;= \frac{\frac{\partial}{\partial b_i}p(v)}{p(v)} \\ \\
+&amp;= \frac{\frac{\partial}{\partial b_i} \sum_h p(h, v) }{p(v)} \\ \\
+&amp;= \frac{\sum_h p(v|h) \frac{\partial}{\partial b_i} p(h)}{p(v)} \\ \\
+&amp;= \sum_h p(h|v) \frac{\frac{\partial}{\partial b_i} p(h)}{p(h)} \\ \\
+&amp;= E_{h \sim p(h|v)} \frac{\partial}{\partial b_i} \log p(h)
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>See the graph model:</p>
+<img alt="../../_images/Figure19.2.PNG" src="../../_images/Figure19.2.PNG" />
+<p>p(h|v) is a complicated distribution.</p>
+<p>Solution: variational inference and variational learning.</p>
+<p>Mean field approximation:</p>
+<div class="math notranslate nohighlight">
+\[q(h|v) = \prod_i p(h_i|v)\]</div>
+<p>Use <span class="math notranslate nohighlight">\(\hat{h}\)</span> to represent q: <span class="math notranslate nohighlight">\(q(h_i | v) = \hat{h_i}\)</span></p>
+<p>Tractable lower bound:</p>
+<img alt="../../_images/Equition19.36.PNG" src="../../_images/Equition19.36.PNG" />
+<p>L can be expressed in a small number of simple arithmetic operations. The ELBO L is therefore tractable.</p>
+<p>We could simply run gradient ascent on both v and h. However, we do not do this for 2 reasons:</p>
+<ol class="arabic simple">
+<li>This would require storing <span class="math notranslate nohighlight">\(\hat{h}\)</span> for every v.</li>
+<li>We would like to extract the features <span class="math notranslate nohighlight">\(\hat{h}\)</span> very quickly, in order to recognize the content of v.</li>
+</ol>
+<p>Instead, we rapidly estimate them with fixed-point equition.</p>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial \hat{h}_i} L(v, \theta, \hat{h}) = 0\]</div>
+<p>We can iteratively apply the solution to the equition for i = 1, … m, and repeat the cycle until we satisfy a converge criterion. Common convergence criteria</p>
+<ul class="simple">
+<li>Stop when a full cycle of updates does not improve L by more than some tolerance amount</li>
+<li>When the cyle does not change <span class="math notranslate nohighlight">\(\hat{h}\)</span> by more than some amount.</li>
+</ul>
+<p>Binary sparse coding e.g</p>
+<img alt="../../_images/Equition19.43.PNG" src="../../_images/Equition19.43.PNG" />
+<p>To apply the fixed-point update inference rule, we solve for the <span class="math notranslate nohighlight">\(\hat{h}\)</span> that sets equition 19.43 to 0.</p>
+<img alt="../../_images/Equition19.44.PNG" src="../../_images/Equition19.44.PNG" />
+<p>The mean field fixed-point equition defined a recurrent neural network. The task of this network is to perform inference.</p>
+<p>In the case of binary sparse coding, the recurrent network specified in equition 19.44 consists of repeatedly updating the hidden units based on the changing value of the neighboring hiddne unites.The input always sends a fixed message of <span class="math notranslate nohighlight">\(v^T\beta W\)</span> to the hidden units, but the hidden units constantly update the message they send to each other. More specifically, two units <span class="math notranslate nohighlight">\(\hat{h}_i\)</span> and <span class="math notranslate nohighlight">\(\hat{h}_j\)</span> inhibit each other when their weight vectors are aligned. Between two hidden units that both explain the input, only the one that explains the input the best will be allowed to remain active. This competition is the mean field approximation’s attempt to capture the explaining away interactions in the binary sparse coding posterior. The explaining away effect actually should cause a multimodel posterior. Unfortunately, explaining away interaction cannot be modeled by the factorial q used for mean field, so the mean field approximation is forced to choose one mode to model</p>
+<p>Rewrite the equition of 19.44</p>
+<img alt="../../_images/Equition19.45.PNG" src="../../_images/Equition19.45.PNG" />
+<p>We can think of unit i as attempting to encode the residual error in v given the code of the other units. We can thus think of sparse coding as an iterative antoencoder, which repeatedly encodes and decodes its input, attempting to fix mistakes in the reconstruction after each iteration.</p>
+</div>
+<div class="section" id="calculus-of-variations">
+<h2>19.4.2 Calculus of Variations<a class="headerlink" href="#calculus-of-variations" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>A function of a function f is known as functional J[f].</li>
+<li>We can take functional derivative of the functional J with respect to individual values of function f(x) at any any specific value of x.</li>
+<li>The functional derivative of functional J with repect to the value of function f at point x is denoted <span class="math notranslate nohighlight">\(\frac{\delta}{\delta f(x)}J\)</span></li>
+<li>For differentiable f(x) and differentiable g(y, x) with continuous derivatives:</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\frac{\delta}{\delta f(x)} \int g(f(x), x)dx = \frac{\partial}{\partial y}g(f(x), x)\]</div>
+<p>We can optimize a functional by solving for the function where the functional derivative at every point is equal to zero.</p>
+<p>e.g. find the probability distribution function over <span class="math notranslate nohighlight">\(x \in R\)</span> that has maximal differential entropy.</p>
+<div class="math notranslate nohighlight">
+\[H[p] = - E_x log p(x) = - \int p(x) \log p(x) dx\]</div>
+<p>We can not simply maximize H[p] with repect to function p(x). Restriction we want to have</p>
+<ul class="simple">
+<li>p(x) integrate to 1</li>
+<li>Entropy increase without bound as the variance increase =&gt; problem uninteresting =&gt; fixed variance <span class="math notranslate nohighlight">\(\sigma^2\)</span></li>
+<li>distribution can be shifted without changing entropy =&gt; mean of the distribution: <span class="math notranslate nohighlight">\(\mu\)</span></li>
+</ul>
+<p>Review on Lagrange function:</p>
+<img alt="../../_images/Lagrangian.PNG" src="../../_images/Lagrangian.PNG" />
+<p>So the Lagrangian functional for this optimization problem is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+L[p] &amp;= \lambda_1(\int p(x)dx -1) + \lambda_2(E[x] - \mu) + \lambda_3(E[(x)-\mu)]^2 - \sigma^2) + H[p] \\
+&amp;= \int [\lambda_1 p(x) + \lambda_2 p(x)x + \lambda_3 p(x)(x-\mu)^2 - p(x) \log p(x)]dx - \lambda_1 -\mu \lambda_2 - \sigma^2\lambda_3
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>The minimize the Lagrangian with repect to p, we set the functional derivatives to 0:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\forall x, \frac{\delta}{\delta p(x)} L = \lambda_1 + \lambda_2 x + \lambda_3 (x-\mu)^2 - 1 - log p(x) = 0 \\ \\
+p(x) = exp(\lambda_1 + \lambda_2 x + \lambda_3(x - \mu)^2 -1)\end{split}\]</div>
+<p>We are free to choose any <span class="math notranslate nohighlight">\(\lambda\)</span> values, becuase the gradient of the Lagrangian with repect to <span class="math notranslate nohighlight">\(\lambda\)</span> is 0 as long as the constraints are satisfied. We may set <span class="math notranslate nohighlight">\(\lambda_1 = 1 - \log \sigma \sqrt{2 \pi}\)</span> and <span class="math notranslate nohighlight">\(\lambda_2 = 0\)</span> and <span class="math notranslate nohighlight">\(\lambda_3 = -\frac{1}{2\sigma^2}\)</span> so that we can have</p>
+<div class="math notranslate nohighlight">
+\[p(x) = N(x; \mu, \sigma^2)\]</div>
+<p>This is one reason for using the normal distribution when we do not know the true distribution. Because the normal distribution has the maximum entropym we impose the least possible amount of structure by making this assumption.</p>
+<p>For the model with continuous latent variable. If we have mean field assumption:</p>
+<div class="math notranslate nohighlight">
+\[q(h|v) = \prod_i q(h_i|v)\]</div>
+<p>and fix <span class="math notranslate nohighlight">\(q(h_j|v)\)</span> for all <span class="math notranslate nohighlight">\(j \neq i\)</span>. Then the optimal <span class="math notranslate nohighlight">\(q(h_i|v)\)</span> maybe obtained by normalizing the unnormalized distribution</p>
+<div class="math notranslate nohighlight">
+\[\hat{q}(h_i|v) = exp(E_{h_i \sim q(h_{-i}|v)} \log \hat{p}(v, h))\]</div>
+<p>As long as p does not assign 0 probability to any joint configuration of variables. It is a fixed point equition, designed to be iteratively applied for each value of i repeatedly until convergence.</p>
+</div>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.researchgate.net/profile/Ian_Goodfellow/publication/240308780_Scaling_Up_Spike-and-Slab_Models_for_Unsupervised_Feature_Learning/links/0046351e16dabb80cd000000/Scaling-Up-Spike-and-Slab-Models-for-Unsupervised-Feature-Learning.pdf">Scaling up Spike and Slab Models for Unsupervised Feature Learning</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="19.3 MAP Inference and Sparse Coding.html" class="btn btn-neutral" title="19.3 MAP Inference and Sparse Coding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
