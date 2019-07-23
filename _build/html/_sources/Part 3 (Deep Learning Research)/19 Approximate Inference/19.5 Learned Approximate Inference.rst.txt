@@ -1,0 +1,41 @@
+19.5 Learned Approximate Inference
+=======================================
+
+Explicitly performing optimization via
+
+* fixed point equition
+* gradient-based optimization
+
+is often very expensive and time consuming.
+
+Solution: we can think of the optimzation process as a function f that maps an input v to an approximate distribution :math:`q^* = argmax_q L(v, q)`. Once we think of the multistep iterative optimization process as just being a function, we can approximate it with a neural network that implements an approaximate :math:`\hat{f}(v, \theta)`
+
+################################################
+19.5.1 Wake-Sleep
+################################################
+
+* The main difficulties with training a model to infer h from v is that we do not have a supervised training set with which to train the model. Given a v, we do not know the appropriate h. 
+* Solution: the wake-sleep algorithm resolves this problem by drawing samples of both h and v from the model distribution. 
+* Drawback of this approach: we will only by able to train the inference network on values of v that have high probability under the model. Early in learning, the model distribution will not resemble the data distribution, so the inference network will not have an opportunity to learn on samples that resemble data.
+
+Review on 18.1:
+
+Target probability distribution:
+
+.. math::
+	p(x; \theta) = \frac{1}{Z(\theta)}\hat{p}(x; \theta)
+
+The gradient
+
+.. math::
+	\nabla_{\theta} = \nabla_{\theta} \log\hat{p}(x;\theta) - \nabla_{\theta} \log Z(\theta)
+
+* :math:`\nabla_{\theta} \log\hat{p}(x;\theta)` : Positive phase. Models with no latent variables or with few interaction between the latent variables typically have a tractable positive phase. 
+* :math:`\nabla_{\theta} \log Z(\theta)`: Negative phase. For undirected model, the negative phase is difficult. 
+
+
+Review on 18.2
+
+**Because the negative phase involves drawing samples from the model’s distribution, we can think of it as ﬁnding points that the model believes in strongly. Because the negative phase acts to reduce the probability of those points, they are generally considered to represent the model’s incorrect beliefs about the world. They are frequently referred to in the literature as “hallucinations” or “fantasyparticles.” In fact, the negative phase has been proposed as a possible explanation for dreaming in humans and other animals, the idea being that the brain maintains a probabilistic model of the world and follows the gradient of** :math:`\log \hat{p}` **when experiencing real events while awake and follows the negative gradient of** :math:`\log \hat{p}` **to minimize log Z while sleeping and experiencing events sampled from the current model.**
+
+Another possible explanation for biological dreaming is that it is providing samples from p(h, v) which can be used to train an inference network to predict h given v. 

@@ -183,6 +183,21 @@ and fix :math:`q(h_j|v)` for all :math:`j \neq i`. Then the optimal :math:`q(h_i
 
 As long as p does not assign 0 probability to any joint configuration of variables. It is a fixed point equition, designed to be iteratively applied for each value of i repeatedly until convergence. 
 
+The training algorithm tends to adapt the model in a way that makes the approximating assumption underlying the approximate inference algorithm become more true. When training the parameters, variational learning increases 
+
+.. math::
+	E_{h~q} log(v, h)
+
+for specific v, this 
+
+* increase p(h|v) for values of h that have high probability under q(h|v)
+* decrease p(h|v) for values of h that have low probability under q(h|v)
+
+We often estimate :math:`\log p(v; \theta)` after training the model and find that the gap with :math:`L(v, \theta, q)` is small. 
+* From this, we can conclude that our variational approximation is accurate for the specific value of :math:`\theta` that we obtained from the learning process.
+* We should not conclude that our variational approximation is accurate in general or that the variational approximation did little harm to the learning process.  
+
+
 
 ##########################################
 Resource

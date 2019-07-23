@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>19 Approximate Inference &mdash; dl 0.0.1 documentation</title>
+  <title>19.5 Learned Approximate Inference &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="19.1 Inference as Optimization" href="19.1 Inference as Optimization.html" />
-    <link rel="prev" title="18.7 Estimating the Partition Function" href="../18 Confronting the Partition Function/18.7 Estimating the Partition Function.html" /> 
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="19.4 Variational Inference and Learning" href="19.4 Variational Inference and Learning.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -88,12 +88,15 @@
 <li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">19 Approximate Inference</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">19 Approximate Inference</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="19.1 Inference as Optimization.html">19.1 Inference as Optimization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="19.2 Expectation Maximization.html">19.2 Expectation Maximization</a></li>
 <li class="toctree-l3"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="19.4 Variational Inference and Learning.html">19.4 Variational Inference and Learning</a></li>
-<li class="toctree-l3"><a class="reference internal" href="19.5 Learned Approximate Inference.html">19.5 Learned Approximate Inference</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">19.5 Learned Approximate Inference</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#wake-sleep">19.5.1 Wake-Sleep</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -146,13 +149,15 @@
         
           <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>19 Approximate Inference</li>
+          <li><a href="index.html">19 Approximate Inference</a> &raquo;</li>
+        
+      <li>19.5 Learned Approximate Inference</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/19.5 Learned Approximate Inference.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -165,27 +170,36 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="approximate-inference">
-<h1>19 Approximate Inference<a class="headerlink" href="#approximate-inference" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="learned-approximate-inference">
+<h1>19.5 Learned Approximate Inference<a class="headerlink" href="#learned-approximate-inference" title="Permalink to this headline">¶</a></h1>
+<p>Explicitly performing optimization via</p>
 <ul class="simple">
-<li>v: visible variables</li>
-<li>h: hidden variables</li>
+<li>fixed point equition</li>
+<li>gradient-based optimization</li>
 </ul>
-<p>Challenge of inference: compute p(h|v) or take expectation with respect to it.</p>
-<p>Review:</p>
-<img alt="../../_images/Figure16.61.PNG" src="../../_images/Figure16.61.PNG" />
-<img alt="../../_images/Figure16.71.PNG" src="../../_images/Figure16.71.PNG" />
-<img alt="../../_images/Figure16.81.PNG" src="../../_images/Figure16.81.PNG" />
-<p>Direct interaction in undirected model / explaining away interaction between mutual ancestors of the same visible unit in directed model ==&gt; interaction between latent variables =&gt; Intractable inference problem.</p>
-<img alt="../../_images/Figure19.1.PNG" src="../../_images/Figure19.1.PNG" />
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="19.1 Inference as Optimization.html">19.1 Inference as Optimization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="19.2 Expectation Maximization.html">19.2 Expectation Maximization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="19.4 Variational Inference and Learning.html">19.4 Variational Inference and Learning</a></li>
-<li class="toctree-l1"><a class="reference internal" href="19.5 Learned Approximate Inference.html">19.5 Learned Approximate Inference</a></li>
+<p>is often very expensive and time consuming.</p>
+<p>Solution: we can think of the optimzation process as a function f that maps an input v to an approximate distribution <span class="math notranslate nohighlight">\(q^* = argmax_q L(v, q)\)</span>. Once we think of the multistep iterative optimization process as just being a function, we can approximate it with a neural network that implements an approaximate <span class="math notranslate nohighlight">\(\hat{f}(v, \theta)\)</span></p>
+<div class="section" id="wake-sleep">
+<h2>19.5.1 Wake-Sleep<a class="headerlink" href="#wake-sleep" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The main difficulties with training a model to infer h from v is that we do not have a supervised training set with which to train the model. Given a v, we do not know the appropriate h.</li>
+<li>Solution: the wake-sleep algorithm resolves this problem by drawing samples of both h and v from the model distribution.</li>
+<li>Drawback of this approach: we will only by able to train the inference network on values of v that have high probability under the model. Early in learning, the model distribution will not resemble the data distribution, so the inference network will not have an opportunity to learn on samples that resemble data.</li>
 </ul>
+<p>Review on 18.1:</p>
+<p>Target probability distribution:</p>
+<div class="math notranslate nohighlight">
+\[p(x; \theta) = \frac{1}{Z(\theta)}\hat{p}(x; \theta)\]</div>
+<p>The gradient</p>
+<div class="math notranslate nohighlight">
+\[\nabla_{\theta} = \nabla_{\theta} \log\hat{p}(x;\theta) - \nabla_{\theta} \log Z(\theta)\]</div>
+<ul class="simple">
+<li><span class="math notranslate nohighlight">\(\nabla_{\theta} \log\hat{p}(x;\theta)\)</span> : Positive phase. Models with no latent variables or with few interaction between the latent variables typically have a tractable positive phase.</li>
+<li><span class="math notranslate nohighlight">\(\nabla_{\theta} \log Z(\theta)\)</span>: Negative phase. For undirected model, the negative phase is difficult.</li>
+</ul>
+<p>Review on 18.2</p>
+<p><strong>Because the negative phase involves drawing samples from the model’s distribution, we can think of it as ﬁnding points that the model believes in strongly. Because the negative phase acts to reduce the probability of those points, they are generally considered to represent the model’s incorrect beliefs about the world. They are frequently referred to in the literature as “hallucinations” or “fantasyparticles.” In fact, the negative phase has been proposed as a possible explanation for dreaming in humans and other animals, the idea being that the brain maintains a probabilistic model of the world and follows the gradient of</strong> <span class="math notranslate nohighlight">\(\log \hat{p}\)</span> <strong>when experiencing real events while awake and follows the negative gradient of</strong> <span class="math notranslate nohighlight">\(\log \hat{p}\)</span> <strong>to minimize log Z while sleeping and experiencing events sampled from the current model.</strong></p>
+<p>Another possible explanation for biological dreaming is that it is providing samples from p(h, v) which can be used to train an inference network to predict h given v.</p>
 </div>
 </div>
 
@@ -197,10 +211,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="19.1 Inference as Optimization.html" class="btn btn-neutral float-right" title="19.1 Inference as Optimization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../18 Confronting the Partition Function/18.7 Estimating the Partition Function.html" class="btn btn-neutral" title="18.7 Estimating the Partition Function" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="19.4 Variational Inference and Learning.html" class="btn btn-neutral" title="19.4 Variational Inference and Learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
