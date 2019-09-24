@@ -306,6 +306,61 @@ L(q) &amp;= E_{z \sim q(z|x)} \log p_{model}(z, z) + H(q(z|x)) \\
 </ul>
 <p>Nice property of VAE: Simultaneously training a parametric encoder in combination with the generator network forces the model to learn a predictable coordinate system that the encoder can capture.</p>
 <img alt="../../_images/Figure20.6.PNG" src="../../_images/Figure20.6.PNG" />
+<p>Example:</p>
+<ol class="arabic simple">
+<li>KL Divergence</li>
+</ol>
+<p>Consider 2 multivariant normal distributions</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+p(x) &amp;= N(\mu_1, \Sigma_1) \\
+&amp;= \frac{1}{\sqrt{(2\pi)^k|\Sigma_1|}}e^{-\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1)}
+\\ \\
+q(x) &amp;= N(\mu_2, \Sigma_2) \\
+&amp;= \frac{1}{\sqrt{(2\pi)^k|\Sigma_2|}}e^{-\frac{1}{2}(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2)}
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Now we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+KL[p || q] &amp;= \sum_x p(x) \log \frac{p(x)}{q(x)} \\
+&amp;= \sum_x p(x) (\log(p(x)) - \log(q(x))) \\
+&amp;= \sum_x p(x) (-\frac{1}{2}\log(|\Sigma_1|) -\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1) + \frac{1}{2}\log(|\Sigma_2|) + \frac{1}{2}(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2)) \\
+&amp;= \sum_x p(x) (\frac{1}{2}\log(\frac{|\Sigma_2|}{|\Sigma_1|} -\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1) + \frac{1}{2}(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2) )
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Focus on small part:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+&amp;\sum_x p(x) (\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1)) \\
+&amp;= E_{x \sim p(x)}(tr(\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1))) \\
+&amp;= E_{x \sim p(x)}(tr(\frac{1}{2}(x - \mu_1)(x - \mu_1)^T\Sigma_1^{-1})) \\
+&amp;= tr(E_{x \sim p(x)}(\frac{1}{2}(x - \mu_1)(x - \mu_1)^T\Sigma_1^{-1})) \\
+&amp;= tr(\frac{1}{2} E_{x \sim p(x)} ((x - \mu_1)(x - \mu_1)^T) \Sigma_1^{-1}) \\
+&amp;= tr(\frac{1}{2} \Sigma \Sigma^{-1}) \\
+&amp;= \frac{1}{2}tr(I_k) \\
+&amp;= \frac{1}{2}k
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>For another for</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+&amp;\sum_x p(x) (\frac{1}{2}(x - \mu_2)^T\Sigma_1^{-1}(x - \mu_2)) \\
+&amp;=\frac{1}{2} \sum_x p(x) (((x - \mu_1) + (\mu_1 - \mu_2))^T\Sigma_2^{-1}((x - \mu_1) + (mu_1 - \mu_2)) \\
+&amp;= \frac{1}{2} (tr(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2))
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>So,</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2))
+\end{split}
+\end{equation}\]</div>
 </div>
 <div class="section" id="generative-adverserial-network">
 <h2>20.10.4 Generative Adverserial Network<a class="headerlink" href="#generative-adverserial-network" title="Permalink to this headline">¶</a></h2>

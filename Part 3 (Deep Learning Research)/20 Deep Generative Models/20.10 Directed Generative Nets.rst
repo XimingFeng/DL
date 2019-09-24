@@ -146,6 +146,78 @@ Nice property of VAE: Simultaneously training a parametric encoder in combinatio
 
 .. image:: rsc/Figure20.6.PNG
 
+
+Example:
+
+1. KL Divergence 
+
+Consider 2 multivariant normal distributions
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	p(x) &= N(\mu_1, \Sigma_1) \\ 
+	&= \frac{1}{\sqrt{(2\pi)^k|\Sigma_1|}}e^{-\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1)}
+	\\ \\   
+	q(x) &= N(\mu_2, \Sigma_2) \\ 
+	&= \frac{1}{\sqrt{(2\pi)^k|\Sigma_2|}}e^{-\frac{1}{2}(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2)}
+	\end{split}
+	\end{equation}
+
+Now we have 
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	KL[p || q] &= \sum_x p(x) \log \frac{p(x)}{q(x)} \\
+	&= \sum_x p(x) (\log(p(x)) - \log(q(x))) \\
+	&= \sum_x p(x) (-\frac{1}{2}\log(|\Sigma_1|) -\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1) + \frac{1}{2}\log(|\Sigma_2|) + \frac{1}{2}(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2)) \\
+	&= \sum_x p(x) (\frac{1}{2}\log(\frac{|\Sigma_2|}{|\Sigma_1|} -\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1) + \frac{1}{2}(x - \mu_2)^T\Sigma_2^{-1}(x - \mu_2) ) 
+	\end{split}
+	\end{equation}
+
+Focus on small part:
+
+.. math::
+
+	\begin{equation} 
+	\begin{split}
+	&\sum_x p(x) (\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1)) \\
+	&= E_{x \sim p(x)}(tr(\frac{1}{2}(x - \mu_1)^T\Sigma_1^{-1}(x - \mu_1))) \\
+	&= E_{x \sim p(x)}(tr(\frac{1}{2}(x - \mu_1)(x - \mu_1)^T\Sigma_1^{-1})) \\
+	&= tr(E_{x \sim p(x)}(\frac{1}{2}(x - \mu_1)(x - \mu_1)^T\Sigma_1^{-1})) \\
+	&= tr(\frac{1}{2} E_{x \sim p(x)} ((x - \mu_1)(x - \mu_1)^T) \Sigma_1^{-1}) \\
+	&= tr(\frac{1}{2} \Sigma \Sigma^{-1}) \\ 
+	&= \frac{1}{2}tr(I_k) \\
+	&= \frac{1}{2}k
+	\end{split}
+	\end{equation}
+
+For another for 
+
+.. math::
+	
+	\begin{equation} 
+	\begin{split}
+	&\sum_x p(x) (\frac{1}{2}(x - \mu_2)^T\Sigma_1^{-1}(x - \mu_2)) \\ 
+	&=\frac{1}{2} \sum_x p(x) (((x - \mu_1) + (\mu_1 - \mu_2))^T\Sigma_2^{-1}((x - \mu_1) + (mu_1 - \mu_2)) \\
+	&= \frac{1}{2} (tr(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2))
+	\end{split}
+	\end{equation}
+
+So,
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2))
+	\end{split}
+	\end{equation}
+
+
+
+
+
 ###############################################################
 20.10.4 Generative Adverserial Network
 ###############################################################
@@ -244,3 +316,4 @@ Resource
 
 * `Variational AutoEncoder Video Tutorial <https://www.youtube.com/watch?v=w8F7_rQZxXk&list=PLdxQ7SoCLQANizknbIiHzL_hYjEaI-wUe>`_
 * `Zeros Sum Game <https://en.wikipedia.org/wiki/Zero-sum_game>`_
+* `KL divergence between two multivariate Gaussians <https://stats.stackexchange.com/questions/60680/kl-divergence-between-two-multivariate-gaussians>`_
