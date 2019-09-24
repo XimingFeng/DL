@@ -1,0 +1,398 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>20.4 Deep Boltzmann Machines &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="20.5 Boltzmann Machines for Real-Valued Data" href="20.5 Boltzmann Machines for Real Valued Data.html" />
+    <link rel="prev" title="20.3 Deep Believe Network" href="20.3 Deep Believe Network.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">20 Deep Generative Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.2 Restricted Boltzmann Machines.html">20.2 Restricted Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.3 Deep Believe Network.html">20.3 Deep Believe Network</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">20.4 Deep Boltzmann Machines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#intersting-properties">20.4.1 Intersting Properties</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#dbm-mean-field-inference">20.4.3 DBM Mean Field Inference</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#layer-wise-pretraining">20.4.4 Layer-Wise Pretraining</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#jointly-training-deep-boltzmann-machines">20.4.5 Jointly training Deep Boltzmann Machines</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="20.5 Boltzmann Machines for Real Valued Data.html">20.5 Boltzmann Machines for Real-Valued Data</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">20 Deep Generative Models</a> &raquo;</li>
+        
+      <li>20.4 Deep Boltzmann Machines</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.4 Deep Boltzmann Machines.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="deep-boltzmann-machines">
+<h1>20.4 Deep Boltzmann Machines<a class="headerlink" href="#deep-boltzmann-machines" title="Permalink to this headline">¶</a></h1>
+<img alt="../../_images/Figure20.2.PNG" src="../../_images/Figure20.2.PNG" />
+<p>Deep Boltzmann Machines</p>
+<ul class="simple">
+<li>Entirely undirected model</li>
+<li>Several layer of latent variables</li>
+<li>Within each layer, each of the variables are mutually independent, conditioned on the variable in the  neighboring layers.</li>
+<li>Energy based model</li>
+</ul>
+<p>Review on energy based model:</p>
+<p>Many interesting theoretical results about undirected models depend on the assumption that <span class="math notranslate nohighlight">\(\forall x, \hat{p}(x) &gt; 0\)</span>. A convinient way to enforce this condition is to use energy based model (EBM) where</p>
+<div class="math notranslate nohighlight">
+\[\hat{p}(x) = exp(-E(x))\]</div>
+<p>and E(x), aka, energy function. By learning the energy function, we can use unconstrained optimization. Any distriburuib of the form given by the equation above is an example to Boltzmann distribution.</p>
+<p>e.g. DBM with 1 layer of visible variables and 3 hidden layers:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P(v, h^{(1)}, h^{(2)}, h^{(3)}) = \frac{1}{Z(\theta)} exp(-E(v, h^{(1)}, h^{(2)}, h^{(3)})) \\
+E(v, h^{(1)}, h^{(2)}, h^{(3)}) = -v^TW^{(1)}h^{(1)} - h^{(1)T}W^{(2)}h^{(2)} - h^{(2)T}W^{(3)}h^{(3)}\end{split}\]</div>
+<p>Advantages offered by DBM, similar to RBM: can be organized into a bipartite graph. With odd layer on one side and even layer on the other. When we condition on the variables in the even layer, the variables in the odd layers become conditionally independent, vice versa.</p>
+<img alt="../../_images/Figure20.3.PNG" src="../../_images/Figure20.3.PNG" />
+<p>E.g of 2 hidden layers:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P(v_i = 1 | h^{(1)}) = \sigma(W_{i, :})^{(1)}h^{(1)} \\
+P(h_i^{(1)} = 1 | v, h^{(2)}) = \sigma(v^TW_{:, i}^{(1)} + W_{i, :}^{(2)}h^{(2)}) \\
+P(h_k^{(2)} = 1 | h^{(1)}) = \sigma(h^{(1)T}W_{:, k}^{(2)})\end{split}\]</div>
+<p>The bipartite structure makes Gibbs sampling in the deep Boltzmann Machine efficient. It is possible to update all units in only 2 iterations. Gibbs sampling can be divided into  2 blocks of updates, one including even layers including v and the other including all odd layers. Because of the bipartite DBM connection pattern, gievn the even layers, the distribution over the odd layers is factorial and thus can be sampled simultaneously and independently as a block, vice versa. Efficient sampling is especially important for training with the stochastic maximum likehood algorithm.</p>
+<div class="section" id="intersting-properties">
+<h2>20.4.1 Intersting Properties<a class="headerlink" href="#intersting-properties" title="Permalink to this headline">¶</a></h2>
+<p>Compared to DBN, the posterior distribution P(h|v) is simpler for DBM. In DBMs. all the hidden units within a layer are conditionally independent given the other layers. This lack of intralayer interaction makes it possible to use fixed-point equitions to optimize the variational lower bound and find the true optimal mean field expectation.</p>
+<p>Unfortunate property of DBMs: sampling from them is relatively difficult.</p>
+<ul class="simple">
+<li>DBNs: MCMC sampling in their top pair of layers. The other layers are used at the end of the sampling process, in one efficient ancestral sampling pass.</li>
+<li>DBMs: necessary to use MCMC accorss all layers, with every layer of the model participating in every Markov Chain transition.</li>
+</ul>
+</div>
+<div class="section" id="dbm-mean-field-inference">
+<h2>20.4.3 DBM Mean Field Inference<a class="headerlink" href="#dbm-mean-field-inference" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Conditional distribution over one DBM layer given the neighboring layers is factorial.</li>
+<li>The distribution over all hidden layers generally does not factorize because of interaction between layers.</li>
+</ul>
+<p>The mean field approximation is a simple form of variational distribution, where we restrict the approximating distribution to fully factorial distribution.</p>
+<p>Review Variational Inference and Learning:</p>
+<p>Core idea of variational learning: We can maximize L over a restricted family of distribution q.</p>
+<p>Common restriction:</p>
+<div class="math notranslate nohighlight">
+\[q(h|v) = \prod_i q(h_i|v)\]</div>
+<p>Called <strong>mean field</strong> approach.</p>
+<p>In the case of approximating posterior distribution over hidden units given the visible units, we restrict the approximating family to the set of distribution where the hidden units are conditionally independent. e.g: DBM with 2 hidden layers: Let <span class="math notranslate nohighlight">\(Q(h^{(1)}, h^{(2)} | v)\)</span> be the approximation of <span class="math notranslate nohighlight">\(P(h^{(1)}, h^{(2)} | v)\)</span></p>
+<div class="math notranslate nohighlight">
+\[Q(h^{(1)}, h^{(2)} | v) = \prod_j Q(h^{(1)}_j | v)\prod_k Q(h^{(2)}_k | v)\]</div>
+<p>Importantly, the inference process must be run again to find a different distribution Q every time we use a new value of v.</p>
+<p>Gold of mean field approach, minimize:</p>
+<div class="math notranslate nohighlight">
+\[KL(Q||P) = \sum_h Q(h^{(1)}, h^{(2)} | v) \log (\frac{Q(h^{(1)}, h^{(2)} | v)}{P(h^{(1)}, h^{(2)} | v)})\]</div>
+<p>We associate the probability of eah element of <span class="math notranslate nohighlight">\(h^{(1)}\)</span> with a parameter.</p>
+<ul class="simple">
+<li>For each j, <span class="math notranslate nohighlight">\(\hat{h}^{(1)}_j = Q(h^{(1)}_j = 1 | v)\)</span> where <span class="math notranslate nohighlight">\(\hat{h}^{(1)}_j \in [0, 1]\)</span></li>
+<li>For each k, <span class="math notranslate nohighlight">\(\hat{h}^{(2)}_k = Q(h^{(2)}_k = 1 | v)\)</span> where <span class="math notranslate nohighlight">\(\hat{h}^{(2)}_k \in [0, 1]\)</span></li>
+</ul>
+<p>Now we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+Q(h^{(1)}, h^{(2)} | v) &amp;= \prod_j Q(h^{(1)}_j | v)\prod_k Q(h^{(2)}_k | v) \\
+&amp;= \prod_j (\hat{h}^{(1)}_j)^{h_j^{(1)}}(1 - \hat{h}^{(1)}_j)^{1 - h_j^{(1)}} \prod_k (\hat{h}^{(2)}_k)^{h_k^{(2)}}(1 - \hat{h}^{(2)}_k)^{1 - h_k^{(2)}}
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>For DBMs with more layers, the approximate posterior parameterization can be extended in the obvious way, updating all the even layers simultaneously and then update all the odd layers simulteneously, following the same schedule as Gibbs sampling.</p>
+<p>Now that we have specified our family of approximating distribution Q, it remains to specify a procedure for choosing the member of this family that best fits p. The most straight-forward way is shown below.</p>
+<p>Review on 19.4.3:</p>
+<p>For the model with continuous latent variable. If we have mean field assumption:</p>
+<div class="math notranslate nohighlight">
+\[q(h|v) = \prod_i q(h_i|v)\]</div>
+<p>and fix <span class="math notranslate nohighlight">\(q(h_j|v)\)</span> for all <span class="math notranslate nohighlight">\(j \neq i\)</span>. Then the optimal <span class="math notranslate nohighlight">\(q(h_i|v)\)</span> maybe obtained by normalizing the unnormalized distribution</p>
+<div class="math notranslate nohighlight">
+\[\hat{q}(h_i|v) = exp(E_{h_i \sim q(h_{-i}|v)} \log \hat{p}(v, h))\]</div>
+<p>Applying these genarl equitions, we obtain the update rules</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{h}^{(1)}_j = \sigma(\sum_i v_iW_{i, j}^{(1)} + \sum_{k'}W^{(2)}_{j, k'}\hat{h}_{k'}^{(2)}), \forall j \\ \\
+\hat{h}_k^{(2)} = \sigma(\sum_{j'} W_{j', k}^{(2)}\hat{h}^{(1)}_{j'}), \forall k\end{split}\]</div>
+<p>These fixed_point update equition define an iterative algorithm  where we alternate updates of <span class="math notranslate nohighlight">\(\hat{h}^{(1)}_j\)</span> and <span class="math notranslate nohighlight">\(\hat{h}_k^{(2)}\)</span></p>
+<p>For deep Boltzmann Machine with 2 hidden layer, ELBO is given by</p>
+<div class="math notranslate nohighlight">
+\[L(Q, \theta) = \sum_i \sum_{j'} v_i W_{i, j'}^{(1)}\hat{h}_{j'} + \sum_{j'}\sum_{k'} \hat{h}^{(1)}_{j'}W_{j', k'}^{(2)}\hat{h}^{(2)}_{k'} - \log Z(\theta) + H(Q)\]</div>
+<p>The hardness results for computing the partition function that apply to restricted Boltzmann machines also apply to deep Boltzmann machines.</p>
+<ul>
+<li><p class="first">Evauating the probability mass function of Boltzmann machine requires approximate methods such as annealed importance sampling.</p>
+</li>
+<li><p class="first">Training the model requires approximation to th egradient of the log partition function. DBMs are typically trained using stochastic maximum likehood..</p>
+<blockquote>
+<div><ul class="simple">
+<li>pseudolikehood require the ability to evaluate the unnormalized probabilities, rather than only obtain a variational lower bound on them</li>
+<li>Contrastive Divergence is slow for DBMs because they do not allow efficient sampling of hidden units given the visible units</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Review on Annealed Importance Sampling: 18.7</p>
+</div>
+<div class="section" id="layer-wise-pretraining">
+<h2>20.4.4 Layer-Wise Pretraining<a class="headerlink" href="#layer-wise-pretraining" title="Permalink to this headline">¶</a></h2>
+<p>Train a DBM using stochastic maximum likehood from a random initiallization usually results in failure.</p>
+<ul class="simple">
+<li>In some cases, the model fails to learn to represent the distribution adequately.</li>
+<li>In other cases, the DBM may represent the distribution well, but with no higher likehood than could be obtained with just an RBM.</li>
+</ul>
+<p>Greedy layer wise pretraining: each layer of the DBM is trained in isolation as an RBM. The first layer is train to model the imput data. Each subsequent RBM is trained to model samples from the previous RBM’s posterior distribution. After all the RBMs have been trained in this way, they can be combined to form a DBM. The DBM may then be trained with OCD. Typically the PCD will make only a small change in the model’s parameters and in its performance as measured by the log-likehood it assignes to the data, or its ability to classify inputs.</p>
+<img alt="../../_images/algo20.1.PNG" src="../../_images/algo20.1.PNG" />
+<img alt="../../_images/Figure20.4.PNG" src="../../_images/Figure20.4.PNG" />
+<p>In DBM, the RBM parameters must be modified before inclusion in the DBM. A layer in the middle of the stack of RBM is trained with only bottom-up input, but after the stack is combined to form the DBM, the layer will have both bottom-up and top-down input. To acount for this effect, divide the weights of all but the top and bottom RBM in half before inserting them into the DBM.</p>
+</div>
+<div class="section" id="jointly-training-deep-boltzmann-machines">
+<h2>20.4.5 Jointly training Deep Boltzmann Machines<a class="headerlink" href="#jointly-training-deep-boltzmann-machines" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Cause: Classic DBMs require greedy unsupervised pretraining and, to perform classification well, require a seperate MLP-based classifier on top of the hidden features they extract.</p>
+</li>
+<li><p class="first">Challenge: Har to tell how our hyperparameters are working until quite late in the training process</p>
+</li>
+<li><p class="first">2 Main Solutions</p>
+<blockquote>
+<div><ul class="simple">
+<li>Centered deep Boltzmann Machine, which reparameterizes the model in order to make the Hessian of the cost function better conditioned at the beginning the learning process. Can be trained without a greedy layer-wise pretraining stage. Excellent test set log-likehood and produce high quality samples. Unfortunately, remain unable to compete with appropriately regularize MLPs as a classifier.</li>
+<li>Multi-prediction deep Boltzmann machine. Uses an alternative training criterion that allows the use of the back-propagation algorithm to avoid the problem with MCMC estimates of the gradient. New criterion does not lead to good likehood or samples. Compared to the MCMC approach, it does lead to superior classification performance and ability to reason well about the missing inputs.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Reviwe on Hessian Matrices: textbook p84</p>
+<p>Energy function function of Boltzmann machines:</p>
+<div class="math notranslate nohighlight">
+\[E(x) = -x^TUx - b^Tx\]</div>
+<p>Centereed Boltzmann machine introduces a vector <span class="math notranslate nohighlight">\(\mu\)</span> that is substracted from all the states:</p>
+<div class="math notranslate nohighlight">
+\[E'(x; U, b) = -(x - \mu)^T U (x - \mu) - (x - \mu)^Tb\]</div>
+<p>Typically <span class="math notranslate nohighlight">\(\mu\)</span> is a hyperparameter fixed at the beginning of the training. It is usually chosen to make sure that <span class="math notranslate nohighlight">\(x - \mu \approx 0\)</span> when the model is initialized. Improved conditioning of the Hessian matrix enables learning to succeed, even in difficult cases like training a deep Boltzmann machine with multiple layers.</p>
+<p>Multi-prediction DB views the mean field equition as defining a familt of recurrent networks for approximately solving possible inference problem. Rather than training the model to maximize the likehood, the model is trained to make each recurrent network obtain an accurate answer to the corresponding inference problem. Process:</p>
+<img alt="../../_images/Figure20.5.PNG" src="../../_images/Figure20.5.PNG" />
+<p>Final loss is typically based on the approximate conditional distribution that the approximate inference network imposes over the missing values.</p>
+<p>Backpropagation through inference graph has 2 main advantages</p>
+<ol class="arabic">
+<li><p class="first">It trains the model as it is really used, with approximate inference.</p>
+<blockquote>
+<div><ul class="simple">
+<li>The orginal DBM does not make accurate classifier on its own, the best classification results with the original DBM were based on training a seperate classifier to use features extracted by the DBM</li>
+<li>MP-DBM uses inference in the DBM to compute the distribution oever the class labels. Mean field inference in the MP-DBM performs well as a classifier without special modification.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Back-propagation computes the exact gradient of the loss. Better for optimzation than the approximate gradient of SML training, which suffer from both bias and variance.</p>
+</li>
+</ol>
+<p>Disadvantage of back-propagation through the approximate inference graph is that it does not provide a way to optimize the log-likehood, but rather gives a heuristic approximation of the generalized pseudolikehood.</p>
+<p>Compare to dropout</p>
+<ul class="simple">
+<li>Dropout: share parameters among mant different computational graphs, with different between each graph being whether it includs or excludes each unit</li>
+<li>MP-DBM also shares parameters accross many computational graphs. The difference between the graph is wethher each input units is observed or not. When a unit is not observed, then MP-DBM does not delete in entirely as dropout does. Instead, the MP-DBM treats it as a latent variable to be inferred.</li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="20.5 Boltzmann Machines for Real Valued Data.html" class="btn btn-neutral float-right" title="20.5 Boltzmann Machines for Real-Valued Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="20.3 Deep Believe Network.html" class="btn btn-neutral" title="20.3 Deep Believe Network" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

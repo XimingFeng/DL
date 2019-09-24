@@ -1,0 +1,434 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>20.10 Directed Generative Nets &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="20.9 Back-Propagation through Random Operations" href="20.9 Back-Propagation through Random Operations.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">20 Deep Generative Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.2 Restricted Boltzmann Machines.html">20.2 Restricted Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.3 Deep Believe Network.html">20.3 Deep Believe Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.4 Deep Boltzmann Machines.html">20.4 Deep Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.5 Boltzmann Machines for Real Valued Data.html">20.5 Boltzmann Machines for Real-Valued Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.6 Convolutional Boltzmann Machines.html">20.6 Convolutional Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.7 Boltzmann Machines for Structured or Sequenti.html">20.7 Boltzmann Machines for Structured or Sequential Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.8 Other Boltzmann Machines.html">20.8 Other Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.9 Back-Propagation through Random Operations.html">20.9 Back-Propagation through Random Operations</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">20.10 Directed Generative Nets</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#sigmoid-belief-network">20.10.1 Sigmoid Belief Network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#differentiable-generator-networks">20.10.2 Differentiable Generator Networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#variantional-autoencoders">20.10.3 Variantional Autoencoders</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generative-adverserial-network">20.10.4 Generative Adverserial Network</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#generative-moment-mathcing-networks">20.10.5 Generative Moment Mathcing Networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#convolutional-generative-networks">20.10.6 Convolutional Generative Networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#auto-regressive-networks">20.10.7 Auto-regressive Networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#linear-auto-regressive-networks">20.10.8 Linear Auto-Regressive networks</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#resource">Resource</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">20 Deep Generative Models</a> &raquo;</li>
+        
+      <li>20.10 Directed Generative Nets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.10 Directed Generative Nets.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="directed-generative-nets">
+<h1>20.10 Directed Generative Nets<a class="headerlink" href="#directed-generative-nets" title="Permalink to this headline">¶</a></h1>
+<p>Review Deep Believe Network</p>
+<p>Deep believe networks:</p>
+<ul class="simple">
+<li>Generative models</li>
+<li>Several layers of latent variables, typically binary.</li>
+<li>Visible units: maybe binary or real</li>
+<li>No intralayer connection</li>
+<li>The connection between the top 2 layers are undirected</li>
+</ul>
+<div class="section" id="sigmoid-belief-network">
+<h2>20.10.1 Sigmoid Belief Network<a class="headerlink" href="#sigmoid-belief-network" title="Permalink to this headline">¶</a></h2>
+<p>In general, we can think of a sigmoid belief network as having a vector of binary state s, with each element  if state influenced by its ancestors:</p>
+<div class="math notranslate nohighlight">
+\[p(s_i) = \sigma (\sum_{j &lt; i} W_{j, i}s_j + b_i)\]</div>
+<p>Most common structure of sigmoid belief network is the one divided into many layers, with ancestral sampling procceeding through a seriers of many hidden layers and then ultimately generating the visible layer. Note it is not deep belief network. Such structure is interesting because the structure is universal approximator of probability distributions over the visible units.</p>
+<ul class="simple">
+<li>Generating a sample: very efficient</li>
+<li>Inference: Intractable. Mean field inference also intractable.</li>
+</ul>
+<p>Solution:</p>
+<ul class="simple">
+<li>construct a different lower bound that is specialized for sigmoid belief networks</li>
+<li>Another approach is to use learned inference machanisms as described in 19.5</li>
+</ul>
+<p>Special case of sigmoid belief network: no latent variables. See auto-regressive network which generalize this fully visble belief network to other kinds of variables besides binary variables and other structures of conditional distribution besides log-linear relationships.</p>
+</div>
+<div class="section" id="differentiable-generator-networks">
+<h2>20.10.2 Differentiable Generator Networks<a class="headerlink" href="#differentiable-generator-networks" title="Permalink to this headline">¶</a></h2>
+<p>Differentiable Generator Networks: transform samples of latent variables z to sample x or to distribution over x using a differentiable function <span class="math notranslate nohighlight">\(g(z; \theta^{(g)})\)</span> which is typically represented by a neural network. This model class includes</p>
+<ul class="simple">
+<li>Variational autoencoders: pair generator with an inference net</li>
+<li>Generative Adverserial networks: pair gererator network with a discriminator network</li>
+</ul>
+<p>Sampling x or to distribution over x defines a distribution <span class="math notranslate nohighlight">\(p_g(x)\)</span> and allow us to train various criteria of <span class="math notranslate nohighlight">\(p_g(x)\)</span> using the reparameterization tricks</p>
+<p>Review on 20.9 Reparameterization trick:</p>
+<p>When developing genertative models, we often wish to extend neural networks to implement stochastic transformations of x. Strategy</p>
+<ol class="arabic simple">
+<li>Extra input z that are sampled from some simple probability, e.g. uniform or Guassian</li>
+<li>The neural network can then continue to perform deterministic computation internally</li>
+<li>The function f(x, z) will appear stochastic to an observer who does not have access to z.</li>
+</ol>
+<p>We can build elements of the graph on top of the output of sampling distribution.</p>
+<p>Reparameterization trick, stochastic back-propagation: <span class="math notranslate nohighlight">\(p(x|w)\)</span>, with w being parameters <span class="math notranslate nohighlight">\(\theta\)</span> parameters, and if applicable, input x. We can rewrite <span class="math notranslate nohighlight">\(p(x|w)\)</span> into :math`:y=f(z;w)` where z is a source of randomness. We may then compute the derivative of y w.r.t. w using traditional tool such as back propagation algorithm applied to f, as long as f is continuous and differetiable almost everywhere. Cruciallt w must not be a function of z and z must not be a function of w.</p>
+<ul class="simple">
+<li>When generator defines a conditional distribution over x, it is capable of generating dsicrete data as well as continuous daya.</li>
+<li>when generator net provides samples directly, it is capable of generating only continuous data. Advantage: no longer forced to use conditional distributions whose form can be easily written down and algebraically manipulated by human designer.</li>
+</ul>
+<p>Differentiable generator networks have sufficient model capacity to be good generative model and optimization algorithms have the ability to fit them. The difficulty lies in determining how to train generator networks when the value of z for each x is not fixed and known ahead of each time.</p>
+</div>
+<div class="section" id="variantional-autoencoders">
+<h2>20.10.3 Variantional Autoencoders<a class="headerlink" href="#variantional-autoencoders" title="Permalink to this headline">¶</a></h2>
+<p>The variational antoencoder or VAE is directed model that uses learned approximate inference and can be trained purely with gradient-based algorithm. Process of generating samples from the model:</p>
+<ol class="arabic simple">
+<li>Draw a sample z from a distribution <span class="math notranslate nohighlight">\(p_{model}(z)\)</span></li>
+<li>The sample z run through a differentiable generator network g(z)</li>
+<li>x is sampled from distribution <span class="math notranslate nohighlight">\(p_{model}(x;g(z)) = p_{model}(x|z)\)</span></li>
+</ol>
+<p>During training, the approximate inference network (or encoder) q(z | x) is used to obtain z, and <span class="math notranslate nohighlight">\(p_{model}(x | z)\)</span> is then viewed as a decoder network.</p>
+<p>Review on variational lower bound</p>
+<p>Introduce q as an arbitrary distribution over h</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+KL[q(h) || p(h|x)] &amp;= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
+&amp;= \sum_h q(h) \log \frac{q(h)}{\frac {p(x, h)}{p(x)}} \\
+&amp;= \sum_h q(h) \log p(x) + \sum_h q(h) \log q(h) - \sum_h q(h) \log p(x, h) \\
+&amp;= \log p(x) - H(q) - E_{h\sim q}[\log p(x, h)]
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>Now we have</p>
+<div class="math notranslate nohighlight">
+\[\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)\]</div>
+<p>Because KL divergence is always nonnegative we have lower bound</p>
+<div class="math notranslate nohighlight">
+\[L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)\]</div>
+<p>For appropriate of q, L is tractable to compute. For q(h) <strong>(textbook: q(h|v))</strong> that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h) = p(v|h), the approaximation is perfect, <span class="math notranslate nohighlight">\(L(v, \theta, q) = log P(x; \theta)\)</span>.</p>
+<p>In the context of VAE</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\log p_{model}(x) &amp; &gt;= \\
+L(q) &amp;= E_{z \sim q(z|x)} \log p_{model}(z, z) + H(q(z|x)) \\
+&amp;=E_{z \sim q(z|x)} log p_{model}(x|z) - D_{KL} (q(z|x) || p_{model}(z))
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>The main idea behind variational autoencoder is to traina parametric encoder that produce the parameters of q. As long as z is a continuous variable, we can then back-prop through samples of z drawn from <span class="math notranslate nohighlight">\(q(z|x) =  q(z;f(x;\theta))\)</span> to obtain a gradient with repect to <span class="math notranslate nohighlight">\(\theta\)</span>. Learning then consists solely of maximizing L with respect to the parameters of the encoder and decoder. All the expectation in L may be approximated by Monte Carlo Sampling.</p>
+<p>Drawback:</p>
+<ul class="simple">
+<li>Samples from variational autoencoders trained on images tend to be somewhat blurry.</li>
+<li>Tend to use only a small subset of the dimensions of z, as if the encoder were not abe to transform enough of the local distribution in input space where the marginal distribution matches the factorized prior</li>
+</ul>
+<p>VAE framework is straightforward to extend to a wide range of model architectures. This is a key advantage over Boltzman Machines</p>
+<ul class="simple">
+<li>Deep recurrent attention writer (DRAW) uses a recurrent encoder and recurrent decoder combined with an attention machanism.</li>
+<li>Generate squences by defining variational RNN by usin a recurrent encoder and decoder within the VAE framework</li>
+<li>Importance-weighted antoencoder</li>
+</ul>
+<p>Comparison:</p>
+<ul>
+<li><p class="first">VAE</p>
+<blockquote>
+<div><ul class="simple">
+<li>The variantional autoencoder is defined for arbitrary computational graphs, which makes it applicable to a wider range of probabistic model families because there is no need to restrict the choice of models to those with tractable mean field fixed-point equitions.</li>
+<li>Has the advantage of increasing a bound on the log-likehood of the model</li>
+<li>learns an inference for only one problem, inferring z given x</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">MP-DBM and other approaches that involve back-prop through the approximate inference</p>
+<blockquote>
+<div><ul class="simple">
+<li>require an inference procedure such as mean field fixed-point equitions to provide the computational graph.</li>
+<li>more heuristic and have little probablistic interpretation beyond making the results of approximate inference accurate.</li>
+<li>Are able to perform approximate inference over any subset of variables given any other subset of variables, beacuse mean field fixed-point equition specify how to share parameters between the computational graphs for all the different problems.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>Nice property of VAE: Simultaneously training a parametric encoder in combination with the generator network forces the model to learn a predictable coordinate system that the encoder can capture.</p>
+<img alt="../../_images/Figure20.6.PNG" src="../../_images/Figure20.6.PNG" />
+</div>
+<div class="section" id="generative-adverserial-network">
+<h2>20.10.4 Generative Adverserial Network<a class="headerlink" href="#generative-adverserial-network" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Generator: directly produces samples <span class="math notranslate nohighlight">\(x = g(z;\theta^{g})\)</span></li>
+<li>Discriminator: attempts to distinguish between samples from the trianing data and samples drawn from the generator. The discriminator emits a probability value given by <span class="math notranslate nohighlight">\(d(x;\theta^{d})\)</span>, indicating the probability that x is a real training example rather than a fake samples drawn from the model.</li>
+</ul>
+<p>Simplest way to formulate learning in generative adverserial network is as a <a class="reference external" href="https://en.wikipedia.org/wiki/Zero-sum_game">zero sum game</a>, in which a function <span class="math notranslate nohighlight">\(v(\theta^{(g)}, \theta^{(d)})\)</span> determines the payoff of the discriminator. The generator receives <span class="math notranslate nohighlight">\(-v(\theta^{(g)}, \theta^{(d)})\)</span> as its own pay off. During learning, each player attempts to maximize its own payoff, so that at convergence</p>
+<div class="math notranslate nohighlight">
+\[g^* = argmin_g max_d v(g, d)\]</div>
+<p>The default choise for v is</p>
+<div class="math notranslate nohighlight">
+\[v(\theta^{(g)}, \theta^{(d)}) = E_{x \sim p_{data}} \log d(x) + E_{x \sim p_{model}} \log (1 - d(x))\]</div>
+<p>The main motivation for the design of GAN is that learning process requires neither approximate inference nor approximation of partition function gredient.</p>
+<p>Learning in GANs can be difficult in practice when g and d are represented by neural networks and <span class="math notranslate nohighlight">\(max_d v(g, d) is not convex\)</span>. Note the equilibria for minimax game are not local minima of v. Instead, they are points that are simulteneously minima for both player’s cost. This means that they are saddle points of v that are local minima with respect to the first player’s parameters and local maxima with respect to the second player’s parameters. It is possible for two players to take turns increasing then decreasing v forever, rather than landing exactly on the saddle point, where neither player is capable of reducing its cost.</p>
+<p>Stablization of GAN learning remains an open problem. Fortunately, GAN learning perform well when the model architecture and hyperparameters are carefully selected.</p>
+<p>GAN’s training procedure can fit probability distribution that assign 0 probability to the training points. Rather than maximizing the log-probability of specific points, the generator net learns to trace out a mamifold whose points resemble training points in some way.</p>
+<p>Units in discriminator should be stochastically dropped while computing the gradient for the generator network to follow.</p>
+</div>
+<div class="section" id="generative-moment-mathcing-networks">
+<h2>20.10.5 Generative Moment Mathcing Networks<a class="headerlink" href="#generative-moment-mathcing-networks" title="Permalink to this headline">¶</a></h2>
+<p>Generative moment matching networks are trained with a technique called moment matching. Moment matching: train the generator generator in such a way that many of the statistics of samples generated by the model are as similar as possible to those of the statistics of the examples in the training set. In this case, a momen is an expectation of differnt oiwers of a random variable.</p>
+<p>Generative moment matching networks can be trained by maximizing a cost function called maximum mean discrepancy, or MMD. This cost function measures the error in the first moments in an infinite-dimentional space, using an implicity mapping to feature space defined by a kernel function to make computations on infinite-dimentional vectors tractable. The MMD cost is zero if and only if the 2 distributions being compared are equal.</p>
+<p>When the batch size is too small, MMD can underestimate the amount of variation in the distributions being sampled.</p>
+<p>As with GANs, it is possible to train a generator net using MMD even if that generator net assigns 0 probability to the training points.</p>
+</div>
+<div class="section" id="convolutional-generative-networks">
+<h2>20.10.6 Convolutional Generative Networks<a class="headerlink" href="#convolutional-generative-networks" title="Permalink to this headline">¶</a></h2>
+<p>Conv net for recognition: information flow from image to some summarization layer at the top of the network, become more invariant to nuisance transformation. In generator network, the oppsite is true. Rich detail must be added as the representation of the image to be generated propagates through the network, culminating in the final representation of the image, which is of courtse the image itself, with object positions and poses and textures and lighting.</p>
+<p>The primary mechanism for discarding information in a convolutional network is the pooling layer. We cannot put the inverse of the poolin layer into generator network because most pooling functions are not invertible. An approach that seems to perform acceptably is to use an “un-pooling”. This layer correponds to the inverse of the max-pooling operation under certain simplifying conditions.</p>
+<ol class="arabic simple">
+<li>Stride of the max-pooling operation is constrained to be = width of the pooling region</li>
+<li>Maximum input within each pooling region is assumed to be the input in the uppper left corner</li>
+<li>All nonmaximal inputs within each pooling region are assumed to be 0.</li>
+</ol>
+<p>Even though the assumption motivating the definition of the un-pooling operator are unrealistic, the subsequient layers are able to learn to compensate for its unusual output, so the samples generated by the model as a whole are visually pleasing.</p>
+</div>
+<div class="section" id="auto-regressive-networks">
+<h2>20.10.7 Auto-regressive Networks<a class="headerlink" href="#auto-regressive-networks" title="Permalink to this headline">¶</a></h2>
+<p>Auto-regressive networks are directed probabilistic models with no latent random variables. They decompose a joint probability over the observed variables using the chain rule of prpbability to obtain a product of conditionals of the form <span class="math notranslate nohighlight">\(P(x_d|x_{d-1}, ... x_1)\)</span>. Such models have been called fully-visible Bayes network and used successfully in many forms.</p>
+</div>
+<div class="section" id="linear-auto-regressive-networks">
+<h2>20.10.8 Linear Auto-Regressive networks<a class="headerlink" href="#linear-auto-regressive-networks" title="Permalink to this headline">¶</a></h2>
+<p>The simplest form of auto-regressive network has no hidden units and no sharing of parameters or features. Each <span class="math notranslate nohighlight">\(P(x_i|x_{i-1}, ... x_1)\)</span> is parameterized as a linear model</p>
+<ul class="simple">
+<li>Linear regression: real valued data</li>
+<li>Logistic regression: binary data</li>
+<li>Softmax regression: discrete data</li>
+</ul>
+<p>This model has <span class="math notranslate nohighlight">\(O(d^2)\)</span> parameters when there are d variables to model.</p>
+<img alt="../../_images/Figure20.8.PNG" src="../../_images/Figure20.8.PNG" />
+<p>Linear auto-regression networks are essentially the generalization of linear classification models to generative modeling. They therefore have the same advantages and disadvantages as linear classification.</p>
+<ul class="simple">
+<li>They must be trained with convect loss functions and sometimes admit closed form solution</li>
+<li>The model iteself does not offer a way of increasing its capacity, so capacity must be raised using techniques like basis expansions of the input or the kernel trick.</li>
+</ul>
+</div>
+<div class="section" id="resource">
+<h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://www.youtube.com/watch?v=w8F7_rQZxXk&amp;list=PLdxQ7SoCLQANizknbIiHzL_hYjEaI-wUe">Variational AutoEncoder Video Tutorial</a></li>
+<li><a class="reference external" href="https://en.wikipedia.org/wiki/Zero-sum_game">Zeros Sum Game</a></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="20.9 Back-Propagation through Random Operations.html" class="btn btn-neutral" title="20.9 Back-Propagation through Random Operations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+20.3 Deep Believe Network
+===============================
+
+Deep believe networks:
+ 
+* Generative models
+* Several layers of latent variables, typically binary.
+* Visible units: maybe binary or real
+* No intralayer connection
+* The connection between the top 2 layers are undirected
+* Connections between all the other layers are directed, with arrows pointed toward the layer that is close to the data. 
+
+A DBM with l hidden layers contains l weight metrices: :math:`W^{(1)}, W^{(2)} .... W^{(l)}` and also l + 1 bias vector :math:`b^{(0)}, b^{(1)}, ...., b^{(l)}`. Probability represented by DBN:
+
+.. math::
+	P(h^{(l)}, h^{(l-1)}) \propto exp(b^{(l)T}h^{(l)} + b^{(l-1)T}h^{(l -1 )} + h^{(l-1)T}W^{(l)}h^{(l)}) \\ \\
+	P(h_i^{(k)} = 1 | h^{(k+1)}) = \sigma(b_i^{(k)} + W_{:, i}^{(k+1)T}h^{(k+1)}) \forall i \forall k \in 1, .... l-2 \\ \\
+	P(v_i = 1 | h^{(1)} = \sigma(b_i^{(i)} + W_{:, i}^{(1)T} h^{(1)} ) \forall i
+
+
+Draw sample from a DBN
+
+1. run several steps of Gibbs sampling on the top 2 hidden layer. Essentially drawing a sample from the RBM defined by the top 2 hidden layers
+2. use a single pass of ancestral sampling through the rest of the model to draw a sample from the visible units.
+
+Inference in Deep Belief Network is intractable because of explaining away effect within each directed layer and the interaction between the 2 hidden layers that have undirected connections. 
+
+To train a deep belief network, 
+
+1. Training an RBM to maximize :math:`E_{v\sim p_{data}}\log p(v)` using contrastive divergence or stachastic maximum likehood. 
+2. The parameters of the RBM the define the parameters of the first layer of the DBN.
+3. A second RBM is trained to maximize: :math:`E_{v \sim p_{data}} E_{h^{(1)} \sim p^{(1)} (h^{(1)}|v)} \log p^{(2)}(h^{(1)})`. 
+
+	* :math:`p^{(1)}` is the probability distribution represented by the first RBM. It is driven by data.
+	* :math:`p^{(2)}` is the second RBM trained to model the distribution defined by sampling the hidden units of the first RBM
+
+4. repeat 3, with each new RBM modeling the samples of the previous one. This procedure can be justified as increasing a variational lower bound on the log-likehood of the data under the DBN.
+
+In most applications, no effort is made to jointly train the DBN after the greedy layer-wise procedure is complete. However, it is possible to perform generative fine-tuning using the wake-sleep algorithm.
+
+We can take the weights from the DBN and use them to define MLP.
+
+..math::
+	h^{(1)} = \sigma(b^{(1)} + v^TW^{(1)}) \\
+	h^{(l)} = \sigma(b_i^{(l)} + h^{(l-1)}W^{(l)}) \forall l \in 2, ..., m
+
+

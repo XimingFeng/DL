@@ -1,0 +1,22 @@
+20.6 Convolutional Boltzmann Machines
+=================================================
+
+Review on Conv Net Structure:
+
+.. image:: rsc/Figure9.7.PNG
+
+To simulate pooling layer in feedforward convolutional networks, we could introduce a binary pooling unite p over n binary detector units d and enforce :math:`max_i d_i` by setting the energy function to be :math:`\infty` whenever that constraint is violated. 
+
+Challenge: This does not scale well, as it requires :math:`2^n` different energy configurations to compute the normalization constant. 
+
+Solution: probabilistic max pooling, which constrain the detector units so at most one may be active at a time. This means there are only n + 1 total states. The state with all units off is assigned energy 0.  
+
+Drawback: 
+
+* probablistic max pooling does force the detector units to be mutually exclusive, which may be a useful regularizing constraint in some contexts or a harmful limit on model capacity in other contexts. 
+* It also does not support overlapping pooling regions. 
+* Usually does not perform as well as a classifier as traditional convolutional networks trained with supervised learning. 
+* For Boltzmann machine, it is difficult to thange the input size for various reasons. Scaling the Boltzmann machine pooling region is awkward. For BMs, large pooling region become to expensive for the naive approach.
+* Pixels at the boundary of the image also pose some difficulty. 
+
+

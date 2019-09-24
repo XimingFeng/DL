@@ -1,0 +1,53 @@
+20.9 Back-Propagation through Random Operations
+=================================================
+
+When developing genertative models, we often wish to extend neural networks to implement stochastic transformations of x. Strategy
+
+1. Extra input z that are sampled from some simple probability, e.g. uniform or Guassian
+2. The neural network can then continue to perform deterministic computation internally
+3. The function f(x, z) will appear stochastic to an observer who does not have access to z.
+
+We can build elements of the graph on top of the output of sampling distribution. 
+
+Reparameterization trick, stochastic back-propagation: :math:`p(x|w)`, with w being parameters :math:`\theta` parameters, and if applicable, input x. We can rewrite :math:`p(x|w)` into :math`:y=f(z;w)` where z is a source of randomness. We may then compute the derivative of y w.r.t. w using traditional tool such as back propagation algorithm applied to f, as long as f is continuous and differetiable almost everywhere. Cruciallt w must not be a function of z and z must not be a function of w. 
+
+########################################################################
+20.9.1 Back-Propagation through Discrete Stochastic Operations
+########################################################################
+
+Reinforce algoriths: Reward Increment = Negative Factor * Offset Reinforment * Characteristic Eligibility. 
+
+Core Ider of Reinforcement algorithm: Even though J(f(z; w)) is a step function with useless derivative, the expected cost :math:`E_{z \sim p(z)J(f(z;w))}` is often a smooth function amenable to gradient descent. Although the expectation is typically not tractable when y is high-D, it can be estimated without bias using a Monte Carlo average.
+
+.. math::
+	
+	\begin{equation} 
+	\begin{split}
+	E_Z[J(y)] &= \sum_y J(y)p(y) \\ \\
+	\frac{\partial E[J(y)]}{\partial w} &= \sum_y J(y) \frac{\partial p(y)}{\partial w} \\
+	&= \sum_y J(y)p(y) \frac{\partial \log p(y)}{\partial w} \\
+	& \approx \frac{1}{m} \sum^{m}_{y^{(i)} \sim p(y), i = 1} J(y^{(i)})\frac{\partial \log p(y^{(i)})}{\partial w}
+	\end{split}
+	\end{equation}
+
+Assuption for above equation: J does not reference w directly. 
+
+* Issue with the simple REINFORCE estimator: it has very high variance
+* Solution: variance reduction models. Idea: modify the estimator so that its expected value remain unchanged but its variance gets reduced. In the context of REINFORCE, involve a computation of a baseline that is used to offset J(y). Any offset b(w) that does not depend on y would not change the expectation of the estimated gradient because:
+
+.. math::
+	
+	\begin{equation} 
+	\begin{split}
+	\frac{\partial \log p(y)}{\partial w} &= \sum_y p(y) \frac{\partial \log p(y)}{\partial w} \\
+	&= \sum_y \frac{\partial p(y)}{\partial w} \\
+	&= \frac{\partial}{\partial w} \sum_y p(y) \\
+	&=0 \\ 
+	so \\
+	E_{p(y)}[(J(y) - b(w))\frac{\partial \log p(y)}{\partial w}] &= E_{p(y)}[J(y) \frac{\partial \log p(y)}{\partial w}]  - b(w)E_{p(y)}[\frac{\partial \log p(y)}{\partial w}] \\
+	&= E_{p(y)}[J(y) \frac{\partial \log p(y)}{\partial w}]
+	\end{split}
+	\end{equation}
+
+We can obtain the optimal b(w) by computing the variance of :math:`(J(y) - b(w))\frac{\partial \log p(y)}{\partial w}`
+

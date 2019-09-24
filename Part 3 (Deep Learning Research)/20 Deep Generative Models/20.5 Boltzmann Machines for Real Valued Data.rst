@@ -1,0 +1,87 @@
+20.5 Boltzmann Machines for Real-Valued Data
+=================================================
+
+
+#################################################################
+20.5.1 Gaussian-Bernoulli RBMs
+#################################################################
+
+* Binary hidden units
+* Real-valued visible units
+* Conditional distribution over visible units is a Gaussian distribution whose mean us a function of the hidden units.
+
+There are many ways of parameterize Gaussian-Bernoulli RBMs.
+
+* covariance matrix
+* precision matrix (below)
+
+We wish to have the conditional distribution 
+
+.. math::
+	p(v|h) = N(Wh, \beta^{-1}) \\ \\
+	\log N(Wh, \beta^{-1}) = -\frac{1}{2} (v - Wh)^T\beta(v - Wh) + f(\beta)
+
+f encapsulates all the terms that are a function only of the parameters and not the random variables in the model. We can discard f because its only role is to normalize the distribution and the partition function of whatever energy function we choose will carry out the role.
+
+One way to define the energy function:
+
+.. math::
+	E(v, h) = \frac{1}{2}v^T(\beta \odot v) - (v \odot \beta)^T - b^Th
+
+#################################################################
+20.5.2 Undirected Models of Conditional Covariance
+#################################################################
+
+* Challenge: Much of the information content present in natural images is embedded in the covariance between pixels rather than in the raw pixel avlues. Since Gaussian only model the conditional mean of the input given the hidden uints, it cannot capture conditional mean of the input given the hidden units, it cannot capture conditional covariance information.
+* Solutions: 
+
+	* mean and covariance RBM (mcRBM)
+	* the mean prodoct of Student t-distribution (mPoT) model 
+	* spike and slab RBM(ssRBM) 
+
+**Mean and Covariance RBM: 2 groups of hidden units**
+
+* mean units. Binary. With v: Gaussian RBM
+* covariance units. Binary. With v: covariance RBM
+
+.. math::
+	E_{mc}(x, h^{(m)}, h^{(c)}) = E_m(x, h^{(m)}) + E_c(x, h^{(c)}) \\ \\
+	E_m(x, h^{(m)}) = \frac{1}{2}x^Tx - \sum_jx^TW_{:, j}h_j^{(m)} - \sum_j b_j^{(m)}h_j^{(m)} \\ \\ 
+	E_c(x, h^{(c)}) = \frac{1}{2} \sum h_j^{(c)}(x^Tr^{(j)})^2 - \sum_j b_j^{(c)}h_j^{(c)}
+
+* :math:`r^{(j)}` corresponds to the covariance weight vector associated with :math:`h_j^{(c)}` 
+* :math:`b^{(c)}` is a vector of covariance offset
+
+.. math::
+	p_{mc}(x, h^{(m)}, h^{(c)}) = \frac{1}{Z}exp{-E_{mc}(x, h^{(m)}, h^{(c)})} \\ \\
+	p_{mc}(x| h^{(m)}, h^{(c)}) = N(C^{mc}_{x|h}(\sum_j)W_{:, j}h_j^{(m)}, C^{mc}_{x|h}) \\ \\
+	C^{mc}_{x|h} = (\sum_j h^{(m)}r^{(j)}r^{(j)T} + I)^{-1}
+
+It is difficult to train mcRBM via contrastive divergence or persistent contrastive divergence
+
+**Mean product of Student t-distributions**
+
+**Spike and Slab RBMs**: 2 sets of hidden units
+
+* Binary spike units h
+* Real-Valued slan units s
+
+The mean of visible units conditioned on the hidden units is given by :math:`(h \odot s)W^T`. 
+
+* Each column :math:`W_{:, j}` defines a component that can appear in the input when :math:`h_i = 1`. 
+* The corresponding spike variable :math:`h_i = 1` determines whether that component is present at all
+* The corresponding slab variable :math:`s_i = 1` determines the intensity of the that component if it is present.
+
+When the spike variable is active, the corresponding slab variable add variance to the input along the axis defined by :math:`W_{:, j}`. Contrastive divergence and persistent contrastive divergence with Gibbs sampling are still applicable. 
+
+* mcRBM and mPoT: 
+	
+	* use the activation of hidden units :math:`h_j>0` to enforce constraints on the conditional covariance in the direction :math:`r^{(j)}`
+	* An overcomplete representation would mean that to capture variation in a particular direction in the observation space would require removing potentially all constraints with positive projection in that direction. This would suggest that these models are less well suited to the overcomplete setting.  
+
+* ssRBM: 
+	
+	* specifies the conditional covariance of the observations using the hidden spike activations :math:`h_i=0` to pinch the precision matrix along the direction specified by the corresponding weight vector.
+	* In a overcomplete setting, sparse activation with the ssRBM parameterization permit significant variance only in the selected directions of the sparsely activated :math:`h_i`
+
+disadvatage of ssRBM: some settings of the parameters can correpond to a covariance matrix that is not positive definite. Such a covariance matrix places more unormalized probability on values that are father from the mean, causing the integral over all possible outcomes to diverge. 

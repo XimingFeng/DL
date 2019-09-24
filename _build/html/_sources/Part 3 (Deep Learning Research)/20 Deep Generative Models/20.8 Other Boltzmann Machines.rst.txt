@@ -1,0 +1,14 @@
+20.8 Other Boltzmann Machines
+=============================================
+
+Boltzmann machine may be extended with different training criteria. 
+
+* Maximize the generative criterion :math:`\log p(v)` 
+* Maximize the discriminative criterion :math:`\log p(y|v)`
+
+ It is possible to train higher order (>2) BM, whose energy function terms involve the products between many variables. 
+
+ * 3-way interaction between a hidden unit and 2 different images can model spatial transformation from one frame of video to the next
+ * Multiplication by one-hot class variable can change the relationship between visible and hidden units depending on which class is present.
+ * BM with 2 groups of hidden units. One group interact with both v and class label y. The other that interacts only with the v input values
+ * Gate some features. Binary mask with variables associated with each visible unit.

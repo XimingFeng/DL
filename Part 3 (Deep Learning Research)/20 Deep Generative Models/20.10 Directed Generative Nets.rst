@@ -1,0 +1,237 @@
+20.10 Directed Generative Nets
+================================================
+
+Review Deep Believe Network
+
+Deep believe networks:
+ 
+* Generative models
+* Several layers of latent variables, typically binary.
+* Visible units: maybe binary or real
+* No intralayer connection
+* The connection between the top 2 layers are undirected
+
+
+
+###############################################################
+20.10.1 Sigmoid Belief Network
+###############################################################
+
+In general, we can think of a sigmoid belief network as having a vector of binary state s, with each element  if state influenced by its ancestors:
+
+.. math::
+	p(s_i) = \sigma (\sum_{j < i} W_{j, i}s_j + b_i)
+
+Most common structure of sigmoid belief network is the one divided into many layers, with ancestral sampling procceeding through a seriers of many hidden layers and then ultimately generating the visible layer. Note it is not deep belief network. Such structure is interesting because the structure is universal approximator of probability distributions over the visible units.
+
+* Generating a sample: very efficient
+* Inference: Intractable. Mean field inference also intractable.
+
+Solution: 
+
+* construct a different lower bound that is specialized for sigmoid belief networks
+* Another approach is to use learned inference machanisms as described in 19.5
+
+Special case of sigmoid belief network: no latent variables. See auto-regressive network which generalize this fully visble belief network to other kinds of variables besides binary variables and other structures of conditional distribution besides log-linear relationships.
+
+
+###############################################################
+20.10.2 Differentiable Generator Networks
+###############################################################
+
+Differentiable Generator Networks: transform samples of latent variables z to sample x or to distribution over x using a differentiable function :math:`g(z; \theta^{(g)})` which is typically represented by a neural network. This model class includes
+
+* Variational autoencoders: pair generator with an inference net
+* Generative Adverserial networks: pair gererator network with a discriminator network
+
+Sampling x or to distribution over x defines a distribution :math:`p_g(x)` and allow us to train various criteria of :math:`p_g(x)` using the reparameterization tricks
+
+Review on 20.9 Reparameterization trick:
+
+When developing genertative models, we often wish to extend neural networks to implement stochastic transformations of x. Strategy
+
+1. Extra input z that are sampled from some simple probability, e.g. uniform or Guassian
+2. The neural network can then continue to perform deterministic computation internally
+3. The function f(x, z) will appear stochastic to an observer who does not have access to z.
+
+We can build elements of the graph on top of the output of sampling distribution. 
+
+Reparameterization trick, stochastic back-propagation: :math:`p(x|w)`, with w being parameters :math:`\theta` parameters, and if applicable, input x. We can rewrite :math:`p(x|w)` into :math`:y=f(z;w)` where z is a source of randomness. We may then compute the derivative of y w.r.t. w using traditional tool such as back propagation algorithm applied to f, as long as f is continuous and differetiable almost everywhere. Cruciallt w must not be a function of z and z must not be a function of w. 
+
+* When generator defines a conditional distribution over x, it is capable of generating dsicrete data as well as continuous daya.
+* when generator net provides samples directly, it is capable of generating only continuous data. Advantage: no longer forced to use conditional distributions whose form can be easily written down and algebraically manipulated by human designer.
+
+Differentiable generator networks have sufficient model capacity to be good generative model and optimization algorithms have the ability to fit them. The difficulty lies in determining how to train generator networks when the value of z for each x is not fixed and known ahead of each time.
+
+###############################################################
+20.10.3 Variantional Autoencoders
+###############################################################
+
+The variational antoencoder or VAE is directed model that uses learned approximate inference and can be trained purely with gradient-based algorithm. Process of generating samples from the model:
+
+1. Draw a sample z from a distribution :math:`p_{model}(z)`
+2. The sample z run through a differentiable generator network g(z)
+3. x is sampled from distribution :math:`p_{model}(x;g(z)) = p_{model}(x|z)`
+
+During training, the approximate inference network (or encoder) q(z | x) is used to obtain z, and :math:`p_{model}(x | z)` is then viewed as a decoder network.
+
+Review on variational lower bound 
+
+Introduce q as an arbitrary distribution over h
+
+.. math::
+
+	\begin {equation}
+	\begin{split}
+	KL[q(h) || p(h|x)] &= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
+	&= \sum_h q(h) \log \frac{q(h)}{\frac {p(x, h)}{p(x)}} \\
+	&= \sum_h q(h) \log p(x) + \sum_h q(h) \log q(h) - \sum_h q(h) \log p(x, h) \\
+	&= \log p(x) - H(q) - E_{h\sim q}[\log p(x, h)]  
+	\end{split}
+	\end {equation}
+
+Now we have 
+
+.. math::
+	
+	\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)
+
+Because KL divergence is always nonnegative we have lower bound 
+
+.. math::
+	L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)
+
+For appropriate of q, L is tractable to compute. For q(h) **(textbook: q(h|v))** that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h) = p(v|h), the approaximation is perfect, :math:`L(v, \theta, q) = log P(x; \theta)`.
+
+In the context of VAE
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	\log p_{model}(x) & >= \\
+	L(q) &= E_{z \sim q(z|x)} \log p_{model}(z, z) + H(q(z|x)) \\
+	&=E_{z \sim q(z|x)} log p_{model}(x|z) - D_{KL} (q(z|x) || p_{model}(z))  
+	\end{split}
+	\end{equation}
+
+The main idea behind variational autoencoder is to traina parametric encoder that produce the parameters of q. As long as z is a continuous variable, we can then back-prop through samples of z drawn from :math:`q(z|x) =  q(z;f(x;\theta))` to obtain a gradient with repect to :math:`\theta`. Learning then consists solely of maximizing L with respect to the parameters of the encoder and decoder. All the expectation in L may be approximated by Monte Carlo Sampling.
+
+Drawback: 
+
+* Samples from variational autoencoders trained on images tend to be somewhat blurry. 
+* Tend to use only a small subset of the dimensions of z, as if the encoder were not abe to transform enough of the local distribution in input space where the marginal distribution matches the factorized prior  
+
+VAE framework is straightforward to extend to a wide range of model architectures. This is a key advantage over Boltzman Machines
+
+* Deep recurrent attention writer (DRAW) uses a recurrent encoder and recurrent decoder combined with an attention machanism.
+* Generate squences by defining variational RNN by usin a recurrent encoder and decoder within the VAE framework
+* Importance-weighted antoencoder
+
+
+Comparison:
+
+* VAE
+	
+	* The variantional autoencoder is defined for arbitrary computational graphs, which makes it applicable to a wider range of probabistic model families because there is no need to restrict the choice of models to those with tractable mean field fixed-point equitions. 
+	* Has the advantage of increasing a bound on the log-likehood of the model
+	* learns an inference for only one problem, inferring z given x
+
+* MP-DBM and other approaches that involve back-prop through the approximate inference
+
+	* require an inference procedure such as mean field fixed-point equitions to provide the computational graph.
+	* more heuristic and have little probablistic interpretation beyond making the results of approximate inference accurate.
+	* Are able to perform approximate inference over any subset of variables given any other subset of variables, beacuse mean field fixed-point equition specify how to share parameters between the computational graphs for all the different problems.
+
+Nice property of VAE: Simultaneously training a parametric encoder in combination with the generator network forces the model to learn a predictable coordinate system that the encoder can capture.
+
+.. image:: rsc/Figure20.6.PNG
+
+###############################################################
+20.10.4 Generative Adverserial Network
+###############################################################
+
+* Generator: directly produces samples :math:`x = g(z;\theta^{g})`
+* Discriminator: attempts to distinguish between samples from the trianing data and samples drawn from the generator. The discriminator emits a probability value given by :math:`d(x;\theta^{d})`, indicating the probability that x is a real training example rather than a fake samples drawn from the model. 
+
+Simplest way to formulate learning in generative adverserial network is as a `zero sum game <https://en.wikipedia.org/wiki/Zero-sum_game>`_, in which a function :math:`v(\theta^{(g)}, \theta^{(d)})` determines the payoff of the discriminator. The generator receives :math:`-v(\theta^{(g)}, \theta^{(d)})` as its own pay off. During learning, each player attempts to maximize its own payoff, so that at convergence
+
+.. math::
+	g^* = argmin_g max_d v(g, d)
+
+The default choise for v is 
+
+.. math::
+	
+	v(\theta^{(g)}, \theta^{(d)}) = E_{x \sim p_{data}} \log d(x) + E_{x \sim p_{model}} \log (1 - d(x))
+
+The main motivation for the design of GAN is that learning process requires neither approximate inference nor approximation of partition function gredient. 
+
+Learning in GANs can be difficult in practice when g and d are represented by neural networks and :math:`max_d v(g, d) is not convex`. Note the equilibria for minimax game are not local minima of v. Instead, they are points that are simulteneously minima for both player's cost. This means that they are saddle points of v that are local minima with respect to the first player's parameters and local maxima with respect to the second player's parameters. It is possible for two players to take turns increasing then decreasing v forever, rather than landing exactly on the saddle point, where neither player is capable of reducing its cost. 
+
+Stablization of GAN learning remains an open problem. Fortunately, GAN learning perform well when the model architecture and hyperparameters are carefully selected. 
+
+GAN's training procedure can fit probability distribution that assign 0 probability to the training points. Rather than maximizing the log-probability of specific points, the generator net learns to trace out a mamifold whose points resemble training points in some way. 
+
+Units in discriminator should be stochastically dropped while computing the gradient for the generator network to follow. 
+
+###############################################################
+20.10.5 Generative Moment Mathcing Networks
+###############################################################
+
+Generative moment matching networks are trained with a technique called moment matching. Moment matching: train the generator generator in such a way that many of the statistics of samples generated by the model are as similar as possible to those of the statistics of the examples in the training set. In this case, a momen is an expectation of differnt oiwers of a random variable. 
+
+Generative moment matching networks can be trained by maximizing a cost function called maximum mean discrepancy, or MMD. This cost function measures the error in the first moments in an infinite-dimentional space, using an implicity mapping to feature space defined by a kernel function to make computations on infinite-dimentional vectors tractable. The MMD cost is zero if and only if the 2 distributions being compared are equal.
+
+When the batch size is too small, MMD can underestimate the amount of variation in the distributions being sampled. 
+
+As with GANs, it is possible to train a generator net using MMD even if that generator net assigns 0 probability to the training points.
+
+###############################################################
+20.10.6 Convolutional Generative Networks
+###############################################################
+
+Conv net for recognition: information flow from image to some summarization layer at the top of the network, become more invariant to nuisance transformation. In generator network, the oppsite is true. Rich detail must be added as the representation of the image to be generated propagates through the network, culminating in the final representation of the image, which is of courtse the image itself, with object positions and poses and textures and lighting. 
+
+The primary mechanism for discarding information in a convolutional network is the pooling layer. We cannot put the inverse of the poolin layer into generator network because most pooling functions are not invertible. An approach that seems to perform acceptably is to use an "un-pooling". This layer correponds to the inverse of the max-pooling operation under certain simplifying conditions. 
+
+1. Stride of the max-pooling operation is constrained to be = width of the pooling region
+2. Maximum input within each pooling region is assumed to be the input in the uppper left corner
+3. All nonmaximal inputs within each pooling region are assumed to be 0.
+
+Even though the assumption motivating the definition of the un-pooling operator are unrealistic, the subsequient layers are able to learn to compensate for its unusual output, so the samples generated by the model as a whole are visually pleasing.
+
+
+###############################################################
+20.10.7 Auto-regressive Networks
+###############################################################
+
+Auto-regressive networks are directed probabilistic models with no latent random variables. They decompose a joint probability over the observed variables using the chain rule of prpbability to obtain a product of conditionals of the form :math:`P(x_d|x_{d-1}, ... x_1)`. Such models have been called fully-visible Bayes network and used successfully in many forms.
+
+###############################################################
+20.10.8 Linear Auto-Regressive networks
+###############################################################
+
+The simplest form of auto-regressive network has no hidden units and no sharing of parameters or features. Each :math:`P(x_i|x_{i-1}, ... x_1)` is parameterized as a linear model
+
+* Linear regression: real valued data
+* Logistic regression: binary data
+* Softmax regression: discrete data
+
+This model has :math:`O(d^2)` parameters when there are d variables to model. 
+
+.. image:: rsc/Figure20.8.PNG
+
+
+Linear auto-regression networks are essentially the generalization of linear classification models to generative modeling. They therefore have the same advantages and disadvantages as linear classification. 
+
+* They must be trained with convect loss functions and sometimes admit closed form solution
+* The model iteself does not offer a way of increasing its capacity, so capacity must be raised using techniques like basis expansions of the input or the kernel trick.
+
+ 
+
+###############################################################
+Resource
+###############################################################
+
+* `Variational AutoEncoder Video Tutorial <https://www.youtube.com/watch?v=w8F7_rQZxXk&list=PLdxQ7SoCLQANizknbIiHzL_hYjEaI-wUe>`_
+* `Zeros Sum Game <https://en.wikipedia.org/wiki/Zero-sum_game>`_

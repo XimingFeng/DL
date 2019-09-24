@@ -1,0 +1,13 @@
+Deep Believe Network
+===============================
+
+Deep believe networks:
+ 
+* Generative models
+* Several layers of latent variables, typically binary.
+* Visible units: maybe binary or real
+* No intralayer connection
+* The connection between the top 2 layers are undirected
+* Connections between all the other layers are directed, with arrows pointed toward the layer that is close to the data. 
+
+A DBM with l hidden layers contains l weight metrices: :math:`W^{(1)}, W^{(2)} .... W^{(l)}`

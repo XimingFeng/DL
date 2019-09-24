@@ -1,0 +1,277 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>20.3 Deep Believe Network &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="20.4 Deep Boltzmann Machines" href="20.4 Deep Boltzmann Machines.html" />
+    <link rel="prev" title="20.2 Restricted Boltzmann Machines" href="20.2 Restricted Boltzmann Machines.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">20 Deep Generative Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.2 Restricted Boltzmann Machines.html">20.2 Restricted Boltzmann Machines</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">20.3 Deep Believe Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.4 Deep Boltzmann Machines.html">20.4 Deep Boltzmann Machines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">20 Deep Generative Models</a> &raquo;</li>
+        
+      <li>20.3 Deep Believe Network</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.3 Deep Believe Network.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="deep-believe-network">
+<h1>20.3 Deep Believe Network<a class="headerlink" href="#deep-believe-network" title="Permalink to this headline">¶</a></h1>
+<p>Deep believe networks:</p>
+<ul class="simple">
+<li>Generative models</li>
+<li>Several layers of latent variables, typically binary.</li>
+<li>Visible units: maybe binary or real</li>
+<li>No intralayer connection</li>
+<li>The connection between the top 2 layers are undirected</li>
+<li>Connections between all the other layers are directed, with arrows pointed toward the layer that is close to the data.</li>
+</ul>
+<p>A DBM with l hidden layers contains l weight metrices: <span class="math notranslate nohighlight">\(W^{(1)}, W^{(2)} .... W^{(l)}\)</span> and also l + 1 bias vector <span class="math notranslate nohighlight">\(b^{(0)}, b^{(1)}, ...., b^{(l)}\)</span>. Probability represented by DBN:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P(h^{(l)}, h^{(l-1)}) \propto exp(b^{(l)T}h^{(l)} + b^{(l-1)T}h^{(l -1 )} + h^{(l-1)T}W^{(l)}h^{(l)}) \\ \\
+P(h_i^{(k)} = 1 | h^{(k+1)}) = \sigma(b_i^{(k)} + W_{:, i}^{(k+1)T}h^{(k+1)}) \forall i \forall k \in 1, .... l-2 \\ \\
+P(v_i = 1 | h^{(1)} = \sigma(b_i^{(i)} + W_{:, i}^{(1)T} h^{(1)} ) \forall i\end{split}\]</div>
+<p>Draw sample from a DBN</p>
+<ol class="arabic simple">
+<li>run several steps of Gibbs sampling on the top 2 hidden layer. Essentially drawing a sample from the RBM defined by the top 2 hidden layers</li>
+<li>use a single pass of ancestral sampling through the rest of the model to draw a sample from the visible units.</li>
+</ol>
+<p>Inference in Deep Belief Network is intractable because of explaining away effect within each directed layer and the interaction between the 2 hidden layers that have undirected connections.</p>
+<p>To train a deep belief network,</p>
+<ol class="arabic">
+<li><p class="first">Training an RBM to maximize <span class="math notranslate nohighlight">\(E_{v\sim p_{data}}\log p(v)\)</span> using contrastive divergence or stachastic maximum likehood.</p>
+</li>
+<li><p class="first">The parameters of the RBM the define the parameters of the first layer of the DBN.</p>
+</li>
+<li><p class="first">A second RBM is trained to maximize: <span class="math notranslate nohighlight">\(E_{v \sim p_{data}} E_{h^{(1)} \sim p^{(1)} (h^{(1)}|v)} \log p^{(2)}(h^{(1)})\)</span>.</p>
+<blockquote>
+<div><ul class="simple">
+<li><span class="math notranslate nohighlight">\(p^{(1)}\)</span> is the probability distribution represented by the first RBM. It is driven by data.</li>
+<li><span class="math notranslate nohighlight">\(p^{(2)}\)</span> is the second RBM trained to model the distribution defined by sampling the hidden units of the first RBM</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">repeat 3, with each new RBM modeling the samples of the previous one. This procedure can be justified as increasing a variational lower bound on the log-likehood of the data under the DBN.</p>
+</li>
+</ol>
+<p>In most applications, no effort is made to jointly train the DBN after the greedy layer-wise procedure is complete. However, it is possible to perform generative fine-tuning using the wake-sleep algorithm.</p>
+<p>We can take the weights from the DBN and use them to define MLP.</p>
+<dl class="docutils">
+<dt>..math::</dt>
+<dd>h^{(1)} = sigma(b^{(1)} + v^TW^{(1)}) \
+h^{(l)} = sigma(b_i^{(l)} + h^{(l-1)}W^{(l)}) forall l in 2, …, m</dd>
+</dl>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="20.4 Deep Boltzmann Machines.html" class="btn btn-neutral float-right" title="20.4 Deep Boltzmann Machines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="20.2 Restricted Boltzmann Machines.html" class="btn btn-neutral" title="20.2 Restricted Boltzmann Machines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

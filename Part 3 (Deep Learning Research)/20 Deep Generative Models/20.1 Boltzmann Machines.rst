@@ -1,0 +1,26 @@
+20.1 Boltzmann Machines
+=========================
+
+Boltzman Machine definition:
+
+* Over d-D binary random vector :math:`x \in \{0, 1\}^d`
+* Energy based model. :math:`P(x) = \frac{exp(-E(x))}{Z}` 
+* :math:`E(x) = -x^T Ux - b^Tx` , where U is the weight matrix of model parameters and b is the vector of bias parameters.
+
+This senario is certainly viable, it does limit the kind of interactions between the observed variables to those described by the weight matrix. Specifically, it means that the probability of one unit being on is given by a linear model (logistic regression) from the values of the other units. 
+
+A Boltzmann machine with hidden units is no longer limited to modeling linear relationship between variables. Instead, the Boltzmann machine becomes a universal approximator of probability mass functions over discrete variables.
+
+Formally, we decompose the unites x into 2 subsets: 
+
+* Visible units v 
+* Latent / Hidden units h
+
+Then the energy function become:
+
+.. math::
+	E(v, h) = -v^TRv -v^TWh - h^TSh - b^Tv - c^Th
+
+Learning algorithms for Boltzmann Machines are usually based on maximum likehood. All Boltzmann machines have an intractable partition function, so the maximum likehood gradient must be approximated.
+
+Interesting property of Boltzmann machine when trained with learning fules based one maximum likehood is that update for particular weight connecting 2 unites depends only on the statistics of those 2 units, collected under different distribution :math:`p_{model}(v)` and :math:`p_{data}(v)p_{model}(h|v)`. The rest of the network participates in shaping those statistics, but the weight can be updated without knowing anything about the rest of the network or how those statistics were produced. This means that the learning rule is local. 

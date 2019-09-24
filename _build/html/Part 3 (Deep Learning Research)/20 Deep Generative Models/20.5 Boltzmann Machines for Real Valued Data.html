@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>20.5 Boltzmann Machines for Real-Valued Data &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="20.4 Deep Boltzmann Machines" href="20.4 Deep Boltzmann Machines.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">20 Deep Generative Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.2 Restricted Boltzmann Machines.html">20.2 Restricted Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.3 Deep Believe Network.html">20.3 Deep Believe Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.4 Deep Boltzmann Machines.html">20.4 Deep Boltzmann Machines</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">20.5 Boltzmann Machines for Real-Valued Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#gaussian-bernoulli-rbms">20.5.1 Gaussian-Bernoulli RBMs</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#undirected-models-of-conditional-covariance">20.5.2 Undirected Models of Conditional Covariance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">20 Deep Generative Models</a> &raquo;</li>
+        
+      <li>20.5 Boltzmann Machines for Real-Valued Data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.5 Boltzmann Machines for Real Valued Data.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="boltzmann-machines-for-real-valued-data">
+<h1>20.5 Boltzmann Machines for Real-Valued Data<a class="headerlink" href="#boltzmann-machines-for-real-valued-data" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="gaussian-bernoulli-rbms">
+<h2>20.5.1 Gaussian-Bernoulli RBMs<a class="headerlink" href="#gaussian-bernoulli-rbms" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Binary hidden units</li>
+<li>Real-valued visible units</li>
+<li>Conditional distribution over visible units is a Gaussian distribution whose mean us a function of the hidden units.</li>
+</ul>
+<p>There are many ways of parameterize Gaussian-Bernoulli RBMs.</p>
+<ul class="simple">
+<li>covariance matrix</li>
+<li>precision matrix (below)</li>
+</ul>
+<p>We wish to have the conditional distribution</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}p(v|h) = N(Wh, \beta^{-1}) \\ \\
+\log N(Wh, \beta^{-1}) = -\frac{1}{2} (v - Wh)^T\beta(v - Wh) + f(\beta)\end{split}\]</div>
+<p>f encapsulates all the terms that are a function only of the parameters and not the random variables in the model. We can discard f because its only role is to normalize the distribution and the partition function of whatever energy function we choose will carry out the role.</p>
+<p>One way to define the energy function:</p>
+<div class="math notranslate nohighlight">
+\[E(v, h) = \frac{1}{2}v^T(\beta \odot v) - (v \odot \beta)^T - b^Th\]</div>
+</div>
+<div class="section" id="undirected-models-of-conditional-covariance">
+<h2>20.5.2 Undirected Models of Conditional Covariance<a class="headerlink" href="#undirected-models-of-conditional-covariance" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><p class="first">Challenge: Much of the information content present in natural images is embedded in the covariance between pixels rather than in the raw pixel avlues. Since Gaussian only model the conditional mean of the input given the hidden uints, it cannot capture conditional mean of the input given the hidden units, it cannot capture conditional covariance information.</p>
+</li>
+<li><p class="first">Solutions:</p>
+<blockquote>
+<div><ul class="simple">
+<li>mean and covariance RBM (mcRBM)</li>
+<li>the mean prodoct of Student t-distribution (mPoT) model</li>
+<li>spike and slab RBM(ssRBM)</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Mean and Covariance RBM: 2 groups of hidden units</strong></p>
+<ul class="simple">
+<li>mean units. Binary. With v: Gaussian RBM</li>
+<li>covariance units. Binary. With v: covariance RBM</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}E_{mc}(x, h^{(m)}, h^{(c)}) = E_m(x, h^{(m)}) + E_c(x, h^{(c)}) \\ \\
+E_m(x, h^{(m)}) = \frac{1}{2}x^Tx - \sum_jx^TW_{:, j}h_j^{(m)} - \sum_j b_j^{(m)}h_j^{(m)} \\ \\
+E_c(x, h^{(c)}) = \frac{1}{2} \sum h_j^{(c)}(x^Tr^{(j)})^2 - \sum_j b_j^{(c)}h_j^{(c)}\end{split}\]</div>
+<ul class="simple">
+<li><span class="math notranslate nohighlight">\(r^{(j)}\)</span> corresponds to the covariance weight vector associated with <span class="math notranslate nohighlight">\(h_j^{(c)}\)</span></li>
+<li><span class="math notranslate nohighlight">\(b^{(c)}\)</span> is a vector of covariance offset</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}p_{mc}(x, h^{(m)}, h^{(c)}) = \frac{1}{Z}exp{-E_{mc}(x, h^{(m)}, h^{(c)})} \\ \\
+p_{mc}(x| h^{(m)}, h^{(c)}) = N(C^{mc}_{x|h}(\sum_j)W_{:, j}h_j^{(m)}, C^{mc}_{x|h}) \\ \\
+C^{mc}_{x|h} = (\sum_j h^{(m)}r^{(j)}r^{(j)T} + I)^{-1}\end{split}\]</div>
+<p>It is difficult to train mcRBM via contrastive divergence or persistent contrastive divergence</p>
+<p><strong>Mean product of Student t-distributions</strong></p>
+<p><strong>Spike and Slab RBMs</strong>: 2 sets of hidden units</p>
+<ul class="simple">
+<li>Binary spike units h</li>
+<li>Real-Valued slan units s</li>
+</ul>
+<p>The mean of visible units conditioned on the hidden units is given by <span class="math notranslate nohighlight">\((h \odot s)W^T\)</span>.</p>
+<ul class="simple">
+<li>Each column <span class="math notranslate nohighlight">\(W_{:, j}\)</span> defines a component that can appear in the input when <span class="math notranslate nohighlight">\(h_i = 1\)</span>.</li>
+<li>The corresponding spike variable <span class="math notranslate nohighlight">\(h_i = 1\)</span> determines whether that component is present at all</li>
+<li>The corresponding slab variable <span class="math notranslate nohighlight">\(s_i = 1\)</span> determines the intensity of the that component if it is present.</li>
+</ul>
+<p>When the spike variable is active, the corresponding slab variable add variance to the input along the axis defined by <span class="math notranslate nohighlight">\(W_{:, j}\)</span>. Contrastive divergence and persistent contrastive divergence with Gibbs sampling are still applicable.</p>
+<ul>
+<li><p class="first">mcRBM and mPoT:</p>
+<blockquote>
+<div><ul class="simple">
+<li>use the activation of hidden units <span class="math notranslate nohighlight">\(h_j&gt;0\)</span> to enforce constraints on the conditional covariance in the direction <span class="math notranslate nohighlight">\(r^{(j)}\)</span></li>
+<li>An overcomplete representation would mean that to capture variation in a particular direction in the observation space would require removing potentially all constraints with positive projection in that direction. This would suggest that these models are less well suited to the overcomplete setting.</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">ssRBM:</p>
+<blockquote>
+<div><ul class="simple">
+<li>specifies the conditional covariance of the observations using the hidden spike activations <span class="math notranslate nohighlight">\(h_i=0\)</span> to pinch the precision matrix along the direction specified by the corresponding weight vector.</li>
+<li>In a overcomplete setting, sparse activation with the ssRBM parameterization permit significant variance only in the selected directions of the sparsely activated <span class="math notranslate nohighlight">\(h_i\)</span></li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>disadvatage of ssRBM: some settings of the parameters can correpond to a covariance matrix that is not positive definite. Such a covariance matrix places more unormalized probability on values that are father from the mean, causing the integral over all possible outcomes to diverge.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="20.4 Deep Boltzmann Machines.html" class="btn btn-neutral" title="20.4 Deep Boltzmann Machines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

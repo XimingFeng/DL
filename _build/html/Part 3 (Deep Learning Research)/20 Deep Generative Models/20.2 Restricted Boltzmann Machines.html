@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>20.2 Restricted Boltzmann Machines &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="20.3 Deep Believe Network" href="20.3 Deep Believe Network.html" />
+    <link rel="prev" title="20.1 Boltzmann Machines" href="20.1 Boltzmann Machines.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">20 Deep Generative Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">20.2 Restricted Boltzmann Machines</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#conditional-distribution">20.2.1 Conditional Distribution</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="20.3 Deep Believe Network.html">20.3 Deep Believe Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.4 Deep Boltzmann Machines.html">20.4 Deep Boltzmann Machines</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">20 Deep Generative Models</a> &raquo;</li>
+        
+      <li>20.2 Restricted Boltzmann Machines</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.2 Restricted Boltzmann Machines.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="restricted-boltzmann-machines">
+<h1>20.2 Restricted Boltzmann Machines<a class="headerlink" href="#restricted-boltzmann-machines" title="Permalink to this headline">¶</a></h1>
+<p>RBMs are undirected probabilistic graphical models containing a layer of observable variables and a single layer of latent variables. RBMs maybe stacked to form deeper models.</p>
+<img alt="../../_images/Figure20.1.PNG" src="../../_images/Figure20.1.PNG" />
+<ul class="simple">
+<li>Observed layer : vector v with <span class="math notranslate nohighlight">\(n_v\)</span> binary random variables.</li>
+<li>Latent layer : vector h with <span class="math notranslate nohighlight">\(n_h\)</span> binary random variables.</li>
+</ul>
+<p>Review on 16.7.1</p>
+<p>With the graph above, we can see that there is no triangle clique. So each edge forms 1 clique and its factor function of clique <span class="math notranslate nohighlight">\(\{v_i, h_j\}\)</span> would look like this:</p>
+<div class="math notranslate nohighlight">
+\[\phi(C_{i, j}) = exp(b_i*v_i + c_j*h_j + v_i*w_{i, j}*h_j)\]</div>
+<p>That is why the factor function with the graph as a whole looks like:</p>
+<div class="math notranslate nohighlight">
+\[\phi(\vec{v}, \vec{h}) = \prod_{i, j} \phi(C_{i, j}) = exp(\vec{b}^T\vec{v} + \vec{c}^T\vec{h} + \vec{v}^TW\vec{h})\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}P(v, h) = \frac{1}{Z}exp(-E(v, h)) \\
+E(v, h) = -b^Tv - c^Th - v^TWh \\
+Z = \sum_v\sum_h exp\{ -E(v, h) \}\end{split}\]</div>
+<p>Intractable partition function Z =&gt; P(v) intractable to evaluate.</p>
+<div class="section" id="conditional-distribution">
+<h2>20.2.1 Conditional Distribution<a class="headerlink" href="#conditional-distribution" title="Permalink to this headline">¶</a></h2>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+P(h|v) &amp;= \frac{P(h, v)}{P(v)} \\
+&amp;= \frac{1}{P(v)} \frac{1}{Z} exp\{ b^Tv + c^Th + v^TWh \} \\
+&amp;= \frac{1}{Z'} \{ c^Th + v^tWh \} \\
+&amp;= \frac{1}{Z'} \{ \sum^{n_h}_{j=1}c_jh_j + \sum^{n_h}_{j=1}v^TW_{:, j}h_j \} \\
+&amp;= \frac{1}{Z'} \prod_{j=1}^{n_h} exp\{ c_j h_j + v^TW_{:, j}h_j \}
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Since we are conditioning on the visible units v, we can treat these as constant with respect to the distribution P(h|v).</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+P(h_j=1|v) &amp;= \frac{\hat{p}(h_j=1|v)}{\hat{p}(h_j=1|v) + \hat{p}(h_j=0|v)} \\
+&amp;= \frac{exp\{c_j + v^TW_{:, j}\}}{exp(0) + exp\{c_j + v^TW_{:, j}\}} \\
+&amp;= \sigma (c_j + v^TW_{:, j})
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Now review on rule 3.25 we have: <span class="math notranslate nohighlight">\(1- \sigma{x} = \sigma{-x}\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}P(h_j=0|v) = 1 - P(h_j=1|v) = \sigma(-c_j - v^TW_{:, j}) \\
+p(h_j|v) = \sigma((h_j * 2 -1) * (c_j + v^TW_{:, j}))\end{split}\]</div>
+<p>So now we have:</p>
+<div class="math notranslate nohighlight">
+\[P(h|v) = \prod_{j=1}^{n_h} \sigma((2h-1) * (c+W^Tv))_j\]</div>
+<p>A similar deviation could be</p>
+<div class="math notranslate nohighlight">
+\[P(v|h) = \prod_{j=1}^{n_v} \sigma((2v-1) * (b+Wh))_j\]</div>
+<p>Because RBM admits efficient evaluation and differentiation of <span class="math notranslate nohighlight">\(\hat{P}(v)\)</span> and efficient MCMC sampling in the form of block Gibbs sampling, it can readily be trained with any of the techniques described in Chapter 18 for training models that have intractable partition functions. This include</p>
+<ul class="simple">
+<li>CD</li>
+<li>SML</li>
+<li>Ratio Matching</li>
+<li>and so on</li>
+</ul>
+<p>Review :</p>
+<p>Gibbs Sampling</p>
+<p>Draw sample from distribution q(x): updating <span class="math notranslate nohighlight">\(x \leftarrow x' \sim T(x'|x)\)</span></p>
+<ul>
+<li><p class="first">Problem: how to ensure that q(x) is a useful distribution</p>
+</li>
+<li><p class="first">Solution:</p>
+<blockquote>
+<div><ul class="simple">
+<li>Derive T from a goven learned model <span class="math notranslate nohighlight">\(p_{model}\)</span></li>
+<li>Directly parameterize T and learn it, so that its stationary distribution implicitely define the <span class="math notranslate nohighlight">\(p_{model}\)</span> of interest.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p>In DL, we commonly use Markov chain to draw samples from an energy-based model defining a distribution <span class="math notranslate nohighlight">\(p_{model}(\vec{x})\)</span>. In this case, we want the <span class="math notranslate nohighlight">\(q(\vec{x})\)</span> for the Markov chain to be <span class="math notranslate nohighlight">\(p_{model}(\vec{x})\)</span>. To obtain the desired q(x), we must choose an appropriate <span class="math notranslate nohighlight">\(T(x'|x)\)</span></p>
+<p>Gibbs sampling: sampling from <span class="math notranslate nohighlight">\(T(x'|x)\)</span> is accomplished by selecting one variable <span class="math notranslate nohighlight">\(x_i\)</span> and sample it from <span class="math notranslate nohighlight">\(p_{model}\)</span> conditioned on it neighbor in the undirected graph G defining the structure of the energy based model. We can also sample several variables at the same time as long as they are conditionally independent given all their neighbors.</p>
+<p>Contrastive Divergence (CD)</p>
+<img alt="../../_images/Algo18.2.PNG" src="../../_images/Algo18.2.PNG" />
+<p>Stachastic Maximum Likehood (SML) or Persistent Contrastive Divergence (PCD)</p>
+<img alt="../../_images/Algo18.3.PNG" src="../../_images/Algo18.3.PNG" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="20.3 Deep Believe Network.html" class="btn btn-neutral float-right" title="20.3 Deep Believe Network" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="20.1 Boltzmann Machines.html" class="btn btn-neutral" title="20.1 Boltzmann Machines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

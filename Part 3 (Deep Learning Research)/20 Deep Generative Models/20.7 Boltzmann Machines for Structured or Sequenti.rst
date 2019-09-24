@@ -1,0 +1,9 @@
+20.7 Boltzmann Machines for Structured or Sequential Outputs
+================================================================
+
+In the structured output scenario, we wish to train a model that can map from some input x to some output y, and the different entries of y are related to each other and must obey some constraints. 
+
+In the sequence modeling scenario, the model must estimate a probabilistic distribution over a sequence of variables :math:`p(x^{(1)}... x^{(n)})`. Condtional Boltzmann machiens can represent factors of form :math:`p(x^{(t)}| x^{(1)}... x^{(t-1)})` in order to accomplish this task.
+
+RNN-RBM sequence model: generative model of a sequence of frames :math:`x^{(t)}` consisting of an RNN that emits the RBM parameters for each time step. To train the model, we need to be able to back-propagate the gradient of the loss function through the RNN. The loss function is not applied directly to th RNN outputs. Instead, it is to the RBM. This means that we must approximately differentiate the loss with respect to the RBM parameters using contrastive divergence or a related algorithm. This approximate gradient may then be back-propagate through the RNN using the usual back-propagation through time algorithm.
+

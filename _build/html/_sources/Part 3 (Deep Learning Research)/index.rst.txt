@@ -10,3 +10,4 @@ Part III: Deep Learning Research
    17 Monte Carlo Methods/index
    18 Confronting the Partition Function/index
    19 Approximate Inference/index
+   20 Deep Generative Models/index

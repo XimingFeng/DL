@@ -1,0 +1,107 @@
+20.2 Restricted Boltzmann Machines
+=====================================
+
+RBMs are undirected probabilistic graphical models containing a layer of observable variables and a single layer of latent variables. RBMs maybe stacked to form deeper models. 
+
+.. image:: rsc/Figure20.1.PNG
+
+* Observed layer : vector v with :math:`n_v` binary random variables. 
+* Latent layer : vector h with :math:`n_h` binary random variables.
+
+Review on 16.7.1 
+
+With the graph above, we can see that there is no triangle clique. So each edge forms 1 clique and its factor function of clique :math:`\{v_i, h_j\}` would look like this: 
+
+.. math::
+	\phi(C_{i, j}) = exp(b_i*v_i + c_j*h_j + v_i*w_{i, j}*h_j)
+
+That is why the factor function with the graph as a whole looks like:
+
+.. math::
+	\phi(\vec{v}, \vec{h}) = \prod_{i, j} \phi(C_{i, j}) = exp(\vec{b}^T\vec{v} + \vec{c}^T\vec{h} + \vec{v}^TW\vec{h})
+
+
+
+.. math::
+	P(v, h) = \frac{1}{Z}exp(-E(v, h)) \\
+	E(v, h) = -b^Tv - c^Th - v^TWh \\
+	Z = \sum_v\sum_h exp\{ -E(v, h) \}
+
+
+Intractable partition function Z => P(v) intractable to evaluate.
+
+
+########################################################
+20.2.1 Conditional Distribution
+########################################################
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	P(h|v) &= \frac{P(h, v)}{P(v)} \\
+	&= \frac{1}{P(v)} \frac{1}{Z} exp\{ b^Tv + c^Th + v^TWh \} \\
+	&= \frac{1}{Z'} \{ c^Th + v^tWh \} \\
+	&= \frac{1}{Z'} \{ \sum^{n_h}_{j=1}c_jh_j + \sum^{n_h}_{j=1}v^TW_{:, j}h_j \} \\
+	&= \frac{1}{Z'} \prod_{j=1}^{n_h} exp\{ c_j h_j + v^TW_{:, j}h_j \} 
+	\end{split}
+	\end{equation}
+
+Since we are conditioning on the visible units v, we can treat these as constant with respect to the distribution P(h|v). 
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	P(h_j=1|v) &= \frac{\hat{p}(h_j=1|v)}{\hat{p}(h_j=1|v) + \hat{p}(h_j=0|v)} \\
+	&= \frac{exp\{c_j + v^TW_{:, j}\}}{exp(0) + exp\{c_j + v^TW_{:, j}\}} \\
+	&= \sigma (c_j + v^TW_{:, j})
+	\end{split}
+	\end{equation}
+
+Now review on rule 3.25 we have: :math:`1- \sigma{x} = \sigma{-x}`. 
+
+.. math::
+	P(h_j=0|v) = 1 - P(h_j=1|v) = \sigma(-c_j - v^TW_{:, j}) \\
+	p(h_j|v) = \sigma((h_j * 2 -1) * (c_j + v^TW_{:, j}))
+
+So now we have:
+
+.. math::
+	P(h|v) = \prod_{j=1}^{n_h} \sigma((2h-1) * (c+W^Tv))_j
+
+A similar deviation could be
+
+.. math::
+	P(v|h) = \prod_{j=1}^{n_v} \sigma((2v-1) * (b+Wh))_j
+
+Because RBM admits efficient evaluation and differentiation of :math:`\hat{P}(v)` and efficient MCMC sampling in the form of block Gibbs sampling, it can readily be trained with any of the techniques described in Chapter 18 for training models that have intractable partition functions. This include 
+
+* CD 
+* SML
+* Ratio Matching
+* and so on
+
+Review :
+
+Gibbs Sampling
+
+Draw sample from distribution q(x): updating :math:`x \leftarrow x' \sim T(x'|x)`
+
+* Problem: how to ensure that q(x) is a useful distribution
+* Solution:
+	
+	* Derive T from a goven learned model :math:`p_{model}`
+	* Directly parameterize T and learn it, so that its stationary distribution implicitely define the :math:`p_{model}` of interest. 
+
+In DL, we commonly use Markov chain to draw samples from an energy-based model defining a distribution :math:`p_{model}(\vec{x})`. In this case, we want the :math:`q(\vec{x})` for the Markov chain to be :math:`p_{model}(\vec{x})`. To obtain the desired q(x), we must choose an appropriate :math:`T(x'|x)`
+
+Gibbs sampling: sampling from :math:`T(x'|x)` is accomplished by selecting one variable :math:`x_i` and sample it from :math:`p_{model}` conditioned on it neighbor in the undirected graph G defining the structure of the energy based model. We can also sample several variables at the same time as long as they are conditionally independent given all their neighbors. 
+
+Contrastive Divergence (CD)
+
+.. image:: rsc/Algo18.2.PNG
+
+Stachastic Maximum Likehood (SML) or Persistent Contrastive Divergence (PCD)
+
+.. image:: rsc/Algo18.3.PNG
+
+

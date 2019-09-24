@@ -1,0 +1,281 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>20.9 Back-Propagation through Random Operations &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Extra" href="../../Extra/index.html" />
+    <link rel="prev" title="20.8 Other Boltzmann Machines" href="20.8 Other Boltzmann Machines.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">20 Deep Generative Models</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.2 Restricted Boltzmann Machines.html">20.2 Restricted Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.3 Deep Believe Network.html">20.3 Deep Believe Network</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.4 Deep Boltzmann Machines.html">20.4 Deep Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.5 Boltzmann Machines for Real Valued Data.html">20.5 Boltzmann Machines for Real-Valued Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.6 Convolutional Boltzmann Machines.html">20.6 Convolutional Boltzmann Machines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.7 Boltzmann Machines for Structured or Sequenti.html">20.7 Boltzmann Machines for Structured or Sequential Outputs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="20.8 Other Boltzmann Machines.html">20.8 Other Boltzmann Machines</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">20.9 Back-Propagation through Random Operations</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#back-propagation-through-discrete-stochastic-operations">20.9.1 Back-Propagation through Discrete Stochastic Operations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">20 Deep Generative Models</a> &raquo;</li>
+        
+      <li>20.9 Back-Propagation through Random Operations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.9 Back-Propagation through Random Operations.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="back-propagation-through-random-operations">
+<h1>20.9 Back-Propagation through Random Operations<a class="headerlink" href="#back-propagation-through-random-operations" title="Permalink to this headline">¶</a></h1>
+<p>When developing genertative models, we often wish to extend neural networks to implement stochastic transformations of x. Strategy</p>
+<ol class="arabic simple">
+<li>Extra input z that are sampled from some simple probability, e.g. uniform or Guassian</li>
+<li>The neural network can then continue to perform deterministic computation internally</li>
+<li>The function f(x, z) will appear stochastic to an observer who does not have access to z.</li>
+</ol>
+<p>We can build elements of the graph on top of the output of sampling distribution.</p>
+<p>Reparameterization trick, stochastic back-propagation: <span class="math notranslate nohighlight">\(p(x|w)\)</span>, with w being parameters <span class="math notranslate nohighlight">\(\theta\)</span> parameters, and if applicable, input x. We can rewrite <span class="math notranslate nohighlight">\(p(x|w)\)</span> into :math`:y=f(z;w)` where z is a source of randomness. We may then compute the derivative of y w.r.t. w using traditional tool such as back propagation algorithm applied to f, as long as f is continuous and differetiable almost everywhere. Cruciallt w must not be a function of z and z must not be a function of w.</p>
+<div class="section" id="back-propagation-through-discrete-stochastic-operations">
+<h2>20.9.1 Back-Propagation through Discrete Stochastic Operations<a class="headerlink" href="#back-propagation-through-discrete-stochastic-operations" title="Permalink to this headline">¶</a></h2>
+<p>Reinforce algoriths: Reward Increment = Negative Factor * Offset Reinforment * Characteristic Eligibility.</p>
+<p>Core Ider of Reinforcement algorithm: Even though J(f(z; w)) is a step function with useless derivative, the expected cost <span class="math notranslate nohighlight">\(E_{z \sim p(z)J(f(z;w))}\)</span> is often a smooth function amenable to gradient descent. Although the expectation is typically not tractable when y is high-D, it can be estimated without bias using a Monte Carlo average.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+E_Z[J(y)] &amp;= \sum_y J(y)p(y) \\ \\
+\frac{\partial E[J(y)]}{\partial w} &amp;= \sum_y J(y) \frac{\partial p(y)}{\partial w} \\
+&amp;= \sum_y J(y)p(y) \frac{\partial \log p(y)}{\partial w} \\
+&amp; \approx \frac{1}{m} \sum^{m}_{y^{(i)} \sim p(y), i = 1} J(y^{(i)})\frac{\partial \log p(y^{(i)})}{\partial w}
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Assuption for above equation: J does not reference w directly.</p>
+<ul class="simple">
+<li>Issue with the simple REINFORCE estimator: it has very high variance</li>
+<li>Solution: variance reduction models. Idea: modify the estimator so that its expected value remain unchanged but its variance gets reduced. In the context of REINFORCE, involve a computation of a baseline that is used to offset J(y). Any offset b(w) that does not depend on y would not change the expectation of the estimated gradient because:</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\frac{\partial \log p(y)}{\partial w} &amp;= \sum_y p(y) \frac{\partial \log p(y)}{\partial w} \\
+&amp;= \sum_y \frac{\partial p(y)}{\partial w} \\
+&amp;= \frac{\partial}{\partial w} \sum_y p(y) \\
+&amp;=0 \\
+so \\
+E_{p(y)}[(J(y) - b(w))\frac{\partial \log p(y)}{\partial w}] &amp;= E_{p(y)}[J(y) \frac{\partial \log p(y)}{\partial w}]  - b(w)E_{p(y)}[\frac{\partial \log p(y)}{\partial w}] \\
+&amp;= E_{p(y)}[J(y) \frac{\partial \log p(y)}{\partial w}]
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>We can obtain the optimal b(w) by computing the variance of <span class="math notranslate nohighlight">\((J(y) - b(w))\frac{\partial \log p(y)}{\partial w}\)</span></p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../../Extra/index.html" class="btn btn-neutral float-right" title="Extra" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="20.8 Other Boltzmann Machines.html" class="btn btn-neutral" title="20.8 Other Boltzmann Machines" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
