@@ -214,6 +214,15 @@ So,
 	\end{split}
 	\end{equation}
 
+Now we look back to variational auto encoder
+
+.. image:: rsc/vae-gaussian.png
+
+The goal of VAE: to find a distribution :math:`q_{\phi}(z| x)` of some latent variable z which we can sample from it. The generate new samples from :math:`x \sim q_{\theta}(x'|z)` 
+
+Challenge of traditional auto-encoder: when we feed a trained encoder some unknown vector (not in training dataset) as x, decoder cannot decode the z into something meaningful. Decoder does not expect z to be from a distribution from out side of training set. VAE tries to solve the problem by making sure the encoding from some **known** probability distribution can be decoded to a reasonal output when if they are not the encoding of actual training set. So instead forcing the encoder to produce a single encoding, it forces the encoder to produce a probability distribution function over the encodings. 
+
+
 
 
 
@@ -328,6 +337,8 @@ Another extension of the neural auto-regressive architectures gets rid of the ne
 .. math::
 	
 	p_{ensemble}(x) = \frac{1}{k}\sum_{k=1}^k p(x| o^{(i)})
+
+This ensemble model usually generalize better and assign hight probability to the test set than does an individual model defined by a single ordering.
 
 
 

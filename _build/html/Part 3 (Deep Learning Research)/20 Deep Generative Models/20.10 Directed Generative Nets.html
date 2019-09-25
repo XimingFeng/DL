@@ -363,6 +363,10 @@ KL[p || q] &amp;= \sum_x p(x) \log \frac{p(x)}{q(x)} \\
 KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2))
 \end{split}
 \end{equation}\]</div>
+<p>Now we look back to variational auto encoder</p>
+<img alt="../../_images/vae-gaussian.png" src="../../_images/vae-gaussian.png" />
+<p>The goal of VAE: to find a distribution <span class="math notranslate nohighlight">\(q_{\phi}(z| x)\)</span> of some latent variable z which we can sample from it. The generate new samples from <span class="math notranslate nohighlight">\(x \sim q_{\theta}(x'|z)\)</span></p>
+<p>Challenge of traditional auto-encoder: when we feed a trained encoder some unknown vector (not in training dataset) as x, decoder cannot decode the z into something meaningful. Decoder does not expect z to be from a distribution from out side of training set. VAE tries to solve the problem by making sure the encoding from some <strong>known</strong> probability distribution can be decoded to a reasonal output when if they are not the encoding of actual training set. So instead forcing the encoder to produce a single encoding, it forces the encoder to produce a probability distribution function over the encodings.</p>
 </div>
 <div class="section" id="generative-adverserial-network">
 <h2>20.10.4 Generative Adverserial Network<a class="headerlink" href="#generative-adverserial-network" title="Permalink to this headline">¶</a></h2>
@@ -438,6 +442,7 @@ KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^
 <p>Another extension of the neural auto-regressive architectures gets rid of the need to choose an arbitrary order for the observed variables. Since many oerders of variables are possible and each order o of variables yield a different p(x | o), we can form an ensemble of model for many valueso of o:</p>
 <div class="math notranslate nohighlight">
 \[p_{ensemble}(x) = \frac{1}{k}\sum_{k=1}^k p(x| o^{(i)})\]</div>
+<p>This ensemble model usually generalize better and assign hight probability to the test set than does an individual model defined by a single ordering.</p>
 </div>
 <div class="section" id="resource">
 <h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>
