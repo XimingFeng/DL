@@ -310,6 +310,29 @@ Neural auto-regressive networks have the same left-to-right graphical model as l
 
 .. image:: rsc/Figure20.9.PNG
 
+You can extend the model to continuous variables or joint distributions involving both discrete and continuous variables.
+
+###############################################################
+20.10.10 NADE
+###############################################################
+
+The neural auto-regressive density estimator (NADE): the connectivity is the same as for the original neural auto-regressive network, but NADE introduces an additional parameter sharing schema. The parameters of the hidden units of different groups j are shared.
+
+.. image:: rsc/Figure20.10.PNG
+
+
+Forward propagation in a NADE model would loosely resemble the computations performed in mean field inference to fill in missing inputs in an RBM. This mean field inference corresponds to running a recurrent network with shared weights and the first step pf that inference is the same sa in NADE. The only differenceis that with NADE, the output weights connecting the hidden units to th output are parametrized independenly from the weights connecting the input unist to the hidden units. In the RBM, the hidden-to-output weights are the transpose of the input-to-hidden weights. 
+
+Another extension of the neural auto-regressive architectures gets rid of the need to choose an arbitrary order for the observed variables. Since many oerders of variables are possible and each order o of variables yield a different p(x | o), we can form an ensemble of model for many valueso of o:
+
+.. math::
+	
+	p_{ensemble}(x) = \frac{1}{k}\sum_{k=1}^k p(x| o^{(i)})
+
+This ensemble model usually generalize better and assign hight probability to the test set than does an individual model defined by a single ordering.
+
+
+
 ###############################################################
 Resource
 ###############################################################
