@@ -438,6 +438,7 @@ KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^
 <p>Another extension of the neural auto-regressive architectures gets rid of the need to choose an arbitrary order for the observed variables. Since many oerders of variables are possible and each order o of variables yield a different p(x | o), we can form an ensemble of model for many valueso of o:</p>
 <div class="math notranslate nohighlight">
 \[p_{ensemble}(x) = \frac{1}{k}\sum_{k=1}^k p(x| o^{(i)})\]</div>
+<p>This ensemble model usually generalize better and assign hight probability to the test set than does an individual model defined by a single ordering.</p>
 </div>
 <div class="section" id="resource">
 <h2>Resource<a class="headerlink" href="#resource" title="Permalink to this headline">¶</a></h2>

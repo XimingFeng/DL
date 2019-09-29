@@ -329,6 +329,8 @@ Another extension of the neural auto-regressive architectures gets rid of the ne
 	
 	p_{ensemble}(x) = \frac{1}{k}\sum_{k=1}^k p(x| o^{(i)})
 
+This ensemble model usually generalize better and assign hight probability to the test set than does an individual model defined by a single ordering.
+
 
 
 ###############################################################
