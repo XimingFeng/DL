@@ -367,6 +367,38 @@ KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^
 <img alt="../../_images/vae-gaussian.png" src="../../_images/vae-gaussian.png" />
 <p>The goal of VAE: to find a distribution <span class="math notranslate nohighlight">\(q_{\phi}(z| x)\)</span> of some latent variable z which we can sample from it. The generate new samples from <span class="math notranslate nohighlight">\(x \sim q_{\theta}(x'|z)\)</span></p>
 <p>Challenge of traditional auto-encoder: when we feed a trained encoder some unknown vector (not in training dataset) as x, decoder cannot decode the z into something meaningful. Decoder does not expect z to be from a distribution from out side of training set. VAE tries to solve the problem by making sure the encoding from some <strong>known</strong> probability distribution can be decoded to a reasonal output when if they are not the encoding of actual training set. So instead forcing the encoder to produce a single encoding, it forces the encoder to produce a probability distribution function over the encodings.</p>
+<ol class="arabic simple">
+<li>To sample x, we need to know p(x).</li>
+<li><span class="math notranslate nohighlight">\(p(x) = \int_z p(x | z)p(z)dz\)</span>.</li>
+<li>The integral is not in closed form, aka, intractable due to multiple integrals of involved for latent variable z.</li>
+<li>The alternative is to approximate p(z|x) by another distribution q(x|z) which is defined in such a way that it has tractable solution.</li>
+<li>This is done by using variational inference.</li>
+<li>The main idea of variational inference is to pose the inference problem as an optimization problem, by modeling p(z|x) using q(z|x) when q(z|x) is a simple distribution such as Gaussian.</li>
+<li>How to measure the distance between p(z|x) and q(z|x)? In the context of variational inference, KL divergence. If we minimize this distance, we are approximating q(z|x) to p(z|x).</li>
+</ol>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+KL[Q_{\phi} (z|x) || p_{\theta}(z|x)] &amp;= \sum_z Q_{\phi} (z|x) \log (\frac{Q_{\phi} (z|x)}{p_{\theta}(z|x)}) \\ \\
+&amp;= E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(z|x)) \\
+&amp;= E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(x|z) - \log p_{\theta}(z) + \log p_{\theta}(x)) \\ \\
+&amp; = E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(x|z) - \log p_{\theta}(z)) + \log p_{\theta}(x) \\ \\
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Now we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\log p_{\theta}(x) - KL[Q_{\phi} (z|x) || p_{\theta}(z|x)] &amp;= E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) - E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(z)) ) \\ \\
+&amp;= E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) - KL[Q_{\phi} (z|x) || p_{\theta} (z)]
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>And this is VAE objective function</p>
+<ul class="simple">
+<li>1st <span class="math notranslate nohighlight">\(E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))\)</span>: represent reconstruction likehood</li>
+<li>2nd <span class="math notranslate nohighlight">\(KL[Q_{\phi} (z|x) || p_{\theta} (z)]\)</span>: ensure that our learned distribution Q is similar to the prior distribution <span class="math notranslate nohighlight">\(p_{\theta} (z)\)</span></li>
+</ul>
+<p>The loss function = - objective function</p>
 </div>
 <div class="section" id="generative-adverserial-network">
 <h2>20.10.4 Generative Adverserial Network<a class="headerlink" href="#generative-adverserial-network" title="Permalink to this headline">¶</a></h2>

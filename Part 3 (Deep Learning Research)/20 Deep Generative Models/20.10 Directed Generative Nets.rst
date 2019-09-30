@@ -222,6 +222,41 @@ The goal of VAE: to find a distribution :math:`q_{\phi}(z| x)` of some latent va
 
 Challenge of traditional auto-encoder: when we feed a trained encoder some unknown vector (not in training dataset) as x, decoder cannot decode the z into something meaningful. Decoder does not expect z to be from a distribution from out side of training set. VAE tries to solve the problem by making sure the encoding from some **known** probability distribution can be decoded to a reasonal output when if they are not the encoding of actual training set. So instead forcing the encoder to produce a single encoding, it forces the encoder to produce a probability distribution function over the encodings. 
 
+1. To sample x, we need to know p(x). 
+2. :math:`p(x) = \int_z p(x | z)p(z)dz`. 
+3. The integral is not in closed form, aka, intractable due to multiple integrals of involved for latent variable z.
+4. The alternative is to approximate p(z|x) by another distribution q(x|z) which is defined in such a way that it has tractable solution. 
+5. This is done by using variational inference.
+6. The main idea of variational inference is to pose the inference problem as an optimization problem, by modeling p(z|x) using q(z|x) when q(z|x) is a simple distribution such as Gaussian. 
+7. How to measure the distance between p(z|x) and q(z|x)? In the context of variational inference, KL divergence. If we minimize this distance, we are approximating q(z|x) to p(z|x).
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	KL[Q_{\phi} (z|x) || p_{\theta}(z|x)] &= \sum_z Q_{\phi} (z|x) \log (\frac{Q_{\phi} (z|x)}{p_{\theta}(z|x)}) \\ \\
+	&= E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(z|x)) \\
+	&= E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(x|z) - \log p_{\theta}(z) + \log p_{\theta}(x)) \\ \\
+	& = E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(x|z) - \log p_{\theta}(z)) + \log p_{\theta}(x) \\ \\
+	\end{split}
+	\end{equation}
+
+Now we have 
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	\log p_{\theta}(x) - KL[Q_{\phi} (z|x) || p_{\theta}(z|x)] &= E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) - E_{z \sim Q_{\phi} (z|x)} (\log Q_{\phi} (z|x) - \log p_{\theta}(z)) ) \\ \\
+	&= E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) - KL[Q_{\phi} (z|x) || p_{\theta} (z)]
+	\end{split}
+	\end{equation}
+
+And this is VAE objective function
+
+* 1st term :math:`E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))`: represent reconstruction likehood
+* 2nd term :math:`KL[Q_{\phi} (z|x) || p_{\theta} (z)]`: ensure that our learned distribution Q is similar to the prior distribution :math:`p_{\theta} (z)`
+
+The loss function = - objective function
+
 
 
 
