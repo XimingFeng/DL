@@ -252,12 +252,86 @@ Now we have
 
 And this is VAE objective function
 
-* 1st term :math:`E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))`: represent reconstruction likehood
-* 2nd term :math:`KL[Q_{\phi} (z|x) || p_{\theta} (z)]`: ensure that our learned distribution Q is similar to the prior distribution :math:`p_{\theta} (z)`
 
-The loss function = - objective function
+* 1st term :math:`E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))` represent reconstruction likehood. Without this term, we are not penalizing the error of reconstruction. The network cannot learn the generation process.
+* 2nd term :math:`KL[Q_{\phi} (z|x) || p_{\theta} (z)]`: ensure that our learned distribution Q is similar to the prior distribution :math:`p_{\theta} (z)`, KL divergence does not allow probability distribution fuction of latent variable :math:`Q_{\phi} (z|x)` collapse with 0 variance by penalize if it deviate from :math:`p_{\theta} (z)` as a prior. If we do not have this term but only the :math:`E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))` (1st term). The network :math:`Q_{\phi} (z|x)` will cheat by learning a narrow dirtibution with small variance. It will effectively represent a single value from :math:`p_{\theta} (z)`. Now we reduce Variational autoencoder to become a normal autoencoder because :math:`Q_{\phi} (z|x)` become a single value instead of distribution.  
 
+On the left side of the equation, we have 
 
+* 1st term: :math:`p_{\theta}(x)`: reconstruction, generator
+* 2nd term: :math:`KL[Q_{\phi} (z|x)`: regularizer. It is not chose by human designer. Instead, it is obtained by deriving loss function automatically / naturally. 
+
+The loss function = - objective function. So we have 
+
+.. math::
+	
+	L(\theta, \phi) = - E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) + KL[Q_{\phi} (z|x) || p_{\theta} (z)]
+
+Now let's talk more about the second term: :math:`KL[Q_{\phi} (z|x) || p_{\theta} (z)]`. We can assuming 
+
+* :math:`KL[Q_{\phi} (z|x)` as a Gaussian :math:`N(\mu_{\phi}(z), \Sigma_{\phi}(z))`
+* :math:`p_{\theta} (z)` as a Gaussian :math:`N(0, 1)`
+
+Review that we have this derived above. 
+
+.. math::
+	KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2))
+
+So we have 
+ 
+.. math::
+	\begin{equation} 
+	\begin{split}
+	KL[N(\mu_{\phi}(x), \Sigma_{\phi}(x)) || N(0, 1)] &= \frac{1}{2}[tr(\Sigma_{\phi}(x)) - \mu_{\phi}(x)^T\mu_{\phi}(x) - k - \log |\Sigma_{\phi}(x)|] \\
+	&= \frac{1}{2} \sum_k[\Sigma_{\phi}(x) + \mu_{\phi}^2(x) - 1 + \log \Sigma_{\phi}(x)]
+	\end{split}
+	\end{equation}
+
+And ladies and gentle man, this is the final loss function: 
+
+.. math::
+	
+	loss = - E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) +\frac{1}{2} \sum_k[\Sigma_{\phi}(x) + \mu_{\phi}^2(x) - 1 + \log \Sigma_{\phi}(x)]
+
+During training, we need to alternate between 2 optimzation principles
+
+* Minimize loss respect to :math:`\theta`, while keep :math:`\phi` fixed. 
+* Minimize loss respect to :math:`\phi`, while keep :math:`\theta` fixed
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	\nabla_{\theta} loss &= - \nabla_{\theta} E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) \\
+	&= -\frac{1}{L} \sum_{l = 1}^{L} \nabla_{\theta} \log p_{\theta}(x|z^{(l)})
+	\end{split}
+	\end{equation}
+
+The second equation is using Monte Carlo Estimate. :math:`z^{(l)}` is sampled from :math:`Q_{\phi} (z|x)`. 
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	\nabla_{\phi} loss &= - \nabla_{\phi} E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) + \nabla_{\phi} \frac{1}{2} \sum_k[\Sigma_{\phi}(x) + \mu_{\phi}^2(x) - 1 + \log \Sigma_{\phi}(x)]
+	\end{split}
+	\end{equation}  
+
+The second tern is easy. The first term is very hard to estimate because :math:`\phi` appears in the distribution to which the expectation is taken. The solution of the problem is to design a linear transformation :math:`g_{\phi}` so that :math:`z = g_{\phi}(\epsilon, x)` and :math:`\epsilon \sim N(0, 1)`. Now we have:
+
+.. math::
+	E_{Q_{\phi}(z|x)}[f(z)] = E_{\epsilon \sim N(0, 1)}[f(g_{\phi} (\epsilon, x))]
+
+Now we can back-propagate with respect to :math:`\phi`. Now we can change the first term as 
+
+.. math::
+	\begin{equation} 
+	\begin{split}
+	- \nabla_{\phi} E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z) &= - \nabla_{\phi} E_{\epsilon \sim N(0, 1)}(\log p_{\theta}(x|g_{\phi}(\epsilon, x))) \\
+	&= - \nabla_{\phi} \sum_{l = 1}^{L} \log p_{\theta}(x|z^{(l)}) \\
+	&= \sum_{l = 1}^{L} - \nabla_{\phi} \log p_{\theta}(x|z^{(l)})
+	\end{split}
+	\end{equation}
+
+Again, we can use Monte Carlo Estimation. 
 
 
 

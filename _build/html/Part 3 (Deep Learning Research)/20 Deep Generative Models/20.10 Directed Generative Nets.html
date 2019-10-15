@@ -395,10 +395,68 @@ KL[Q_{\phi} (z|x) || p_{\theta}(z|x)] &amp;= \sum_z Q_{\phi} (z|x) \log (\frac{Q
 \end{equation}\end{split}\]</div>
 <p>And this is VAE objective function</p>
 <ul class="simple">
-<li>1st term <span class="math notranslate nohighlight">\(E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))\)</span>: represent reconstruction likehood</li>
-<li>2nd term <span class="math notranslate nohighlight">\(KL[Q_{\phi} (z|x) || p_{\theta} (z)]\)</span>: ensure that our learned distribution Q is similar to the prior distribution <span class="math notranslate nohighlight">\(p_{\theta} (z)\)</span></li>
+<li>1st term <span class="math notranslate nohighlight">\(E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))\)</span> represent reconstruction likehood. Without this term, we are not penalizing the error of reconstruction. The network cannot learn the generation process.</li>
+<li>2nd term <span class="math notranslate nohighlight">\(KL[Q_{\phi} (z|x) || p_{\theta} (z)]\)</span>: ensure that our learned distribution Q is similar to the prior distribution <span class="math notranslate nohighlight">\(p_{\theta} (z)\)</span>, KL divergence does not allow probability distribution fuction of latent variable <span class="math notranslate nohighlight">\(Q_{\phi} (z|x)\)</span> collapse with 0 variance by penalize if it deviate from <span class="math notranslate nohighlight">\(p_{\theta} (z)\)</span> as a prior. If we do not have this term but only the <span class="math notranslate nohighlight">\(E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z))\)</span> (1st term). The network <span class="math notranslate nohighlight">\(Q_{\phi} (z|x)\)</span> will cheat by learning a narrow dirtibution with small variance. It will effectively represent a single value from <span class="math notranslate nohighlight">\(p_{\theta} (z)\)</span>. Now we reduce Variational autoencoder to become a normal autoencoder because <span class="math notranslate nohighlight">\(Q_{\phi} (z|x)\)</span> become a single value instead of distribution.</li>
 </ul>
-<p>The loss function = - objective function</p>
+<p>On the left side of the equation, we have</p>
+<ul class="simple">
+<li>1st term: <span class="math notranslate nohighlight">\(p_{\theta}(x)\)</span>: reconstruction, generator</li>
+<li>2nd term: <span class="math notranslate nohighlight">\(KL[Q_{\phi} (z|x)\)</span>: regularizer. It is not chose by human designer. Instead, it is obtained by deriving loss function automatically / naturally.</li>
+</ul>
+<p>The loss function = - objective function. So we have</p>
+<div class="math notranslate nohighlight">
+\[L(\theta, \phi) = - E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) + KL[Q_{\phi} (z|x) || p_{\theta} (z)]\]</div>
+<p>Now let’s talk more about the second term: <span class="math notranslate nohighlight">\(KL[Q_{\phi} (z|x) || p_{\theta} (z)]\)</span>. We can assuming</p>
+<ul class="simple">
+<li><span class="math notranslate nohighlight">\(KL[Q_{\phi} (z|x)\)</span> as a Gaussian <span class="math notranslate nohighlight">\(N(\mu_{\phi}(z), \Sigma_{\phi}(z))\)</span></li>
+<li><span class="math notranslate nohighlight">\(p_{\theta} (z)\)</span> as a Gaussian <span class="math notranslate nohighlight">\(N(0, 1)\)</span></li>
+</ul>
+<p>Review that we have this derived above.</p>
+<div class="math notranslate nohighlight">
+\[KL[p || q] =  \frac{1}{2}(\log(\frac{|\Sigma_2|}{|\Sigma_1|} - k  + tr(\Sigma_2^{-1}\Sigma_1) + (\mu_1 - \mu_2)^T\Sigma_2^{-1}(\mu_1 - \mu_2))\]</div>
+<p>So we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+KL[N(\mu_{\phi}(x), \Sigma_{\phi}(x)) || N(0, 1)] &amp;= \frac{1}{2}[tr(\Sigma_{\phi}(x)) - \mu_{\phi}(x)^T\mu_{\phi}(x) - k - \log |\Sigma_{\phi}(x)|] \\
+&amp;= \frac{1}{2} \sum_k[\Sigma_{\phi}(x) + \mu_{\phi}^2(x) - 1 + \log \Sigma_{\phi}(x)]
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>And ladies and gentle man, this is the final loss function:</p>
+<div class="math notranslate nohighlight">
+\[loss = - E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) +\frac{1}{2} \sum_k[\Sigma_{\phi}(x) + \mu_{\phi}^2(x) - 1 + \log \Sigma_{\phi}(x)]\]</div>
+<p>During training, we need to alternate between 2 optimzation principles</p>
+<ul class="simple">
+<li>Minimize loss respect to <span class="math notranslate nohighlight">\(\theta\)</span>, while keep <span class="math notranslate nohighlight">\(\phi\)</span> fixed.</li>
+<li>Minimize loss respect to <span class="math notranslate nohighlight">\(\phi\)</span>, while keep <span class="math notranslate nohighlight">\(\theta\)</span> fixed</li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+\nabla_{\theta} loss &amp;= - \nabla_{\theta} E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) \\
+&amp;= -\frac{1}{L} \sum_{l = 1}^{L} \nabla_{\theta} \log p_{\theta}(x|z^{(l)})
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>The second equation is using Monte Carlo Estimate. <span class="math notranslate nohighlight">\(z^{(l)}\)</span> is sampled from <span class="math notranslate nohighlight">\(Q_{\phi} (z|x)\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[\begin{equation}
+\begin{split}
+\nabla_{\phi} loss &amp;= - \nabla_{\phi} E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z)) + \nabla_{\phi} \frac{1}{2} \sum_k[\Sigma_{\phi}(x) + \mu_{\phi}^2(x) - 1 + \log \Sigma_{\phi}(x)]
+\end{split}
+\end{equation}\]</div>
+<p>The second tern is easy. The first term is very hard to estimate because <span class="math notranslate nohighlight">\(\phi\)</span> appears in the distribution to which the expectation is taken. The solution of the problem is to design a linear transformation <span class="math notranslate nohighlight">\(g_{\phi}\)</span> so that <span class="math notranslate nohighlight">\(z = g_{\phi}(\epsilon, x)\)</span> and <span class="math notranslate nohighlight">\(\epsilon \sim N(0, 1)\)</span>. Now we have:</p>
+<div class="math notranslate nohighlight">
+\[E_{Q_{\phi}(z|x)}[f(z)] = E_{\epsilon \sim N(0, 1)}[f(g_{\phi} (\epsilon, x))]\]</div>
+<p>Now we can back-propagate with respect to <span class="math notranslate nohighlight">\(\phi\)</span>. Now we can change the first term as</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{equation}
+\begin{split}
+- \nabla_{\phi} E_{z \sim Q_{\phi} (z|x)}(\log p_{\theta}(x|z) &amp;= - \nabla_{\phi} E_{\epsilon \sim N(0, 1)}(\log p_{\theta}(x|g_{\phi}(\epsilon, x))) \\
+&amp;= - \nabla_{\phi} \sum_{l = 1}^{L} \log p_{\theta}(x|z^{(l)}) \\
+&amp;= \sum_{l = 1}^{L} - \nabla_{\phi} \log p_{\theta}(x|z^{(l)})
+\end{split}
+\end{equation}\end{split}\]</div>
+<p>Again, we can use Monte Carlo Estimation.</p>
 </div>
 <div class="section" id="generative-adverserial-network">
 <h2>20.10.4 Generative Adverserial Network<a class="headerlink" href="#generative-adverserial-network" title="Permalink to this headline">¶</a></h2>

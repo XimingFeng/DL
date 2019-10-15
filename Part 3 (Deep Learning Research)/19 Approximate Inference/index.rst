@@ -29,6 +29,8 @@ Direct interaction in undirected model / explaining away interaction between mut
    19.3 MAP Inference and Sparse Coding
    19.4 Variational Inference and Learning 
    19.5 Learned Approximate Inference
+   Auto Encoding Variational Bayes
+
    
 
    

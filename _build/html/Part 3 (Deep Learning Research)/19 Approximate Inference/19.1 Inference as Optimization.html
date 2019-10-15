@@ -97,6 +97,7 @@
 <li class="toctree-l3"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="19.4 Variational Inference and Learning.html">19.4 Variational Inference and Learning</a></li>
 <li class="toctree-l3"><a class="reference internal" href="19.5 Learned Approximate Inference.html">19.5 Learned Approximate Inference</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Auto Encoding Variational Bayes.html">Paper: Auto-Encoding Variational Bayes</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../20 Deep Generative Models/index.html">20 Deep Generative Models</a></li>
@@ -183,22 +184,22 @@
 <div class="math notranslate nohighlight">
 \[\begin{split}\begin {equation}
 \begin{split}
-KL[q(h) || p(h|x)] &amp;= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
-&amp;= \sum_h q(h) \log \frac{q(h)}{\frac {p(x, h)}{p(x)}} \\
-&amp;= \sum_h q(h) \log p(x) + \sum_h q(h) \log q(h) - \sum_h q(h) \log p(x, h) \\
-&amp;= \log p(x) - H(q) - E_{h\sim q}[\log p(x, h)]
+KL[q(h|v) || p(h|v)] &amp;= \sum_h q(h|v) \log \frac{q(h|v)}{p(h|v)} \\
+&amp;= \sum_h q(h|v) \log \frac{q(h|v)}{\frac {p(x, v)}{p(v)}} \\
+&amp;= \sum_h q(h|v) \log p(v) + \sum_h q(h|v) \log q(h) - \sum_h q(h|v) \log p(v, h) \\
+&amp;= \log p(v) - H(q(h|v)) - E_{h\sim q(h|v)}[\log p(v, h)]
 \end{split}
 \end {equation}\end{split}\]</div>
 <p>Now we have</p>
 <div class="math notranslate nohighlight">
-\[\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)\]</div>
+\[\log p(v) = E_{h\sim q(h|v)}[\log p(v, h)] + KL[q(h|v) || p(h|v)] + H(q)\]</div>
 <p>Because KL divergence is always nonnegative we have lower bound</p>
 <div class="math notranslate nohighlight">
-\[L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)\]</div>
-<p>For appropriate of q, L is tractable to compute. For q(h) <strong>(textbook: q(h|v))</strong> that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h) = p(v|h), the approaximation is perfect, <span class="math notranslate nohighlight">\(L(v, \theta, q) = log P(x; \theta)\)</span>.</p>
+\[L(v, \theta, h) = E_{h\sim q(v|h)}[\log p(v, h)] + H(q(v|h))\]</div>
+<p>For appropriate of q, L is tractable to compute. For q(h|v)) that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h|v) = p(v|h), the approaximation is perfect, <span class="math notranslate nohighlight">\(L(v, \theta, q) = log P(v; \theta)\)</span>.</p>
 <p>We can think of inference as the procedure for finding the q that maximizes L. Solutions</p>
 <ul class="simple">
-<li>Exact inference maximizes L perfectly by searching over a family of functions q that includes p(h|x). (Brute Force)</li>
+<li>Exact inference maximizes L perfectly by searching over a family of functions q that includes p(h|v). (Brute Force)</li>
 <li>Approximate by restricting the family of distribution q that the optimization is allowed to search over</li>
 <li>Approxiamte by using imperfect optimization procedure that may not completely maximize L but may only increase it by significant amount.</li>
 </ul>
