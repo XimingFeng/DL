@@ -15,3 +15,7 @@
    20.8 Other Boltzmann Machines
    20.9 Back-Propagation through Random Operations
    20.10 Directed Generative Nets
+   20.11 Drawing Samples from Autoencoders
+   20.12 Generative Stochastic Networks
+   20.13 Other Generation Schemes
+   20.14 Evaluating Generative Models

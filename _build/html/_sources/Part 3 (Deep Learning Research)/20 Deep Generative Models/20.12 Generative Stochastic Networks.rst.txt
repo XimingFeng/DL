@@ -1,0 +1,18 @@
+20.12 Generative Stochastic Networks
+==============================================
+
+Generative stochastic networks (GSN) are generalizations of denoising entoencoders that include latent variables h in the generative Markov Chain, in addition to the visible variables
+
+GSN is parameterized by 2 conditional probability distributions that specify one step of the Markov Chain
+
+1. :math:`p(x^{(k)} | h^{(k)})` tells how to generate next visible variable given the current latent state. 
+2. :math:`p(h^{(h)} | h^{(k-1)}, x^{(k-1)})` tells how to update the latent state variable, given the previous latent state and visible variable.
+
+Denoising antoencoders and GSN differ from classical probablistic models (directed or undirected) in that they parameterize the generative process itself rather than the mathmatical specification of the joint ditribution of visible and latent variables. Instead, the latter is defined implicitly, if exists, as the stationary distribution of the gernatove Markove chain. 
+
+########################################################
+20.12.1 Discriminant GSNs
+########################################################
+
+The original formuation of GSN was meant for unsupervised learning and implicitly modeling p(x) for observed data x, but it is possible to modify the framework to optimize p(y|x).
+

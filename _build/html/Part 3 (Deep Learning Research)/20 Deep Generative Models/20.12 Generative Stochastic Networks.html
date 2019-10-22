@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>20 Deep Generative Models &mdash; dl 0.0.1 documentation</title>
+  <title>20.12 Generative Stochastic Networks &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="20.1 Boltzmann Machines" href="20.1 Boltzmann Machines.html" />
-    <link rel="prev" title="19.5 Learned Approximate Inference" href="../19 Approximate Inference/19.5 Learned Approximate Inference.html" /> 
+    <link rel="next" title="20.13 Other Generation Schemes" href="20.13 Other Generation Schemes.html" />
+    <link rel="prev" title="20.11 Drawing Samples from Autoencoders" href="20.11 Drawing Samples from Autoencoders.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -89,7 +89,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../19 Approximate Inference/index.html">19 Approximate Inference</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">20 Deep Generative Models</a><ul>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">20 Deep Generative Models</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="20.2 Restricted Boltzmann Machines.html">20.2 Restricted Boltzmann Machines</a></li>
 <li class="toctree-l3"><a class="reference internal" href="20.3 Deep Believe Network.html">20.3 Deep Believe Network</a></li>
@@ -101,9 +101,11 @@
 <li class="toctree-l3"><a class="reference internal" href="20.9 Back-Propagation through Random Operations.html">20.9 Back-Propagation through Random Operations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="20.10 Directed Generative Nets.html">20.10 Directed Generative Nets</a></li>
 <li class="toctree-l3"><a class="reference internal" href="20.11 Drawing Samples from Autoencoders.html">20.11 Drawing Samples from Autoencoders</a></li>
-<li class="toctree-l3"><a class="reference internal" href="20.12 Generative Stochastic Networks.html">20.12 Generative Stochastic Networks</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">20.12 Generative Stochastic Networks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#discriminant-gsns">20.12.1 Discriminant GSNs</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="20.13 Other Generation Schemes.html">20.13 Other Generation Schemes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="20.14 Evaluating Generative Models.html">20.14 Evaluating Generative Models</a></li>
 </ul>
 </li>
 </ul>
@@ -156,13 +158,15 @@
         
           <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
         
-      <li>20 Deep Generative Models</li>
+          <li><a href="index.html">20 Deep Generative Models</a> &raquo;</li>
+        
+      <li>20.12 Generative Stochastic Networks</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.12 Generative Stochastic Networks.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -175,25 +179,18 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="deep-generative-models">
-<h1>20 Deep Generative Models<a class="headerlink" href="#deep-generative-models" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="20.1 Boltzmann Machines.html">20.1 Boltzmann Machines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.2 Restricted Boltzmann Machines.html">20.2 Restricted Boltzmann Machines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.3 Deep Believe Network.html">20.3 Deep Believe Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.4 Deep Boltzmann Machines.html">20.4 Deep Boltzmann Machines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.5 Boltzmann Machines for Real Valued Data.html">20.5 Boltzmann Machines for Real-Valued Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.6 Convolutional Boltzmann Machines.html">20.6 Convolutional Boltzmann Machines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.7 Boltzmann Machines for Structured or Sequenti.html">20.7 Boltzmann Machines for Structured or Sequential Outputs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.8 Other Boltzmann Machines.html">20.8 Other Boltzmann Machines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.9 Back-Propagation through Random Operations.html">20.9 Back-Propagation through Random Operations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.10 Directed Generative Nets.html">20.10 Directed Generative Nets</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.11 Drawing Samples from Autoencoders.html">20.11 Drawing Samples from Autoencoders</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.12 Generative Stochastic Networks.html">20.12 Generative Stochastic Networks</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.13 Other Generation Schemes.html">20.13 Other Generation Schemes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="20.14 Evaluating Generative Models.html">20.14 Evaluating Generative Models</a></li>
-</ul>
+  <div class="section" id="generative-stochastic-networks">
+<h1>20.12 Generative Stochastic Networks<a class="headerlink" href="#generative-stochastic-networks" title="Permalink to this headline">¶</a></h1>
+<p>Generative stochastic networks (GSN) are generalizations of denoising entoencoders that include latent variables h in the generative Markov Chain, in addition to the visible variables</p>
+<p>GSN is parameterized by 2 conditional probability distributions that specify one step of the Markov Chain</p>
+<ol class="arabic simple">
+<li><span class="math notranslate nohighlight">\(p(x^{(k)} | h^{(k)})\)</span> tells how to generate next visible variable given the current latent state.</li>
+<li><span class="math notranslate nohighlight">\(p(h^{(h)} | h^{(k-1)}, x^{(k-1)})\)</span> tells how to update the latent state variable, given the previous latent state and visible variable.</li>
+</ol>
+<p>Denoising antoencoders and GSN differ from classical probablistic models (directed or undirected) in that they parameterize the generative process itself rather than the mathmatical specification of the joint ditribution of visible and latent variables. Instead, the latter is defined implicitly, if exists, as the stationary distribution of the gernatove Markove chain.</p>
+<div class="section" id="discriminant-gsns">
+<h2>20.12.1 Discriminant GSNs<a class="headerlink" href="#discriminant-gsns" title="Permalink to this headline">¶</a></h2>
+<p>The original formuation of GSN was meant for unsupervised learning and implicitly modeling p(x) for observed data x, but it is possible to modify the framework to optimize p(y|x).</p>
 </div>
 </div>
 
@@ -205,10 +202,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="20.1 Boltzmann Machines.html" class="btn btn-neutral float-right" title="20.1 Boltzmann Machines" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="20.13 Other Generation Schemes.html" class="btn btn-neutral float-right" title="20.13 Other Generation Schemes" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../19 Approximate Inference/19.5 Learned Approximate Inference.html" class="btn btn-neutral" title="19.5 Learned Approximate Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="20.11 Drawing Samples from Autoencoders.html" class="btn btn-neutral" title="20.11 Drawing Samples from Autoencoders" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

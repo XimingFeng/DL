@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>12 Applications &mdash; dl 0.0.1 documentation</title>
+  <title>20.14 Evaluating Generative Models &mdash; dl 0.0.1 documentation</title>
   
 
   
@@ -27,9 +27,7 @@
   <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="External Resources On Computer Vision" href="Computer Vision External/index.html" />
-    <link rel="prev" title="11.1 Performance Metrics" href="../11 Practical Methodology/11.1 Performance Metrics.html" /> 
+    <link rel="search" title="Search" href="../../search.html" /> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -79,20 +77,10 @@
             
             
               <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part II: Modern Practical Deep Networks</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../8 Optimization for Training Deep Models/index.html">8 Optimization for Training Deep Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../9 Convolutional Networks/index.html">9 The convolutional Networks</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../11 Practical Methodology/index.html">11 Practical Methodoloogy</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">12 Applications</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="Computer Vision External/index.html">External Resources On Computer Vision</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Natural Language Processing External/index.html">External Resource on Natural Language Processing</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../../Part 3 (Deep Learning Research)/index.html">Part III: Deep Learning Research</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
 </ul>
 
@@ -139,15 +127,13 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">Part II: Modern Practical Deep Networks</a> &raquo;</li>
-        
-      <li>12 Applications</li>
+      <li>20.14 Evaluating Generative Models</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/Part 2 (Modern Practical Deep Networks)/12 Applications/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/Part 3 (Deep Learning Research)/20 Deep Generative Models/20.14 Evaluating Generative Models.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -160,14 +146,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="applications">
-<h1>12 Applications<a class="headerlink" href="#applications" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="Computer Vision External/index.html">External Resources On Computer Vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="Natural Language Processing External/index.html">External Resource on Natural Language Processing</a></li>
-</ul>
-</div>
+  <div class="section" id="evaluating-generative-models">
+<h1>20.14 Evaluating Generative Models<a class="headerlink" href="#evaluating-generative-models" title="Permalink to this headline">¶</a></h1>
+<p>Often, cannot evaluate log(x) under the model, but we can evaluate only a approximation. In these cases, it is important to think and communicate clearly about what exactly is being measured.</p>
+<p>Evaluation metrics are often hard research problems in and of themselves.</p>
+<p>Other fields of machine learning usually allows for some variation in the preprocessing of the data. Examples: MNIST dataset. check textbook for example</p>
+<p>Practioners often evaluate generative models by visually inspecting the samples. Unfortunately, it is possible for a very poor probablistic model to produce very good samples</p>
+<img alt="../../_images/Figure16.1.PNG" src="../../_images/Figure16.1.PNG" />
+<p>Visual quality of samples not reliable -&gt; evaluate log-likehood the model assigns to the test data. Unfortunately, in some cases the likehood seems not to measture any attribute of the model that we really care about. Example: assigne high likehood to MNIST dataset because of the background.</p>
+<p>There are many different uses of generative models and the choice of metrics must match the intended use of the model</p>
 </div>
 
 
@@ -175,15 +162,6 @@
            
           </div>
           <footer>
-  
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="Computer Vision External/index.html" class="btn btn-neutral float-right" title="External Resources On Computer Vision" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="../11 Practical Methodology/11.1 Performance Metrics.html" class="btn btn-neutral" title="11.1 Performance Metrics" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
   
 
   <hr/>

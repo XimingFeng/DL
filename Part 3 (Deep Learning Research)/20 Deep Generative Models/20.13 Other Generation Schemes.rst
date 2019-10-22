@@ -1,0 +1,10 @@
+20.13 Other Generation Schemes
+===============================================
+
+* MCMC sampling
+* Ancestral sampling
+
+They are most popular approaches to generative modeling, they are by no means the only approaches. Other approaches
+
+* Diffusion inversion: based on the idea that the probability distribution we wish to sample from have structure. This structure can gradually be destroyed by a diffusion process that incrementally changes the probability distribution to have more entropy. To form a generative model, we can run the process in reverse, by training a model that gradually restores the structure to an un structured distribution. By iterattively applying a process that brings a distribution closer to the target one, we can gradually approach that target distribution. The model is defined to be the probability distribution produced by the iterative procedure. 
+* Approximate Bayesian Computation: samples are rejected or modified to make the moments of selected function of the samples match those of the desired distribution. 

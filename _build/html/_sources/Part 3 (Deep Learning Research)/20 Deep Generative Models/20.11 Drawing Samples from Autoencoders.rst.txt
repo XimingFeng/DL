@@ -1,0 +1,31 @@
+20.11 Drawing Samples from Autoencoders
+=============================================
+
+* Some kinds of autoencoders, such as variational autoencoders, explicitly represent a probability distribution and admit straightforward ancestral sampling.
+* Most other kinds of autoencoders require MCMC sampling.
+
+####################################################################
+20.11.1 Marlove Chain Associated with Any Denoising Autoencoder
+####################################################################
+
+Generalized denoising autoencoders aare specified by a denoising distribution for sampling an estimate of the clean input given the corrupted input. Each step of the Markov chain that generates from the estimated distribution consists of the following step:
+
+1. Starting from the previous state x, inject corruption noise, sampling :math:`\hat{x}` from :math:`C(\hat{x} | x)`
+2. Encode :math:`\hat{x}` into :math:`h=f(\hat{x})`
+3. Decode h to obtain the parameters :math:`w=g(h)` of :math:`p(x|w = g(h)) = p(x|\hat{x})`
+4. Sample the next state x from :math:`p(x|w = g(h)) = p(x|\hat{x})` 
+
+.. image:: rsc/Figure20.11.PNG
+
+
+####################################################################
+20.11.2 Clamping the Conditional Sampling
+####################################################################
+
+Similar to Boltzmann Machine, denoising autoencoders and their generalizations can be used to sample from a conditional ditribution :math:`p(x_f|x_o)`, simply by clamping the observed units :math:`x_o` and resampling the free units :math:`x_f` given :math:`x_o` and the sampled latent variables (if any). 
+
+####################################################################
+20.11.3 Walk-Back Training Procedure
+####################################################################
+
+The walk-back training procedure was proposed as a way to accelerate the convergence of generative training of denoising autoencoders. It consists of multiple stochastic encoder-decoder step, initialized at a training exmple and penalizing the last probablistic reconstruction (or all the reconstructions along the way. )
