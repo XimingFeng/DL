@@ -15,10 +15,10 @@ Introduce q as an arbitrary distribution over h
 
 	\begin {equation}
 	\begin{split}
-	KL[q(h) || p(h|x)] &= \sum_h q(h) \log \frac{q(h)}{p(h|x)} \\
-	&= \sum_h q(h) \log \frac{q(h)}{\frac {p(x, h)}{p(x)}} \\
-	&= \sum_h q(h) \log p(x) + \sum_h q(h) \log q(h) - \sum_h q(h) \log p(x, h) \\
-	&= \log p(x) - H(q) - E_{h\sim q}[\log p(x, h)]  
+	KL[q(h|v) || p(h|v)] &= \sum_h q(h|v) \log \frac{q(h|v)}{p(h|v)} \\
+	&= \sum_h q(h|v) \log \frac{q(h|v)}{\frac {p(x, v)}{p(v)}} \\
+	&= \sum_h q(h|v) \log p(v) + \sum_h q(h|v) \log q(h) - \sum_h q(h|v) \log p(v, h) \\
+	&= \log p(v) - H(q(h|v)) - E_{h\sim q(h|v)}[\log p(v, h)]  
 	\end{split}
 	\end {equation}
 
@@ -26,18 +26,18 @@ Now we have
 
 .. math::
 	
-	\log p(x) = E_{h\sim q}[\log p(x, h)] + KL[q(h) || p(h|x)] + H(q)
+	\log p(v) = E_{h\sim q(h|v)}[\log p(v, h)] + KL[q(h|v) || p(h|v)] + H(q)
 
 Because KL divergence is always nonnegative we have lower bound 
 
 .. math::
-	L(v, \theta, h) = E_{h\sim q}[\log p(x, h)] + H(q)
+	L(v, \theta, h) = E_{h\sim q(v|h)}[\log p(v, h)] + H(q(v|h))
 
-For appropriate of q, L is tractable to compute. For q(h) **(textbook: q(h|v))** that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h) = p(v|h), the approaximation is perfect, :math:`L(v, \theta, q) = log P(x; \theta)`.
+For appropriate of q, L is tractable to compute. For q(h|v)) that are better approaximation of p(h|v), the lower bound would be tighter, meaning closer to log p(v). When q(h|v) = p(v|h), the approaximation is perfect, :math:`L(v, \theta, q) = log P(v; \theta)`.
 
 We can think of inference as the procedure for finding the q that maximizes L. Solutions
 
-* Exact inference maximizes L perfectly by searching over a family of functions q that includes p(h|x). (Brute Force)
+* Exact inference maximizes L perfectly by searching over a family of functions q that includes p(h|v). (Brute Force)
 * Approximate by restricting the family of distribution q that the optimization is allowed to search over
 * Approxiamte by using imperfect optimization procedure that may not completely maximize L but may only increase it by significant amount.
 

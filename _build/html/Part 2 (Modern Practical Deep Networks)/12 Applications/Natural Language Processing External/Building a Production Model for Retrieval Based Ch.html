@@ -232,7 +232,15 @@ h_t = r_t \odot c_t + (1 - r_t) \odot x_t\end{split}\]</div>
 </div>
 <div class="section" id="training">
 <h3>3.3 Training<a class="headerlink" href="#training" title="Permalink to this headline">¶</a></h3>
-<p>We optimize the model the maximize the score between the context c and responce <span class="math notranslate nohighlight">\(r^+\)</span> actually sent by the agent while minimize the score between the context and each of k random “negative” response <span class="math notranslate nohighlight">\(r_1^-, ..., r_k^-\)</span></p>
+<p>We optimize the model the maximize the score between the context c and responce <span class="math notranslate nohighlight">\(r^+\)</span> actually sent by the agent while minimize the score between the context and each of k random “negative” response <span class="math notranslate nohighlight">\(r_1^-, ..., r_k^-\)</span>. Although negative response could be sampled seperately for each context-response pair, we instead share a set of negative response accross all examples in a batch. This has the benefit of reducing the number of responsees that need to be encoded in each batch of size of b from O(kb) to O(k + b)</p>
+</div>
+<div class="section" id="whitelist-generation">
+<h3>3.5 Whitelist Generation<a class="headerlink" href="#whitelist-generation" title="Permalink to this headline">¶</a></h3>
+<p>2 method of create a whitelist from which our model selects responses at inference time:</p>
+<ul class="simple">
+<li>Frequency-based method: select 1,000 or 10,000 most common agent responses.</li>
+<li>Clustering-base method: encode all agent responses using response encoder <span class="math notranslate nohighlight">\(f_r\)</span> and use k-means clustering with k = 1000 or k = 10,000 to cluster the reponse. Then selected the most common response from each cluster to create whitelist</li>
+</ul>
 </div>
 </div>
 <div class="section" id="resource">

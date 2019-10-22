@@ -100,7 +100,16 @@ To determine the relevance of a response r to a context c, the model computes a 
 3.3 Training
 ********************************************************
 
-We optimize the model the maximize the score between the context c and responce :math:`r^+` actually sent by the agent while minimize the score between the context and each of k random "negative" response :math:`r_1^-, ..., r_k^-`
+We optimize the model the maximize the score between the context c and responce :math:`r^+` actually sent by the agent while minimize the score between the context and each of k random "negative" response :math:`r_1^-, ..., r_k^-`. Although negative response could be sampled seperately for each context-response pair, we instead share a set of negative response accross all examples in a batch. This has the benefit of reducing the number of responsees that need to be encoded in each batch of size of b from O(kb) to O(k + b) 
+
+********************************************************
+3.5 Whitelist Generation
+********************************************************
+
+2 method of create a whitelist from which our model selects responses at inference time:
+
+* Frequency-based method: select 1,000 or 10,000 most common agent responses.
+* Clustering-base method: encode all agent responses using response encoder :math:`f_r` and use k-means clustering with k = 1000 or k = 10,000 to cluster the reponse. Then selected the most common response from each cluster to create whitelist
 
 
 
