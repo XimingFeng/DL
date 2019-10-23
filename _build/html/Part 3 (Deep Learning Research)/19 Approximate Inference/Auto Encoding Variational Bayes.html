@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Paper: Auto-Encoding Variational Bayes &mdash; dl 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="20 Deep Generative Models" href="../20 Deep Generative Models/index.html" />
+    <link rel="prev" title="19.5 Learned Approximate Inference" href="19.5 Learned Approximate Inference.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> dl
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../Part 1 (Applied Math and Machine Learning Basics)/index.html">Part I: Applied Math and Machine Learning Basics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../Part 2 (Modern Practical Deep Networks)/index.html">Part II: Modern Practical Deep Networks</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Part III: Deep Learning Research</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../14 Autoencoders/index.html">14 Autoencoders</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../15 Representation Learning/index.html">15 Representation Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../16 Structured Probablistic Models for Deep Learning/index.html">16 Structured Probablistic Models for Deep Learning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../17 Monte Carlo Methods/index.html">17 Monte Carlo Methods</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../18 Confronting the Partition Function/index.html">18 Confronting the Partition Function</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">19 Approximate Inference</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="19.1 Inference as Optimization.html">19.1 Inference as Optimization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="19.2 Expectation Maximization.html">19.2 Expectation Maximization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="19.3 MAP Inference and Sparse Coding.html">19.3 MAP Inference and Sparse Coding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="19.4 Variational Inference and Learning.html">19.4 Variational Inference and Learning</a></li>
+<li class="toctree-l3"><a class="reference internal" href="19.5 Learned Approximate Inference.html">19.5 Learned Approximate Inference</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Paper: Auto-Encoding Variational Bayes</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#method">2 Method</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../20 Deep Generative Models/index.html">20 Deep Generative Models</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../Extra/index.html">Extra</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">dl</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Part III: Deep Learning Research</a> &raquo;</li>
+        
+          <li><a href="index.html">19 Approximate Inference</a> &raquo;</li>
+        
+      <li>Paper: Auto-Encoding Variational Bayes</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/Part 3 (Deep Learning Research)/19 Approximate Inference/Auto Encoding Variational Bayes.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="paper-auto-encoding-variational-bayes">
+<h1>Paper: Auto-Encoding Variational Bayes<a class="headerlink" href="#paper-auto-encoding-variational-bayes" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://arxiv.org/pdf/1312.6114.pdf">Paper</a></p>
+<p>How to perform efficient approximate inference and learning with directed probablistic models whose continuous latent variable and/or parameters have intractable posterior.</p>
+<p>Variational Bayesian involves the optimization of an approximation to the intractable posterior. The common Mean field approach requires analystical solution of expectation w.r.t the approximate posterior, which are also intractable in general case.</p>
+<p>This paper shows how a reparameterization of variational lower bound yields a simple differentiable unbiased estimator of the lower bound.</p>
+<p>This Stochastic Gradient Variational Bayesian can be used for effiecient approximate posterior inference in almost any model with continuous latent variable and/or parameters. And it is straightforward to optimize using standard stochastic gradient ascent technique.</p>
+<p>For the case of i.i.d dataset and continuous latent variables per datapoint, the paper propose autoencoder VB. It uses SGVB estimator to optimize the recognition model that allow us to perform efficient approximate posterior inference using simple ancestral sampling =&gt; make inference and learning especially effcient, which in turn to allow us to efficiently learn the model parameters.</p>
+<p>Learned posterior inference model, can also be used for a host of tasks</p>
+<ul class="simple">
+<li>recognition</li>
+<li>denoising</li>
+<li>representation</li>
+<li>visualization</li>
+</ul>
+<p>When a neural network is used for the recognition model, we reach variational auto-encoder.</p>
+<div class="section" id="method">
+<h2>2 Method<a class="headerlink" href="#method" title="Permalink to this headline">¶</a></h2>
+<p>This paper, we restrict the ourselves to the common case where</p>
+<ul class="simple">
+<li>We have an i.i.d dataset with latent variable per datapoint,</li>
+<li>We like to perform maximum likehood or maximum a posteriori inference on the global variables and variational inference on the latent variables</li>
+</ul>
+<p>We can extend the scenario if we want. But the paper is focused on the common cases.</p>
+<div class="section" id="problem-scenario">
+<h3>2.1 Problem scenario<a class="headerlink" href="#problem-scenario" title="Permalink to this headline">¶</a></h3>
+<p>review on representation learning in DL textbook at the beginning of chapter 15:</p>
+<p>Feedforward network trained by supervised learning: last layer linear classifier or nearest neighbor classifier. The rest of the network learns to provide a representation to this classifier. Training with a supervised criterion naturally leads to the representatino at every hidden layer taking on properties that make the classification easier.</p>
+<p>Just like superviser network, unsupervised deep learning algorithms have a main training objective but also learn a representation as a side effect. Most of representation learning problem face the trade off between</p>
+<ul class="simple">
+<li>Researve as much info about input as possible</li>
+<li>attain nice properties such as independence</li>
+</ul>
+<p>Consider some dataset: <span class="math notranslate nohighlight">\(X = {x^{i}}_{i=1}^N\)</span> consisting of N i.i.d samples of some discrete or continuous variable x.</p>
+<p>We assume that the data are generated by some random random process, involving an unobserved continuous random variable z. This data generating processs consists of 2 step:</p>
+<ol class="arabic">
+<li><p class="first">a value <span class="math notranslate nohighlight">\(z^{(i)}\)</span> is generated from some prior distribution <span class="math notranslate nohighlight">\(p_{\theta^*}(z)\)</span>.</p>
+</li>
+<li><p class="first">a value <span class="math notranslate nohighlight">\(x^{(i)}\)</span> is generated from some conditional distribution <span class="math notranslate nohighlight">\(p_{\theta^*}(x|z)\)</span>. We assume that</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>the prior <span class="math notranslate nohighlight">\(p_{\theta^*}(z)\)</span> and the likehood <span class="math notranslate nohighlight">\(p_{\theta^*}(x|z)\)</span> come from parametric families of <span class="math notranslate nohighlight">\(p_{\theta}(z)\)</span> and <span class="math notranslate nohighlight">\(p_{\theta}(x|z)\)</span></li>
+<li>Their probability density functions (PDFs) are differentiable with respect to both <span class="math notranslate nohighlight">\(\theta\)</span> and z</li>
+</ol>
+</div></blockquote>
+</li>
+</ol>
+<p>Unfortunately, a lot of this process is hidden from our view: the true parameters <span class="math notranslate nohighlight">\(\theta^*\)</span> as well as the values of the latent variable <span class="math notranslate nohighlight">\(z^{(i)}\)</span> are unknown to us.</p>
+<p>Very importantly, we do not make simplifying assumption about</p>
+<ol class="loweralpha simple">
+<li>the marginal <span class="math notranslate nohighlight">\(p_{\theta}(x)\)</span></li>
+<li>the posterior <span class="math notranslate nohighlight">\(p_{\theta}(z|x)\)</span></li>
+</ol>
+<p>This kind of assumption is very common to solve the challenge. But no! we are not going to use this strategy. So without this kind of simplying assumption, what kind of challenge are we facing:</p>
+<ol class="arabic">
+<li><p class="first">Intractibility:</p>
+<blockquote>
+<div><ol class="loweralpha simple">
+<li>marginal likehood <span class="math notranslate nohighlight">\(p_{\theta}(x) = \int p_{\theta}(z) p_{\theta}(x|z) dz\)</span> is intractible</li>
+<li>true posterior <span class="math notranslate nohighlight">\(p_{\theta}(z|x) = p_{\theta}(x|z) * p_{\theta}(z) / p_{\theta}(x)\)</span> is intractible</li>
+<li>required integrals integrals for any reasonable mean-field VB algorithm are also intractable.</li>
+</ol>
+</div></blockquote>
+</li>
+<li><p class="first">A large dataset: we have so much data that batch optimization is too costly. We would like to make parameter updates using small minibatch or even single datapoints. Sampling based solution, e.g. Monte Carlo, EM would in general be too slow, since it involves a typically expensive sampling loop per datapoint.</p>
+</li>
+</ol>
+<p>Review on intractable inference problem at Chapter 19 of DL textbook:</p>
+<img alt="../../_images/Figure19.1.PNG" src="../../_images/Figure19.1.PNG" />
+<p>We are intersted in and propose solution to, 3 related problems in the above scenario:</p>
+<ol class="arabic simple">
+<li>Efficient approximate maximum likelihood (ML) or maximum a posteriori (MAP) estimation for the parameter <span class="math notranslate nohighlight">\(\theta\)</span>.</li>
+<li>Efficient approximate posterior inference of the latent variable z given an observed value of x for a choice of <span class="math notranslate nohighlight">\(\theta\)</span>. This is useful for coding and data representation tasks.</li>
+<li>Efficient approximate marginal inference of the variable x. This allow us to perform all kinds of tasks where a prior over x is required. Common applications in computer vision include image denoising, inpainting, and super resolution.</li>
+</ol>
+<p>For the purpose of solving the above problems, we introduce a recognition model <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span>: an approximation to the <strong>intractable true posterior</strong> <span class="math notranslate nohighlight">\(p_{\theta}(z|x)\)</span></p>
+<ul class="simple">
+<li><span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span> probabslistic encoder: given datapoint x, it produces a distribution (e.g. a Gaussian) over the possible values of code z from which the datapoint x could have been generated.</li>
+<li><span class="math notranslate nohighlight">\(p_{\theta}(x|z)\)</span> probabslistic decoder: given a code z, it produces a distribution over the possible corresponding value of x.</li>
+</ul>
+</div>
+<div class="section" id="the-variational-bound">
+<h3>2.2 The variational bound<a class="headerlink" href="#the-variational-bound" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+KL[q_{\phi}(z|x) || p_{\theta}(z|x)] &amp;= \sum_h q_{\phi}(z|x) \log \frac{q_{\phi}(z|x)}{p_{\theta}(z|x)} \\ \\
+&amp;= \sum_h q_{\phi}(z|x) \log \frac{q_{\phi}(z|x)}{\frac {p_{\theta}(x, z)}{p_{\theta}(x)}} \\ \\
+&amp;= \log p_{\theta}(x) + \sum_z q_{\phi}(z|x) (\log q_{\phi}(z|x) - log p_{\theta}(x, z) \\ \\
+&amp;=  \log p_{\theta}(x) + \sum_z q_{\phi}(z|x) (\log q_{\phi}(z|x) - log p_{\theta}(x | z) p_{\theta}(z) \\ \\
+&amp;= \log p_{\theta}(x) + KL[q_{\phi}(z|x) || p_{\theta}(z)] - \sum_z q_{\phi}(z|x) log p_{\theta}(x | z)
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>Now we have</p>
+<div class="math notranslate nohighlight">
+\[\log p_{\theta}(x) = KL[q_{\phi}(z|x) || p_{\theta}(z|x)] - KL[q_{\phi}(z|x) || p_{\theta}(z)] + \sum_z q_{\phi}(z|x) log p_{\theta}(x | z)\]</div>
+<p>Because <span class="math notranslate nohighlight">\(KL[q_{\phi}(z|x) || p_{\theta}(z|x)] &gt;= 0\)</span> we have</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+\log p_{\theta}(x) &amp;\geq L(\theta, \phi; x) \\ \\
+&amp;= - KL[q_{\phi}(z|x) || p_{\theta}(z)] + \sum_z q_{\phi}(z|x) log p_{\theta}(x | z) \\ \\
+&amp;= - KL[q_{\phi}(z|x) || p_{\theta}(z)] + E_{z \sim q_{\phi}(z|x)} log p_{\theta}(x | z)
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>we want to differentiate and optimize lower bound w.r.t. both variational parameter <span class="math notranslate nohighlight">\(\phi\)</span> and generative parameters <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>To calculate a function w.r.t. <span class="math notranslate nohighlight">\(\phi\)</span> using naive / Monte Carlo method we have:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+\nabla_{\phi} E_{z \sim q_{\phi}(z)} f(z) &amp;= \sum_z \nabla_{\phi} q_{\phi}(z)f(z) \\ \\
+&amp;= \sum_z f(z) \nabla_{\phi} q_{\phi}(z) \\ \\
+&amp;= \sum_z f(z) q_{\phi}(z) \nabla_{\phi} \log q_{\phi}(z) \\ \\
+&amp;= E_{z \sim q_{\phi}(z)} [f(z)  \nabla_{\phi} \log q_{\phi}(z)] \\ \\
+&amp;\approx \frac{1}{L}\sum_{l=1}^L [f(z^{(l)})  \nabla_{\phi} \log q_{\phi}(z^{(l)})] \\ \\
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(z^{(l)} \sim q_{\phi}(z)\)</span>.</p>
+<p>This gradient estimator exhibits very high variance.</p>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../20 Deep Generative Models/index.html" class="btn btn-neutral float-right" title="20 Deep Generative Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="19.5 Learned Approximate Inference.html" class="btn btn-neutral" title="19.5 Learned Approximate Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Ximing
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../_static/doctools.js"></script>
+        <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
