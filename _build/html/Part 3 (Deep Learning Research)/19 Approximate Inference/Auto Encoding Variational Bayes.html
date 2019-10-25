@@ -292,6 +292,51 @@ KL[q_{\phi}(z|x) || p_{\theta}(z|x)] &amp;= \sum_h q_{\phi}(z|x) \log \frac{q_{\
 <p>where <span class="math notranslate nohighlight">\(z^{(l)} \sim q_{\phi}(z)\)</span>.</p>
 <p>This gradient estimator exhibits very high variance.</p>
 </div>
+<div class="section" id="the-sgvb-estimator-and-aevb-algorithm">
+<h3>2.3 The SGVB estimator and AEVB algorithm<a class="headerlink" href="#the-sgvb-estimator-and-aevb-algorithm" title="Permalink to this headline">¶</a></h3>
+<p>Under certain mild condition outlined in 2.4 for a chosen approximate posterior <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span> we can reparameterize the random variable <span class="math notranslate nohighlight">\(\hat{z} \sim q_{\phi}(z|x)\)</span> using a differentiable transformation <span class="math notranslate nohighlight">\(g_{\phi}(\epsilon , x)\)</span> of an auxiliary noise variable <span class="math notranslate nohighlight">\(\epsilon\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\hat{z} = g_{\phi}(\epsilon , x) \\  with \\  \epsilon \sim p(\epsilon)\end{split}\]</div>
+<p>We can now form Monte Carlo estimates of expectation of some function f(z) w.r.t. <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+E_{z \sim q_{\phi}(z|x)} f(z) &amp;= E_{\epsilon \sim p(\epsilon)}[f(g_{\phi}(\epsilon , x))] \\ \\
+&amp;\approx \frac{1}{L}\sum_{l=1}^L f(g_{\phi}(\epsilon ^{(l)} , x))
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>Now we apply this technique to variational lower bound</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+L(\theta, \phi; x^{(i)}) &amp;= \sum_z q_{\phi}(z|x^{(i)}) (- \log q_{\phi}(z|x^{(i)}) + log p_{\theta}(x^{(i)}, z) ) \\ \\
+&amp;\approx \frac{1}{L} \sum_{l=1}^L q_{\phi}(z^{(i, l)}|x^{(i)}) (- \log q_{\phi}(z^{(i, l)}|x^{(i)}) + log p_{\theta}(x^{(i)} | z^{(i, l)})
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(z^{(i, l)} = g_{\phi}(\epsilon ^{(i, l)} , x^{(i)})\)</span> and <span class="math notranslate nohighlight">\(\epsilon \sim p(\epsilon)\)</span></p>
+<p>Review that :</p>
+<div class="math notranslate nohighlight">
+\[L(\theta, \phi; x) = - KL[q_{\phi}(z|x) || p_{\theta}(z)] + E_{z \sim q_{\phi}(z|x)} log p_{\theta}(x | z)\]</div>
+<p>The KL divergence can be integrated analystically, such that only the expected reconstruction error <span class="math notranslate nohighlight">\(E_{z \sim q_{\phi}(z|x)} log p_{\theta}(x | z)\)</span> requires estimation by sampling.</p>
+<p>The KL divergence can then be interpreted as regularizing <span class="math notranslate nohighlight">\(\phi\)</span>, encouraging the approximate posterior <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span> to be close to the prior <span class="math notranslate nohighlight">\(p_{\theta}(z)\)</span>. This yields a second version of the SGVB estimator</p>
+<div class="math notranslate nohighlight">
+\[\hat{L}^B(\theta, \phi; x^{(i)}) = - KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))\]</div>
+<p>where <span class="math notranslate nohighlight">\(z^{(i, l)} = g_{\phi}(\epsilon ^{(i, l)} , x^{(i)})\)</span> and <span class="math notranslate nohighlight">\(\epsilon \sim p(\epsilon)\)</span></p>
+<p>Given multiple datapoints from a dataset X with N datapoints, we can construct an estimator of the marginal likehood lower bound of the full dataset, based on minibatch:</p>
+<div class="math notranslate nohighlight">
+\[L(\theta, \phi; X) \approx \hat{L}^M(\theta, \phi; X^M = \frac{N}{M} \sum_{i=1}{M} \hat{L}(\theta, \phi; x^{(i)})\]</div>
+<p>where the minibatch <span class="math notranslate nohighlight">\(X^M = {x^{(i)}}_{i=1}^M\)</span> is randomly drawn sample of M datapoints from the full dataset X with N dataponits.</p>
+<p>The number of samples L per datapoint can be set to 1 as long as the minibatch size M is large enough.</p>
+<img alt="../../_images/VAEAlgo1.PNG" src="../../_images/VAEAlgo1.PNG" />
+<p>Now we look back at the equation again, this time we connect this equation with autoencoder</p>
+<div class="math notranslate nohighlight">
+\[\hat{L}^B(\theta, \phi; x^{(i)}) = - KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))\]</div>
+<p>where <span class="math notranslate nohighlight">\(z^{(i, l)} = g_{\phi}(\epsilon ^{(i, l)} , x^{(i)})\)</span> and <span class="math notranslate nohighlight">\(\epsilon \sim p(\epsilon)\)</span></p>
+<ul class="simple">
+<li><span class="math notranslate nohighlight">\(- KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)]\)</span> serves as regularizer</li>
+<li><span class="math notranslate nohighlight">\(\frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))\)</span> serves as an expected negative reconstruction error. <span class="math notranslate nohighlight">\(g_{\phi}()\)</span> is chosen such that it maps a datapoint <span class="math notranslate nohighlight">\(x^{(i)}\)</span> and a random noise vector <span class="math notranslate nohighlight">\(\epsilon^{l}\)</span> to a sample from approximate posterior for the datapoint  <span class="math notranslate nohighlight">\(z^{(i, l)} = g_{\phi}(x^{(i)}, \epsilon^{i, l})\)</span> is then the input to function <span class="math notranslate nohighlight">\(\log_{\theta}(x^{(i)} | z^{(i, l)})\)</span> which equals the probability density of datapoint <span class="math notranslate nohighlight">\(x^{(i)}\)</span> under the generative model, given <span class="math notranslate nohighlight">\(z^{(i, l)}\)</span>. This term is a negative reconstruction error in auto-encoder parlance.</li>
+</ul>
+</div>
 </div>
 </div>
 
