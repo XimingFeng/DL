@@ -210,3 +210,96 @@ where :math:`z^{(i, l)} = g_{\phi}(\epsilon ^{(i, l)} , x^{(i)})` and :math:`\ep
 
 * :math:`- KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)]` serves as regularizer
 * :math:`\frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))` serves as an expected negative reconstruction error. :math:`g_{\phi}()` is chosen such that it maps a datapoint :math:`x^{(i)}` and a random noise vector :math:`\epsilon^{l}` to a sample from approximate posterior for the datapoint  :math:`z^{(i, l)} = g_{\phi}(x^{(i)}, \epsilon^{i, l})` is then the input to function :math:`\log_{\theta}(x^{(i)} | z^{(i, l)})` which equals the probability density of datapoint :math:`x^{(i)}` under the generative model, given :math:`z^{(i, l)}`. This term is a negative reconstruction error in auto-encoder parlance. 
+
+************************************************************
+2.4 The reparameterization rick
+************************************************************
+
+Alternative method for generating samples from :math:`q_{\phi}(z|x)`:
+
+* Let z be a continuous random variable and :math:`z \sim q_{\phi}(z|x)` 
+* Express the random variable as a deterministic variable :math:`z = g_{\phi}(\epsilon, x)`
+* :math:`\epsilon` is an auxilary variable with independent marginal :math:`p(\epsilon)`
+* :math:`g_{\phi}()` is some vector valued function parameterized by :math:`\phi`
+
+It is useful because it can be used to rewrite an expectation w.r.t :math:`q_{\phi}(z|x)` such that the Monte Carlo estimate of the expectation is differentiable w.r.t :math:`\phi`. 
+
+How to choose :math:`g_{\phi}()` and auxiliary variable:
+
+1. Tractable inverse CDF
+2. Analogous to the Gaussian example
+3. Composition
+
+############################################################
+3. Examples: Variational Auto-Encoder
+############################################################
+
+In VAE, we use a neural network for the probablistic encoder :math:`q_{\phi}(z|x)`. Below is the game settings of VAE:
+
+1. :math:`p_{\theta}(z) = N(z; 0, I)` as a Multivariate Gaussian
+2. Generator Network / Encoder :math:`p_{\theta}(x | z)` whose **distribution parameters** are computed from z with a MLP
+	
+	* if x is real-valued data: :math:`p_{\theta}(x | z)` as a multivariate Gaussian
+	* if x is binary data: :math:`p_{\theta}(x | z)` as a Bernoulli
+
+3. Inference Network / Decoder :math:`q_{\phi}(z|x^{(i)}) = \log N(z; \mu^{(i)}, \sigma^{2(i)}I)` where the mean and standard deviation: :math:`\mu^{(i)}`, :math:`\sigma^{(i)}` is the outputs of of the encoding MLP
+
+Please note that we can use many other way to approach the approximate of true posterior. The approximate is :math:`q_{\phi}(z|x)`, it will still be Auto-Encoding Variational Baysian if we use many other methods. Variational Autoencoder believes that :math:`q_{\phi}(z|x^{(i)}) = \log N(z; \mu^{(i)}, \sigma^{2(i)}I)`. And also it belives that the parameter:math:`\mu^{(i)}`, :math:`\sigma^{(i)}` can be reparameterized. But does it have to be the multivariate Gaussian? No, it does not. VAE choose to believe that! The same applies to the generator / decoder in VAE. 
+
+Remember that the objective function is:
+
+.. math::
+	\hat{L}^B(\theta, \phi; x^{(i)}) = - KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))
+
+Because in this model we believe / choose :math:`p_{\theta}(z)` and :math:`q_{\phi}(z|x)` are Gaussians. The KL divergence can be computed and differentiated without estimation. 
+
+
+.. math::
+	\begin {equation}
+	\begin{split}
+	- KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] &= \int q_{\phi}(z|x^{(i)}) (\log p_{\theta}(z) - \log q_{\phi}(z|x^{(i)})) dz \\ \\
+	&= \int q_{\phi}(z|x^{(i)}) \log p_{\theta}(z) dz -  \int q_{\phi}(z|x^{(i)}) \log q_{\phi}(z|x^{(i)}) dz
+	\end{split}
+	\end {equation}
+
+Now we breakdown the last expression:
+
+.. math::
+	\begin {equation}
+	\begin{split}
+	\int q_{\phi}(z|x^{(i)}) \log p_{\theta}(z) dz &= \int N(z; \mu, \sigma^2) \log N(z; 0, I) dz \\
+	&= -\frac{J}{2} \log(2 \pi) - \frac{1}{2} \sum_{j=1}^J(\mu_j^2 + \sigma_j^2) 
+	\end{split}
+	\end {equation}
+
+.. math::
+	\begin {equation}
+	\begin{split}
+	\int q_{\phi}(z|x^{(i)}) \log q_{\phi}(z|x^{(i)}) dz &= \int N(z; \mu, \sigma^2) \log N(z; \mu, \sigma^2) dz \\
+	&= -\frac{J}{2} \log(2 \pi) - \frac{1}{2} \sum_{j=1}^J (1 + \log(\sigma_j^2))
+	\end{split}
+	\end {equation}
+
+put them together:
+
+.. math::
+	\begin {equation}
+	\begin{split}
+	- KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] &= \int q_{\phi}(z|x^{(i)}) \log p_{\theta}(z) dz -  \int q_{\phi}(z|x^{(i)}) \log q_{\phi}(z|x^{(i)}) dz \\
+	&= - \frac{1}{2} \sum_{j=1}^J (1 + \log(\sigma_j^2) - \mu_j^2 - \sigma_j^2)
+	\end{split}
+	\end {equation}
+
+Now we can rewrite the estimated lower bound as:
+
+.. math::
+	\begin {equation}
+	\begin{split}
+	\hat{L}^B(\theta, \phi; x^{(i)}) &= - KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)})) \\ \\
+	&= - \frac{1}{2} \sum_{j=1}^J (1 + \log((\sigma_j^{(i)})^2) - (\mu_j^{(i)})^2 - (\sigma_j^{(i)})^2) + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))
+	\end{split}
+	\end {equation}
+
+where :math:`z^{(i, l)} = \mu^{(i)} + \sigma^{(i)}) \odot \epsilon ^{(l)}` and :math:`\epsilon ^{(l)} \sim N(0, I)`
+
+

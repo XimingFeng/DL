@@ -96,6 +96,7 @@
 <li class="toctree-l3"><a class="reference internal" href="19.5 Learned Approximate Inference.html">19.5 Learned Approximate Inference</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Paper: Auto-Encoding Variational Bayes</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#method">2 Method</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples-variational-auto-encoder">3. Examples: Variational Auto-Encoder</a></li>
 </ul>
 </li>
 </ul>
@@ -337,6 +338,85 @@ L(\theta, \phi; x^{(i)}) &amp;= \sum_z q_{\phi}(z|x^{(i)}) (- \log q_{\phi}(z|x^
 <li><span class="math notranslate nohighlight">\(\frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))\)</span> serves as an expected negative reconstruction error. <span class="math notranslate nohighlight">\(g_{\phi}()\)</span> is chosen such that it maps a datapoint <span class="math notranslate nohighlight">\(x^{(i)}\)</span> and a random noise vector <span class="math notranslate nohighlight">\(\epsilon^{l}\)</span> to a sample from approximate posterior for the datapoint  <span class="math notranslate nohighlight">\(z^{(i, l)} = g_{\phi}(x^{(i)}, \epsilon^{i, l})\)</span> is then the input to function <span class="math notranslate nohighlight">\(\log_{\theta}(x^{(i)} | z^{(i, l)})\)</span> which equals the probability density of datapoint <span class="math notranslate nohighlight">\(x^{(i)}\)</span> under the generative model, given <span class="math notranslate nohighlight">\(z^{(i, l)}\)</span>. This term is a negative reconstruction error in auto-encoder parlance.</li>
 </ul>
 </div>
+<div class="section" id="the-reparameterization-rick">
+<h3>2.4 The reparameterization rick<a class="headerlink" href="#the-reparameterization-rick" title="Permalink to this headline">¶</a></h3>
+<p>Alternative method for generating samples from <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span>:</p>
+<ul class="simple">
+<li>Let z be a continuous random variable and <span class="math notranslate nohighlight">\(z \sim q_{\phi}(z|x)\)</span></li>
+<li>Express the random variable as a deterministic variable <span class="math notranslate nohighlight">\(z = g_{\phi}(\epsilon, x)\)</span></li>
+<li><span class="math notranslate nohighlight">\(\epsilon\)</span> is an auxilary variable with independent marginal <span class="math notranslate nohighlight">\(p(\epsilon)\)</span></li>
+<li><span class="math notranslate nohighlight">\(g_{\phi}()\)</span> is some vector valued function parameterized by <span class="math notranslate nohighlight">\(\phi\)</span></li>
+</ul>
+<p>It is useful because it can be used to rewrite an expectation w.r.t <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span> such that the Monte Carlo estimate of the expectation is differentiable w.r.t <span class="math notranslate nohighlight">\(\phi\)</span>.</p>
+<p>How to choose <span class="math notranslate nohighlight">\(g_{\phi}()\)</span> and auxiliary variable:</p>
+<ol class="arabic simple">
+<li>Tractable inverse CDF</li>
+<li>Analogous to the Gaussian example</li>
+<li>Composition</li>
+</ol>
+</div>
+</div>
+<div class="section" id="examples-variational-auto-encoder">
+<h2>3. Examples: Variational Auto-Encoder<a class="headerlink" href="#examples-variational-auto-encoder" title="Permalink to this headline">¶</a></h2>
+<p>In VAE, we use a neural network for the probablistic encoder <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span>. Below is the game settings of VAE:</p>
+<ol class="arabic">
+<li><p class="first"><span class="math notranslate nohighlight">\(p_{\theta}(z) = N(z; 0, I)\)</span> as a Multivariate Gaussian</p>
+</li>
+<li><p class="first">Generator Network / Encoder <span class="math notranslate nohighlight">\(p_{\theta}(x | z)\)</span> whose <strong>distribution parameters</strong> are computed from z with a MLP</p>
+<blockquote>
+<div><ul class="simple">
+<li>if x is real-valued data: <span class="math notranslate nohighlight">\(p_{\theta}(x | z)\)</span> as a multivariate Gaussian</li>
+<li>if x is binary data: <span class="math notranslate nohighlight">\(p_{\theta}(x | z)\)</span> as a Bernoulli</li>
+</ul>
+</div></blockquote>
+</li>
+<li><p class="first">Inference Network / Decoder <span class="math notranslate nohighlight">\(q_{\phi}(z|x^{(i)}) = \log N(z; \mu^{(i)}, \sigma^{2(i)}I)\)</span> where the mean and standard deviation: <span class="math notranslate nohighlight">\(\mu^{(i)}\)</span>, <span class="math notranslate nohighlight">\(\sigma^{(i)}\)</span> is the outputs of of the encoding MLP</p>
+</li>
+</ol>
+<p>Please note that we can use many other way to approach the approximate of true posterior. The approximate is <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span>, it will still be Auto-Encoding Variational Baysian if we use many other methods. Variational Autoencoder believes that <span class="math notranslate nohighlight">\(q_{\phi}(z|x^{(i)}) = \log N(z; \mu^{(i)}, \sigma^{2(i)}I)\)</span>. And also it belives that the parameter:math:<cite>mu^{(i)}</cite>, <span class="math notranslate nohighlight">\(\sigma^{(i)}\)</span> can be reparameterized. But does it have to be the multivariate Gaussian? No, it does not. VAE choose to believe that! The same applies to the generator / decoder in VAE.</p>
+<p>Remember that the objective function is:</p>
+<div class="math notranslate nohighlight">
+\[\hat{L}^B(\theta, \phi; x^{(i)}) = - KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))\]</div>
+<p>Because in this model we believe / choose <span class="math notranslate nohighlight">\(p_{\theta}(z)\)</span> and <span class="math notranslate nohighlight">\(q_{\phi}(z|x)\)</span> are Gaussians. The KL divergence can be computed and differentiated without estimation.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+- KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] &amp;= \int q_{\phi}(z|x^{(i)}) (\log p_{\theta}(z) - \log q_{\phi}(z|x^{(i)})) dz \\ \\
+&amp;= \int q_{\phi}(z|x^{(i)}) \log p_{\theta}(z) dz -  \int q_{\phi}(z|x^{(i)}) \log q_{\phi}(z|x^{(i)}) dz
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>Now we breakdown the last expression:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+\int q_{\phi}(z|x^{(i)}) \log p_{\theta}(z) dz &amp;= \int N(z; \mu, \sigma^2) \log N(z; 0, I) dz \\
+&amp;= -\frac{J}{2} \log(2 \pi) - \frac{1}{2} \sum_{j=1}^J(\mu_j^2 + \sigma_j^2)
+\end{split}
+\end {equation}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+\int q_{\phi}(z|x^{(i)}) \log q_{\phi}(z|x^{(i)}) dz &amp;= \int N(z; \mu, \sigma^2) \log N(z; \mu, \sigma^2) dz \\
+&amp;= -\frac{J}{2} \log(2 \pi) - \frac{1}{2} \sum_{j=1}^J (1 + \log(\sigma_j^2))
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>put them together:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+- KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] &amp;= \int q_{\phi}(z|x^{(i)}) \log p_{\theta}(z) dz -  \int q_{\phi}(z|x^{(i)}) \log q_{\phi}(z|x^{(i)}) dz \\
+&amp;= - \frac{1}{2} \sum_{j=1}^J (1 + \log(\sigma_j^2) - \mu_j^2 - \sigma_j^2)
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>Now we can rewrite the estimated lower bound as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin {equation}
+\begin{split}
+\hat{L}^B(\theta, \phi; x^{(i)}) &amp;= - KL[q_{\phi}(z|x^{(i)}) || p_{\theta}(z)] + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)})) \\ \\
+&amp;= - \frac{1}{2} \sum_{j=1}^J (1 + \log((\sigma_j^{(i)})^2) - (\mu_j^{(i)})^2 - (\sigma_j^{(i)})^2) + \frac{1}{L} \sum_{l=1}^{L} (\log p_{\theta}(x^{(i)} | z^{(i, l)}))
+\end{split}
+\end {equation}\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(z^{(i, l)} = \mu^{(i)} + \sigma^{(i)}) \odot \epsilon ^{(l)}\)</span> and <span class="math notranslate nohighlight">\(\epsilon ^{(l)} \sim N(0, I)\)</span></p>
 </div>
 </div>
 
