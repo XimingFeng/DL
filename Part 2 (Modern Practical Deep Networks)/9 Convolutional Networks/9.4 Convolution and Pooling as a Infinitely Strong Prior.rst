@@ -4,7 +4,7 @@
 Prior: probability distribution oever the parameters of the model that encode our believe about what models are reasonable.
 
 * A weak prior: high entropy. Eg: Gaussian with high variance. Such prior allows the data to move more or less freely.
-* A strong prior: lwo entropy. Eg: Gaussian with low variance. Such piror plays a more active role in determine where the parameters end up. 
+* A strong prior: low entropy. Eg: Gaussian with low variance. Such piror plays a more active role in determine where the parameters end up. 
 
 Check `this <https://homepage.stat.uiowa.edu/~mbognar/applets/normal.html>`_ and try different variance.
 
