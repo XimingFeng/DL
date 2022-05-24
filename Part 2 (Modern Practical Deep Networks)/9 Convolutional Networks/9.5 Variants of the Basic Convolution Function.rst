@@ -3,7 +3,7 @@
 
 Convolution in the context of NN means an operation that consists of many applications of convolution in parallel. 
 
-* Kenel K with element :math:`K_{i, j, k, l}` giving the connection strength between a unit in channel i of output and a unit in channel j of the input, with an offset of k rows and l columns between the output unit and the input unit.
+* Kernel K with element :math:`K_{i, j, k, l}` giving the connection strength between a unit in channel i of output and a unit in channel j of the input, with an offset of k rows and l columns between the output unit and the input unit.
 * Input: :math:`V_{i, j, k}` with channel i, row j and column k
 * Output Z same format as V
 * Use 1 as first entry
@@ -43,7 +43,7 @@ Special case of 0 padding:
 
 * Valid: no 0 padding is used. Limited number of layers.
 * Same: keep the size of the output to the size of input. Unlimited number of layers. Pixels near the border influence fewer output pixels than the input pixels near the center.
-* Full: Enough zeros are added for every pixels to be visited k (kenel width) times in each direction, resulting width m + k - 1. Difficult to learn a single kernel that performs well at all positions in the convolutional feature map.
+* Full: Enough zeros are added for every pixels to be visited k (kernel width) times in each direction, resulting width m + k - 1. Difficult to learn a single kernel that performs well at all positions in the convolutional feature map.
 
 Usually the optimal amount of 0 padding lies somewhere between 'Valid' or 'Same'
 
@@ -71,8 +71,9 @@ Comparison on local connections, convolution and full connection
 
 Useful when we know that each feature should be a function of a small part of space, but no reason to think that the same feature should occur accross all the space. eg: look for mouth only in the bottom half of the image.
 
-It can be also useful to make versions of convolution or local connected layers in which the connectivity is further restricted, eg: constrain each output channeel i to be a function of onlu a subset of the input channel. Adv: 
+It can be also useful to make versions of convolution or local connected layers in which the connectivity is further restricted, eg: constrain each output channeel i to be a function of only a subset of the input channel.
 
+Adv: 
 * reduce memory consumption 
 * increase statistical efficiency 
 * reduce computation for both forward and backward prop. 
